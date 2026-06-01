@@ -10,13 +10,7 @@ const profile = getProfile(lang);
 const projectsHref = localizePath('/proyectos', lang);
 const contactHref = localizePath('/contacto', lang);
 
-const techBadges = [
-  { name: 'SaaS', color: '#38bdf8' },
-  { name: 'Laravel', color: '#fb7185' },
-  { name: 'Python', color: '#fbbf24' },
-  { name: 'Node.js', color: '#4ade80' },
-  { name: 'React', color: 'var(--color-primary)' },
-];
+const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
 ---
 
 <section
@@ -51,8 +45,7 @@ const techBadges = [
   </div>
   <!-- Radial glow bottom-left -->
   <div
-    class="absolute bottom-0 left-1/4 w-72 h-72 opacity-8 pointer-events-none"
-    style="background: radial-gradient(circle, rgba(0,217,245,0.3) 0%, transparent 70%);"
+    class="absolute bottom-0 left-1/4 w-72 h-72 opacity-10 pointer-events-none glow-radial"
     aria-hidden="true"
   >
   </div>
@@ -90,14 +83,15 @@ const techBadges = [
       <!-- Tech badges -->
       <div class="flex flex-wrap gap-2.5" role="list" aria-label={t('hero:tech-aria-label')}>
         {
-          techBadges.map((tech) => (
+          techBadges.map((tech, index) => (
             <span role="listitem" class="chip">
               <span
-                class="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                style={`background: ${tech.color};`}
+                class={`brand-dot w-1.5 h-1.5 ${
+                  index % 3 === 1 ? 'brand-dot-soft' : index % 3 === 2 ? 'brand-dot-muted' : ''
+                }`}
                 aria-hidden="true"
               />
-              {tech.name}
+              {tech}
             </span>
           ))
         }
@@ -211,7 +205,7 @@ const techBadges = [
                 </div>
               </div>
               {i < stats.length - 1 && (
-                <span class="hidden sm:block text-xl leading-none text-white/10" aria-hidden="true">
+                <span class="hidden sm:block text-xl leading-none brand-separator" aria-hidden="true">
                   |
                 </span>
               )}
@@ -224,15 +218,14 @@ const techBadges = [
     <!-- Right: code block + isotipo -->
     <div class="relative hidden lg:flex items-center justify-end gap-5 animate-fade-in delay-300">
       <div
-        class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed card-elevated"
-        style="border-color: var(--color-border-accent);"
+        class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed card-elevated border-accent-strong"
         role="img"
         aria-label={t('hero:code-aria-label')}
       >
-        <div class="flex gap-1.5 mb-4">
-          <span class="w-3 h-3 rounded-full bg-red-500/55"></span>
-          <span class="w-3 h-3 rounded-full bg-yellow-500/55"></span>
-          <span class="w-3 h-3 rounded-full bg-green-500/55"></span>
+        <div class="flex gap-1.5 mb-4" aria-hidden="true">
+          <span class="terminal-dot terminal-dot-primary"></span>
+          <span class="terminal-dot terminal-dot-secondary"></span>
+          <span class="terminal-dot terminal-dot-muted"></span>
         </div>
         <div class="text-body-muted">// Building scalable solutions</div>
         <div class="mt-1">
