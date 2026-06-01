@@ -18,12 +18,15 @@ export const stackCategories: StackCategory[] = [
     description: 'Interfaces modernas y experiencias de usuario',
     techs: [
       { name: 'React', level: 'Principal' },
+      { name: 'Next.js', level: 'Principal' },
       { name: 'Astro', level: 'Principal' },
       { name: 'JavaScript', level: 'Principal' },
       { name: 'TypeScript', level: 'Frecuente' },
-      { name: 'HTML', level: 'Principal' },
-      { name: 'CSS', level: 'Principal' },
+      { name: 'HTML5', level: 'Principal' },
+      { name: 'CSS3', level: 'Principal' },
       { name: 'Tailwind CSS', level: 'Principal' },
+      { name: 'Bootstrap', level: 'Frecuente' },
+      { name: 'Vue.js', level: 'Frecuente' },
     ],
   },
   {
@@ -36,6 +39,7 @@ export const stackCategories: StackCategory[] = [
       { name: 'FastAPI', level: 'Frecuente' },
       { name: 'PHP', level: 'Frecuente' },
       { name: 'Python', level: 'Frecuente' },
+      { name: 'GraphQL', level: 'Frecuente' },
     ],
   },
   {
@@ -49,15 +53,34 @@ export const stackCategories: StackCategory[] = [
     ],
   },
   {
+    name: 'Arquitectura',
+    description: 'Diseño de sistemas escalables y mantenibles',
+    techs: [
+      { name: 'SaaS Multi-tenant', level: 'Frecuente' },
+      { name: 'APIs REST', level: 'Principal' },
+      { name: 'Microservicios', level: 'Frecuente' },
+      { name: 'Diseño de servicios backend', level: 'Frecuente' },
+    ],
+  },
+  {
     name: 'IA & Automatización',
     description: 'Agentes inteligentes e integraciones conversacionales',
     techs: [
-      { name: 'Agentes IA', level: 'Frecuente' },
-      { name: 'Integración de APIs', level: 'Principal' },
+      { name: 'AI Agents', level: 'Frecuente' },
+      { name: 'LLM Integration', level: 'En aprendizaje' },
       { name: 'Flujos conversacionales', level: 'Frecuente' },
       { name: 'Automatización de procesos', level: 'Frecuente' },
+    ],
+  },
+  {
+    name: 'Integraciones',
+    description: 'Canales de mensajería y servicios externos',
+    techs: [
       { name: 'WhatsApp Business API', level: 'Principal' },
-      { name: 'LLM Integration', level: 'En aprendizaje' },
+      { name: 'Instagram API', level: 'Frecuente' },
+      { name: 'Facebook API', level: 'Frecuente' },
+      { name: 'Telegram API', level: 'Frecuente' },
+      { name: 'BigCommerce', level: 'Frecuente' },
     ],
   },
   {
@@ -66,8 +89,8 @@ export const stackCategories: StackCategory[] = [
     techs: [
       { name: 'Git', level: 'Principal' },
       { name: 'GitHub', level: 'Principal' },
-      { name: 'Vercel', level: 'Principal' },
       { name: 'Docker', level: 'En aprendizaje' },
+      { name: 'Vercel', level: 'Principal' },
       { name: 'Postman', level: 'Frecuente' },
       { name: 'VS Code', level: 'Principal' },
     ],
@@ -76,12 +99,11 @@ export const stackCategories: StackCategory[] = [
     name: 'DevOps Learning Path',
     description: 'Área de crecimiento hacia infraestructura y operaciones',
     techs: [
-      { name: 'Docker', level: 'En aprendizaje' },
       { name: 'CI/CD', level: 'En aprendizaje' },
       { name: 'Cloud Infrastructure', level: 'Explorando' },
       { name: 'Automatización de despliegues', level: 'En aprendizaje' },
-      { name: 'Monitoreo', level: 'Explorando' },
       { name: 'Infraestructura como código', level: 'Explorando' },
+      { name: 'Monitoreo', level: 'Explorando' },
     ],
   },
 ];

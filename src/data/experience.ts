@@ -2,6 +2,7 @@ export interface Experience {
   company: string;
   role: string;
   period: string;
+  location: string;
   modality: string;
   description: string;
   responsibilities: string[];
@@ -13,69 +14,96 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    company: 'Freelance / Proyectos Propios',
-    role: 'Full Stack Developer & Tech Lead',
-    period: '2023 — Presente',
-    modality: 'Remoto · Independiente',
+    company: 'Clupp',
+    role: 'Desarrollador Full Stack',
+    period: 'Diciembre 2024 — Actualidad',
+    location: 'México',
+    modality: 'Remoto · Tiempo completo',
     description:
-      'Diseño y desarrollo de plataformas SaaS, agentes de IA, integraciones de mensajería y soluciones backend para clientes y proyectos propios.',
+      'Desarrollo de soluciones web escalables orientadas a producto, con enfoque en interfaces dinámicas, APIs backend y buenas prácticas de desarrollo.',
     responsibilities: [
-      'Arquitectura e implementación de plataformas SaaS multi-tenant con Laravel y Node.js.',
-      'Desarrollo de agentes conversacionales con integración de WhatsApp, Telegram e Instagram.',
-      'Construcción de APIs REST robustas y microservicios con FastAPI y Express.',
-      'Diseño e implementación de bases de datos relacionales y no relacionales.',
-      'Despliegue y gestión de aplicaciones con Docker y Vercel.',
-      'Desarrollo frontend con React y Astro para interfaces modernas.',
+      'Desarrollo de soluciones web escalables con Next.js, React.js, Node.js y Firebase.',
+      'Construcción de interfaces dinámicas, responsivas e intuitivas orientadas a producto.',
+      'Desarrollo e integración de APIs y servicios backend para funcionalidades del producto.',
+      'Implementación de autenticación, gestión de datos e integración de servicios con Firebase.',
+      'Aplicación de buenas prácticas de desarrollo frontend y backend en un entorno tecnológico.',
     ],
-    achievements: [
-      'Entrega de 4 proyectos complejos en tiempo y forma.',
-      'Reducción de tiempos de respuesta de atención al cliente mediante automatización.',
-      'Implementación de flujos IA que redujeron la intervención manual en un 60%.',
-    ],
-    technologies: ['Laravel', 'Node.js', 'FastAPI', 'React', 'Astro', 'MySQL', 'MongoDB', 'Docker', 'WhatsApp API'],
-    relatedProjects: ['Voz Ciudadana', 'HunadChat', 'Code Creatives'],
+    achievements: [],
+    technologies: ['Next.js', 'React.js', 'Node.js', 'Firebase'],
     confidential: false,
   },
   {
-    company: 'Empresa de Desarrollo de Software (Confidencial)',
-    role: 'Full Stack Developer',
-    period: '2022 — 2023',
+    company: 'Diferente Web',
+    role: 'Desarrollador Full Stack',
+    period: 'Septiembre 2023 — Junio 2024',
+    location: 'México',
     modality: 'Remoto · Tiempo completo',
     description:
-      'Desarrollo de sistemas internos y plataformas web para clientes de distintos sectores. Trabajo en equipo con metodologías ágiles.',
+      'Desarrollo y mantenimiento de APIs, integración de servicios externos, soluciones e-commerce y administración de bases de datos en proyectos full stack.',
     responsibilities: [
-      'Desarrollo de módulos backend con Laravel y PHP.',
-      'Integración de APIs de terceros para pagos, mensajería y datos.',
-      'Mantenimiento y optimización de sistemas legacy.',
-      'Colaboración en sprints ágiles con equipo distribuido.',
-      'Revisión de código y documentación técnica.',
+      'Desarrollo y mantenimiento de APIs para integrar servicios externos y mejorar la comunicación entre aplicaciones.',
+      'Integración y personalización de soluciones e-commerce mediante BigCommerce.',
+      'Administración de datos con MySQL y MongoDB, considerando escalabilidad, seguridad y eficiencia.',
+      'Participación en proyectos full stack combinando backend, frontend e integraciones externas.',
     ],
-    achievements: [
-      'Optimización de consultas SQL que mejoró el rendimiento en un 40%.',
-      'Migración exitosa de sistema monolítico a arquitectura modular.',
-      'Implementación de sistema de notificaciones en tiempo real con WebSockets.',
-    ],
-    technologies: ['Laravel', 'PHP', 'MySQL', 'JavaScript', 'Vue.js', 'Redis'],
-    confidential: true,
+    achievements: [],
+    technologies: ['MySQL', 'MongoDB', 'BigCommerce', 'JavaScript', 'PHP'],
+    relatedProjects: ['Integraciones e-commerce con BigCommerce'],
+    confidential: false,
   },
   {
-    company: 'Proyectos de Aprendizaje & Comunidad',
-    role: 'Developer & Contribuidor',
-    period: '2021 — 2022',
-    modality: 'Personal',
+    company: 'Hoteles Buenaventura',
+    role: 'Desarrollador Full Stack',
+    period: 'Abril 2023 — Julio 2023',
+    location: 'Puerto Vallarta, Jalisco, México',
+    modality: 'Presencial',
     description:
-      'Período de formación intensiva, proyectos personales y contribuciones a la comunidad de desarrollo. Base técnica sólida en backend y APIs.',
+      'Desarrollo de calendario interactivo para gestión de fechas, reservas y disponibilidad, con construcción de APIs REST y frontend en React.js.',
     responsibilities: [
-      'Construcción de proyectos personales para aprender tecnologías backend.',
-      'Participación en comunidades de desarrollo y foros técnicos.',
-      'Experimentación con Node.js, Express, Python y bases de datos.',
+      'Desarrollo de calendario interactivo para gestión de fechas, reservas y disponibilidad.',
+      'Construcción de APIs REST con Laravel y MySQL para administrar información operativa.',
+      'Desarrollo de frontend con React.js para visualización y selección interactiva de fechas.',
+      'Integración entre frontend y backend para mejorar la experiencia del usuario final.',
     ],
-    achievements: [
-      'Dominio de JavaScript full stack (frontend y backend).',
-      'Primeros proyectos desplegados en producción.',
-      'Comprensión sólida de REST APIs y arquitecturas cliente-servidor.',
+    achievements: [],
+    technologies: ['Laravel', 'MySQL', 'React.js'],
+    relatedProjects: ['Calendario de reservas para Hoteles Buenaventura'],
+    confidential: false,
+  },
+  {
+    company: 'The Rocket Code',
+    role: 'Desarrollador Full Stack',
+    period: 'Marzo 2022 — Mayo 2023',
+    location: 'México',
+    modality: 'Remoto · Tiempo completo',
+    description:
+      'Desarrollo de funcionalidades web, migración de sistemas frontend y construcción de APIs para comunicación eficiente entre cliente y servidor.',
+    responsibilities: [
+      'Desarrollo de funcionalidades para aplicaciones web utilizando React.js.',
+      'Migración de cotizador de precios desde Next.js hacia React.js, mejorando estructura y mantenibilidad.',
+      'Desarrollo de APIs con Node.js, Express y MongoDB para comunicación eficiente entre frontend y backend.',
+      'Participación en creación de sitios y aplicaciones web para distintos clientes.',
     ],
-    technologies: ['Node.js', 'Express', 'JavaScript', 'Python', 'MySQL', 'MongoDB', 'HTML', 'CSS'],
+    achievements: [],
+    technologies: ['React.js', 'Next.js', 'Node.js', 'Express', 'MongoDB'],
+    relatedProjects: ['Cotizador web (migración Next.js → React.js)'],
+    confidential: false,
+  },
+  {
+    company: 'Creativa Softline',
+    role: 'Diseñador Web',
+    period: 'Experiencia inicial',
+    location: 'Tuxtla Gutiérrez, Chiapas, México',
+    modality: 'Presencial',
+    description:
+      'Diseño y desarrollo de sitios web funcionales y responsivos. Primera experiencia profesional en desarrollo e implementación web.',
+    responsibilities: [
+      'Diseño y desarrollo de sitios web funcionales, responsivos y visualmente atractivos.',
+      'Implementación de interfaces con Bootstrap, Skeleton y Boilerplate.',
+      'Participación en procesos de diseño, maquetación e implementación web.',
+    ],
+    achievements: [],
+    technologies: ['HTML', 'CSS', 'Bootstrap', 'JavaScript'],
     confidential: false,
   },
 ];
