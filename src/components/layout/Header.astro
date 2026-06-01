@@ -47,9 +47,9 @@ function isActive(href: string): boolean {
       <img
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
         alt="Andejecruher Logo"
-        width="180"
-        height="44"
-        class="h-9 w-auto object-contain"
+        width="220"
+        height="54"
+        class="h-11 sm:h-12 lg:h-11 xl:h-12 w-auto max-w-[190px] sm:max-w-[220px] object-contain"
       />
     </a>
 
@@ -75,9 +75,9 @@ function isActive(href: string): boolean {
     </ul>
 
     <div class="flex items-center gap-2">
-      <!-- Global controls -->
+      <!-- Desktop controls -->
       <div
-        class="language-switcher hidden sm:inline-flex"
+        class="language-switcher hidden lg:inline-flex"
         role="group"
         aria-label={t('nav:language-switcher-label')}
       >
@@ -98,11 +98,11 @@ function isActive(href: string): boolean {
       </div>
 
       <button
-        id="theme-toggle"
-        class="control-btn"
+        class="control-btn hidden lg:inline-flex"
         type="button"
         aria-label={t('nav:theme-toggle-label')}
         aria-pressed="false"
+        data-theme-toggle
         data-theme-label-dark={t('nav:theme-toggle-dark')}
         data-theme-label-light={t('nav:theme-toggle-light')}
       >
@@ -134,7 +134,7 @@ function isActive(href: string): boolean {
       <!-- Mobile hamburger -->
       <button
         id="menu-toggle"
-        class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors text-body-muted hover:text-brand-primary"
+        class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors text-body-muted hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40"
         aria-label={t('nav:menu-open')}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -151,32 +151,35 @@ function isActive(href: string): boolean {
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="nav-shell lg:hidden mt-2 overflow-hidden transition-all duration-300 max-h-0 opacity-0"
+    class="nav-shell lg:hidden mt-2 overflow-hidden transition-all duration-300 ease-out max-h-0 opacity-0"
     aria-hidden="true"
   >
-    <ul class="flex flex-col p-4 gap-1" role="list">
-      {
-        navItems.map((item) => {
-          const href = localizePath(item.href, lang);
-          const active = isActive(href);
-          return (
-            <li>
-              <a
-                href={href}
-                class={`block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
-                  active
-                    ? 'nav-link-mobile-active'
-                    : 'text-body-secondary hover:text-brand-primary brand-hover-surface'
-                }`}
-                aria-current={active ? 'page' : undefined}
-              >
-                {t(`nav:item-${item.key}`)}
-              </a>
-            </li>
-          );
-        })
-      }
-      <li class="pt-3 border-t divider mt-2">
+    <div class="flex flex-col p-4 gap-4">
+      <ul class="flex flex-col gap-1" role="list" aria-label={t('nav:aria-label')}>
+        {
+          navItems.map((item) => {
+            const href = localizePath(item.href, lang);
+            const active = isActive(href);
+            return (
+              <li>
+                <a
+                  href={href}
+                  class={`mobile-menu-link block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                    active
+                      ? 'nav-link-mobile-active'
+                      : 'text-body-secondary hover:text-brand-primary brand-hover-surface'
+                  }`}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  {t(`nav:item-${item.key}`)}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="grid gap-3 pt-4 border-t divider">
         <div
           class="language-switcher w-full justify-center"
           role="group"
@@ -197,68 +200,131 @@ function isActive(href: string): boolean {
             ))
           }
         </div>
-      </li>
-      <li class="pt-2">
-        <a href={contactHref} class="btn btn-secondary btn-sm w-full justify-center mt-1">
+
+        <button
+          class="control-btn mobile-theme-btn gap-2 px-4 font-semibold"
+          type="button"
+          aria-label={t('nav:theme-toggle-label')}
+          aria-pressed="false"
+          data-theme-toggle
+          data-theme-label-dark={t('nav:theme-toggle-dark')}
+          data-theme-label-light={t('nav:theme-toggle-light')}
+        >
+          <span class="relative inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
+            <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+            </svg>
+            <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span>{t('nav:theme-toggle-label')}</span>
+        </button>
+
+        <a href={contactHref} class="mobile-menu-link btn btn-secondary btn-sm w-full justify-center">
           {t('nav:cta-connect')}
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </header>
 
 <!-- Spacer -->
-<div class="h-20" aria-hidden="true"></div>
+<div class="h-24" aria-hidden="true"></div>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  const bar1 = document.getElementById('bar1');
-  const bar2 = document.getElementById('bar2');
-  const bar3 = document.getElementById('bar3');
+  const toggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
+  const menu = document.getElementById('mobile-menu') as HTMLDivElement | null;
+  const bar1 = document.getElementById('bar1') as HTMLSpanElement | null;
+  const bar2 = document.getElementById('bar2') as HTMLSpanElement | null;
+  const bar3 = document.getElementById('bar3') as HTMLSpanElement | null;
   let open = false;
 
-  toggle?.addEventListener('click', () => {
-    open = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute(
-      'aria-label',
-      open ? toggle.dataset.labelClose ?? 'Close menu' : toggle.dataset.labelOpen ?? 'Open menu',
-    );
-    menu?.setAttribute('aria-hidden', String(!open));
+  function closeMenu() {
+    if (!open) return;
 
-    if (open) {
-      if (menu) {
-        menu.style.maxHeight = `${menu.scrollHeight}px`;
-        menu.style.opacity = '1';
-      }
-      if (bar1) bar1.style.transform = 'translateY(6px) rotate(45deg)';
-      if (bar2) bar2.style.opacity = '0';
-      if (bar3) {
-        bar3.style.transform = 'translateY(-6px) rotate(-45deg)';
-        bar3.style.width = '24px';
-      }
-    } else {
-      if (menu) {
-        menu.style.maxHeight = '0';
-        menu.style.opacity = '0';
-      }
-      if (bar1) bar1.style.transform = '';
-      if (bar2) bar2.style.opacity = '1';
-      if (bar3) {
-        bar3.style.transform = '';
-        bar3.style.width = '16px';
-      }
+    open = false;
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', toggle.dataset.labelOpen ?? 'Open menu');
+    menu?.setAttribute('aria-hidden', 'true');
+
+    if (menu) {
+      menu.style.maxHeight = '0';
+      menu.style.opacity = '0';
     }
+    if (bar1) bar1.style.transform = '';
+    if (bar2) bar2.style.opacity = '1';
+    if (bar3) {
+      bar3.style.transform = '';
+      bar3.style.width = '16px';
+    }
+  }
+
+  function openMenu() {
+    if (open) return;
+
+    open = true;
+    toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', toggle.dataset.labelClose ?? 'Close menu');
+    menu?.setAttribute('aria-hidden', 'false');
+
+    if (menu) {
+      menu.style.maxHeight = `${menu.scrollHeight}px`;
+      menu.style.opacity = '1';
+    }
+    if (bar1) bar1.style.transform = 'translateY(6px) rotate(45deg)';
+    if (bar2) bar2.style.opacity = '0';
+    if (bar3) {
+      bar3.style.transform = 'translateY(-6px) rotate(-45deg)';
+      bar3.style.width = '24px';
+    }
+  }
+
+  toggle?.addEventListener('click', () => {
+    if (open) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  document.querySelectorAll('.mobile-menu-link').forEach((link) => {
+    link.addEventListener('click', () => closeMenu());
   });
 
   document.addEventListener('click', (e) => {
     if (open && !toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
-      toggle?.click();
+      closeMenu();
     }
   });
 
-  const themeToggle = document.getElementById('theme-toggle');
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (open && menu) {
+      menu.style.maxHeight = `${menu.scrollHeight}px`;
+    }
+  });
+
+  const themeToggles = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-theme-toggle]'),
+  );
   const storageKey = 'andejecruher-theme';
 
   function getPreferredTheme() {
@@ -267,27 +333,32 @@ function isActive(href: string): boolean {
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   }
 
-  function applyTheme(theme) {
+  function applyTheme(theme: 'light' | 'dark') {
     const root = document.documentElement;
     root.dataset.theme = theme;
     root.classList.toggle('theme-light', theme === 'light');
     root.classList.toggle('theme-dark', theme === 'dark');
-    themeToggle?.setAttribute('aria-pressed', String(theme === 'dark'));
-    themeToggle?.setAttribute(
-      'aria-label',
-      theme === 'dark'
-        ? themeToggle.dataset.themeLabelLight ?? 'Switch to light theme'
-        : themeToggle.dataset.themeLabelDark ?? 'Switch to dark theme',
-    );
+
+    themeToggles.forEach((themeToggle) => {
+      themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+      themeToggle.setAttribute(
+        'aria-label',
+        theme === 'dark'
+          ? themeToggle.dataset.themeLabelLight ?? 'Switch to light theme'
+          : themeToggle.dataset.themeLabelDark ?? 'Switch to dark theme',
+      );
+    });
   }
 
   applyTheme(getPreferredTheme());
 
-  themeToggle?.addEventListener('click', () => {
-    const currentTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
-    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    window.localStorage.setItem(storageKey, nextTheme);
-    applyTheme(nextTheme);
+  themeToggles.forEach((themeToggle) => {
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+      const nextTheme: 'light' | 'dark' = currentTheme === 'dark' ? 'light' : 'dark';
+      window.localStorage.setItem(storageKey, nextTheme);
+      applyTheme(nextTheme);
+    });
   });
 
   window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {

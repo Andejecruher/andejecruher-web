@@ -1,5 +1,6 @@
 ---
 import { navItems } from '../../data/navigation';
+import { getProfile } from '../../data/profile';
 import { socialLinks } from '../../data/socialLinks';
 import { localizePath } from '../../i18n/routing';
 import { getLang, useTranslations } from '../../i18n/utils';
@@ -7,150 +8,225 @@ import { getLang, useTranslations } from '../../i18n/utils';
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+const profile = getProfile(lang);
 const homeHref = localizePath('/', lang);
+const contactHref = localizePath('/contacto', lang);
+const logoSrc = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png';
+const featuredSocials = socialLinks.filter((link) =>
+  ['github', 'linkedin', 'twitter', 'email'].includes(link.icon),
+);
+interface FooterContactLink {
+  label: string;
+  value: string;
+  href: string;
+  icon: 'email' | 'website' | 'github' | 'linkedin';
+  external: boolean;
+}
+
+function isFooterContactLink(link: FooterContactLink | false | undefined): link is FooterContactLink {
+  return Boolean(link);
+}
+
+const githubLink = socialLinks.find((link) => link.icon === 'github');
+const linkedInLink = socialLinks.find((link) => link.icon === 'linkedin');
+const contactLinks = [
+  {
+    label: 'Email',
+    value: profile.email,
+    href: `mailto:${profile.email}`,
+    icon: 'email',
+    external: false,
+  },
+  {
+    label: t('footer:website-label'),
+    value: profile.website.replace(/^https?:\/\//, ''),
+    href: profile.website,
+    icon: 'website',
+    external: true,
+  },
+  githubLink && {
+    label: githubLink.label,
+    value: githubLink.href.replace(/^https?:\/\//, ''),
+    href: githubLink.href,
+    icon: 'github',
+    external: githubLink.external,
+  },
+  linkedInLink && {
+    label: linkedInLink.label,
+    value: linkedInLink.href.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+    href: linkedInLink.href,
+    icon: 'linkedin',
+    external: linkedInLink.external,
+  },
+].filter(isFooterContactLink);
 ---
 
-<footer class="section-bg-footer border-t divider">
-  <div class="max-w-6xl mx-auto px-4 py-16">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-      <!-- Brand -->
-      <div class="md:col-span-1">
-        <a href={homeHref} aria-label="Andejecruher">
-          <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
-            alt="Andejecruher Logo"
-            width="160"
-            height="40"
-            class="h-8 w-auto object-contain mb-4"
-          />
-        </a>
-        <p class="text-sm leading-relaxed text-body-muted max-w-[260px]">
-          {t('footer:tagline')}
+<footer class="section-bg-footer border-t divider" aria-labelledby="footer-heading">
+  <div class="max-w-6xl mx-auto px-4 py-16 sm:py-20">
+    <div class="footer-shell relative overflow-hidden rounded-[2rem] border divider bg-[var(--color-surface-soft)] p-6 sm:p-8 lg:p-10">
+      <div class="footer-glow footer-glow-primary" aria-hidden="true"></div>
+      <div class="footer-glow footer-glow-secondary" aria-hidden="true"></div>
+
+      <div class="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.25fr_0.75fr_1fr] lg:gap-12">
+        <!-- Identity -->
+        <section aria-labelledby="footer-heading" class="space-y-6">
+          <a href={homeHref} class="inline-flex items-center" aria-label={profile.name}>
+            <img
+              src={logoSrc}
+              alt={`${profile.name} Logo`}
+              width="240"
+              height="59"
+              class="h-14 sm:h-16 w-auto max-w-[240px] object-contain"
+            />
+          </a>
+
+          <div class="space-y-3 max-w-md">
+            <p class="text-label">{profile.role}</p>
+            <h2 id="footer-heading" class="text-2xl sm:text-3xl font-semibold text-heading">
+              {profile.fullName}
+            </h2>
+            <p class="text-sm sm:text-base leading-relaxed text-body-secondary">
+              {profile.description}
+            </p>
+            <p class="text-sm text-body-muted">{profile.location}</p>
+          </div>
+
+          {featuredSocials.length > 0 && (
+            <nav aria-label={t('footer:social-title')} class="space-y-3">
+              <h3 class="text-sm font-semibold text-heading">{t('footer:social-title')}</h3>
+              <div class="flex flex-wrap items-center gap-3">
+                {
+                  featuredSocials.map((link) => (
+                    <a
+                      href={link.href}
+                      class="social-btn footer-social-btn"
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      aria-label={link.label}
+                    >
+                      {link.icon === 'github' && (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                        </svg>
+                      )}
+                      {link.icon === 'linkedin' && (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                      )}
+                      {link.icon === 'twitter' && (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                      )}
+                      {link.icon === 'email' && (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect width="20" height="16" x="2" y="4" rx="2" />
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                      )}
+                    </a>
+                  ))
+                }
+              </div>
+            </nav>
+          )}
+        </section>
+
+        <!-- Navigation -->
+        <nav aria-labelledby="footer-nav-title">
+          <h3 id="footer-nav-title" class="text-sm font-semibold mb-5 text-heading">
+            {t('footer:nav-title')}
+          </h3>
+          <ul class="grid grid-cols-2 gap-2 sm:max-w-md lg:grid-cols-1" role="list">
+            {
+              navItems.map((item) => (
+                <li>
+                  <a href={localizePath(item.href, lang)} class="footer-link group">
+                    <span class="footer-link-dot" aria-hidden="true"></span>
+                    <span>{t(`nav:item-${item.key}`)}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <!-- Contact + CTA -->
+        <section class="space-y-8" aria-labelledby="footer-contact-title">
+          <div>
+            <h3 id="footer-contact-title" class="text-sm font-semibold mb-5 text-heading">
+              {t('footer:contact-title')}
+            </h3>
+            <ul class="space-y-3" role="list">
+              {
+                contactLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="footer-contact-link"
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                    >
+                      <span class="footer-contact-icon" aria-hidden="true">
+                        {link.icon === 'email' && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                          </svg>
+                        )}
+                        {link.icon === 'website' && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                          </svg>
+                        )}
+                        {link.icon === 'github' && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                          </svg>
+                        )}
+                        {link.icon === 'linkedin' && (
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                          </svg>
+                        )}
+                      </span>
+                      <span class="min-w-0">
+                        <span class="block text-xs font-semibold uppercase tracking-[0.12em] text-body-muted">
+                          {link.label}
+                        </span>
+                        <span class="block truncate text-sm text-body-secondary">{link.value}</span>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div class="footer-cta rounded-2xl border divider-accent p-5">
+            <p class="text-sm font-semibold text-heading">{t('footer:cta-title')}</p>
+            <p class="mt-2 text-sm leading-relaxed text-body-muted">{t('footer:cta-description')}</p>
+            <a href={contactHref} class="btn btn-secondary btn-sm mt-4 w-full justify-center sm:w-auto">
+              {t('nav:cta-connect')}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="relative mt-12 flex flex-col gap-4 border-t divider pt-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <p class="text-xs text-body-muted">
+          &copy; {year} {profile.name}. {t('footer:copyright')}
         </p>
-        <!-- Social links -->
-        <div class="flex items-center gap-3 mt-6">
-          {
-            socialLinks.map((link) => (
-              <a
-                href={link.href}
-                class="social-btn"
-                target={link.external ? '_blank' : undefined}
-                rel={link.external ? 'noopener noreferrer' : undefined}
-                aria-label={link.label}
-              >
-                {link.icon === 'github' && (
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-                  </svg>
-                )}
-                {link.icon === 'linkedin' && (
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                )}
-                {link.icon === 'twitter' && (
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                )}
-                {link.icon === 'email' && (
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    aria-hidden="true"
-                  >
-                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                  </svg>
-                )}
-                {link.icon === 'whatsapp' && (
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                  </svg>
-                )}
-              </a>
-            ))
-          }
-        </div>
+        <p class="text-xs font-mono text-body-muted">
+          {t('footer:built-with')} <span class="text-accent">Astro</span> · {t('footer:signature')}
+        </p>
       </div>
-
-      <!-- Links -->
-      <div>
-        <h3 class="text-sm font-semibold mb-4 text-heading">{t('footer:nav-title')}</h3>
-        <ul class="flex flex-col gap-2" role="list">
-          {
-            navItems.map((item) => (
-              <li>
-                <a href={localizePath(item.href, lang)} class="text-sm link-muted">
-                  {t(`nav:item-${item.key}`)}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Contact info -->
-      <div>
-        <h3 class="text-sm font-semibold mb-4 text-heading">{t('footer:contact-title')}</h3>
-        <ul class="flex flex-col gap-3" role="list">
-          <li>
-            <a href="mailto:andejecruher@gmail.com" class="text-sm link-muted">
-              andejecruher@gmail.com
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://wa.me/523223188252"
-              class="text-sm link-muted"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              (+52) 322 318 8252
-            </a>
-          </li>
-          <li class="text-sm text-body-muted">{t('footer:remote-available')}</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Bottom bar -->
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t divider">
-      <p class="text-xs text-body-muted">
-        &copy; {year} Andejecruher. {t('footer:copyright')}
-      </p>
-      <p class="text-xs font-mono text-body-muted">
-        {t('footer:built-with')}
-        <span class="text-accent">Astro</span> by Andejecruher.
-      </p>
     </div>
   </div>
 </footer>
