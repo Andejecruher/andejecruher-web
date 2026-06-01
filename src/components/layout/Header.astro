@@ -37,24 +37,24 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 px-4 py-3">
+<header class="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4">
   <nav
-    class="nav-shell max-w-6xl mx-auto flex items-center justify-between gap-3 px-4 sm:px-5 py-3"
+    class="nav-shell nav-shell-main max-w-7xl mx-auto flex items-center justify-between gap-3 px-3 py-2.5 sm:px-5 lg:px-6"
     aria-label={t('nav:aria-label')}
   >
     <!-- Logo -->
-    <a href={homeHref} class="flex items-center gap-3 flex-shrink-0" aria-label="Andejecruher">
+    <a href={homeHref} class="site-logo flex items-center flex-shrink-0" aria-label="Andejecruher">
       <img
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
         alt="Andejecruher Logo"
         width="220"
         height="54"
-        class="h-11 sm:h-12 lg:h-11 xl:h-12 w-auto max-w-[190px] sm:max-w-[220px] object-contain"
+        class="h-12 w-auto max-w-[190px] object-contain sm:h-14 sm:max-w-[230px] lg:h-12 xl:h-14"
       />
     </a>
 
     <!-- Desktop nav -->
-    <ul class="hidden lg:flex items-center gap-1" role="list">
+    <ul class="nav-list hidden lg:flex items-center gap-1" role="list">
       {
         navItems.map((item) => {
           const href = localizePath(item.href, lang);
@@ -74,7 +74,7 @@ function isActive(href: string): boolean {
       }
     </ul>
 
-    <div class="flex items-center gap-2">
+    <div class="nav-actions flex items-center gap-2">
       <!-- Desktop controls -->
       <div
         class="language-switcher hidden lg:inline-flex"
@@ -116,7 +116,7 @@ function isActive(href: string): boolean {
       </button>
 
       <!-- CTA -->
-      <a href={contactHref} class="btn btn-secondary btn-sm hidden lg:inline-flex">
+      <a href={contactHref} class="btn btn-secondary btn-sm nav-cta hidden lg:inline-flex">
         {t('nav:cta-connect')}
         <svg
           width="12"
@@ -134,7 +134,7 @@ function isActive(href: string): boolean {
       <!-- Mobile hamburger -->
       <button
         id="menu-toggle"
-        class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors text-body-muted hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/40"
+        class="hamburger-btn lg:hidden inline-flex flex-col items-center justify-center gap-1.5"
         aria-label={t('nav:menu-open')}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -151,10 +151,10 @@ function isActive(href: string): boolean {
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="nav-shell lg:hidden mt-2 overflow-hidden transition-all duration-300 ease-out max-h-0 opacity-0"
+    class="nav-shell mobile-menu-shell mx-auto mt-2 max-w-7xl overflow-hidden transition-all duration-300 ease-out max-h-0 opacity-0"
     aria-hidden="true"
   >
-    <div class="flex flex-col p-4 gap-4">
+    <div class="flex flex-col gap-4 p-4 sm:p-5">
       <ul class="flex flex-col gap-1" role="list" aria-label={t('nav:aria-label')}>
         {
           navItems.map((item) => {
@@ -164,7 +164,7 @@ function isActive(href: string): boolean {
               <li>
                 <a
                   href={href}
-                  class={`mobile-menu-link block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                  class={`mobile-menu-link block min-h-11 px-4 py-3 text-sm font-semibold rounded-xl transition-colors duration-200 ${
                     active
                       ? 'nav-link-mobile-active'
                       : 'text-body-secondary hover:text-brand-primary brand-hover-surface'
@@ -179,7 +179,7 @@ function isActive(href: string): boolean {
         }
       </ul>
 
-      <div class="grid gap-3 pt-4 border-t divider">
+      <div class="grid gap-3 border-t divider pt-4">
         <div
           class="language-switcher w-full justify-center"
           role="group"
@@ -245,11 +245,15 @@ function isActive(href: string): boolean {
 <div class="h-24" aria-hidden="true"></div>
 
 <script>
-  const toggle = document.getElementById('menu-toggle') as HTMLButtonElement | null;
-  const menu = document.getElementById('mobile-menu') as HTMLDivElement | null;
-  const bar1 = document.getElementById('bar1') as HTMLSpanElement | null;
-  const bar2 = document.getElementById('bar2') as HTMLSpanElement | null;
-  const bar3 = document.getElementById('bar3') as HTMLSpanElement | null;
+  function getElementById<T extends HTMLElement>(id: string) {
+    return (document.getElementById(id) as T | undefined) ?? undefined;
+  }
+
+  const toggle = getElementById<HTMLButtonElement>('menu-toggle');
+  const menu = getElementById<HTMLDivElement>('mobile-menu');
+  const bar1 = getElementById<HTMLSpanElement>('bar1');
+  const bar2 = getElementById<HTMLSpanElement>('bar2');
+  const bar3 = getElementById<HTMLSpanElement>('bar3');
   let open = false;
 
   function closeMenu() {
