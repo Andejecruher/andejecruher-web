@@ -1,6 +1,8 @@
 import { DEFAULT_LANG, type Lang } from '../i18n/config';
 import { SITE_SEO } from './config';
 import type { ResolvedSeo, SeoProps } from './types';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 export interface ResolveSeoContext {
   pathname: string;
@@ -57,7 +59,8 @@ export function resolveSeo(
   const fullTitle = buildFullTitle(title, props.titleTemplate);
   const description = props.description ?? SITE_SEO.defaultDescription;
   const canonical = resolveCanonical(props.canonical, context.pathname, origin);
-  const image = toAbsoluteUrl(props.image ?? SITE_SEO.defaultSocialImage, origin);
+  const rawImage = props.image ?? SITE_SEO.defaultSocialImage;
+  const image = toAbsoluteUrl(resolveSocialImage(rawImage), origin);
   const imageAlt = props.imageAlt ?? props.title ?? SITE_SEO.defaultSocialImageAlt;
 
   const alternateLang: Lang = lang === 'es' ? 'en' : 'es';
@@ -85,6 +88,21 @@ export function resolveSeo(
     twitterSite: SITE_SEO.twitterSite,
     twitterCreator: SITE_SEO.twitterCreator,
   };
+}
+
+function resolveSocialImage(imagePath: string): string {
+  if (/^https?:\/\//i.test(imagePath)) {
+    return imagePath;
+  }
+
+  const normalized = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+  const publicPath = join(process.cwd(), 'public', normalized.replace(/^\//, ''));
+
+  if (!existsSync(publicPath)) {
+    return SITE_SEO.defaultSocialImage;
+  }
+
+  return normalized;
 }
 
 export function seoFromBlogPost(data: {
