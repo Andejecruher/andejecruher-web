@@ -36,5 +36,6 @@
   "featured-badge": "Projects",
   "featured-title": "Featured work",
   "featured-subtitle": "A selection of projects that reflect my technical approach and ability to build real solutions.",
-  "cta-all": "View all projects"
+  "cta-all": "View all projects",
+  "breadcrumb-aria-label": "Breadcrumb"
 }

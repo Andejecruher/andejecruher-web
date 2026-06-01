@@ -84,6 +84,48 @@
   --gray-metallic: #1b2a38;
 }
 
+
+:root[data-theme='light'],
+.theme-light {
+  --color-bg-primary: #f6fbfd;
+  --color-bg-secondary: #eef7fa;
+  --color-bg-tertiary: #e6f2f6;
+  --color-bg-footer: #eaf5f8;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f8fdff;
+  --color-surface-soft: rgba(2, 7, 11, 0.035);
+  --color-surface-glass: rgba(255, 255, 255, 0.76);
+  --color-surface-hover: rgba(0, 135, 168, 0.1);
+  --color-surface-accent: rgba(0, 135, 168, 0.07);
+  --color-primary: #007d9a;
+  --color-primary-hover: #006b86;
+  --color-primary-muted: rgba(0, 125, 154, 0.16);
+  --color-primary-soft: rgba(0, 125, 154, 0.1);
+  --color-primary-glow: rgba(0, 125, 154, 0.24);
+  --color-secondary: #00a9c7;
+  --color-secondary-dark: #00566b;
+  --color-text-primary: #07111c;
+  --color-text-secondary: #334554;
+  --color-text-muted: #63717d;
+  --color-text-on-primary: #ffffff;
+  --color-border: rgba(7, 17, 28, 0.12);
+  --color-border-subtle: rgba(7, 17, 28, 0.08);
+  --color-border-accent: rgba(0, 125, 154, 0.28);
+  --color-border-accent-strong: rgba(0, 125, 154, 0.46);
+  --shadow-soft: 0 18px 60px rgba(5, 28, 40, 0.12);
+  --shadow-glow-primary: 0 0 32px rgba(0, 125, 154, 0.16);
+  --shadow-glow-primary-strong: 0 0 28px rgba(0, 125, 154, 0.22);
+  --gradient-primary: linear-gradient(135deg, #007d9a 0%, #00a9c7 100%);
+  --gradient-hero: radial-gradient(circle at 75% 45%, rgba(0, 125, 154, 0.14), transparent 34%),
+    linear-gradient(135deg, #f6fbfd 0%, #eef7fa 55%, #e1f3f8 100%);
+  --gradient-page-header: linear-gradient(180deg, #eef7fa 0%, #f6fbfd 100%);
+  --gradient-nav: rgba(255, 255, 255, 0.84);
+  --color-success: #15803d;
+  --color-success-soft: rgba(21, 128, 61, 0.08);
+  --color-success-border: rgba(21, 128, 61, 0.28);
+  --gray-metallic: #c7d4dc;
+}
+
 *,
 *::before,
 *::after {
@@ -989,4 +1031,92 @@ img {
   color: var(--color-text-muted);
   margin-top: 0.5em;
   font-family: var(--font-mono);
+}
+/* Global language and theme controls */
+.language-switcher {
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  background: var(--color-surface-soft);
+}
+
+.language-switcher__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.language-switcher__link:hover,
+.language-switcher__link:focus-visible {
+  color: var(--color-primary);
+  outline: none;
+}
+
+.language-switcher__link:focus-visible,
+.control-btn:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-primary-soft), 0 0 0 1px var(--color-primary);
+}
+
+.language-switcher__link--active {
+  color: var(--color-text-on-primary);
+  background: var(--gradient-primary);
+}
+
+.control-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid var(--color-border-accent);
+  border-radius: 9999px;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.control-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-border-accent-strong);
+  background: var(--color-surface-hover);
+}
+
+.theme-icon {
+  position: absolute;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.theme-icon-sun {
+  opacity: 0;
+  transform: scale(0.7) rotate(-30deg);
+}
+
+.theme-icon-moon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+:root[data-theme='light'] .theme-icon-sun,
+.theme-light .theme-icon-sun {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+:root[data-theme='light'] .theme-icon-moon,
+.theme-light .theme-icon-moon {
+  opacity: 0;
+  transform: scale(0.7) rotate(30deg);
 }

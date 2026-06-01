@@ -12,8 +12,26 @@ const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang={lang} class="scroll-smooth">
+<html lang={lang} class="scroll-smooth theme-dark" data-theme="dark">
   <head>
+    <script is:inline>
+      (function () {
+        try {
+          var storageKey = 'andejecruher-theme';
+          var storedTheme = window.localStorage.getItem(storageKey);
+          var preferredTheme = storedTheme === 'light' || storedTheme === 'dark'
+            ? storedTheme
+            : window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          var root = document.documentElement;
+          root.dataset.theme = preferredTheme;
+          root.classList.toggle('theme-light', preferredTheme === 'light');
+          root.classList.toggle('theme-dark', preferredTheme === 'dark');
+        } catch (error) {
+          document.documentElement.dataset.theme = 'dark';
+          document.documentElement.classList.add('theme-dark');
+        }
+      })();
+    </script>
     <SEO {...Astro.props} lang={lang} />
   </head>
   <body>

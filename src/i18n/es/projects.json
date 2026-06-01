@@ -36,5 +36,6 @@
   "featured-badge": "Proyectos",
   "featured-title": "Trabajo destacado",
   "featured-subtitle": "Selección de proyectos que reflejan mi enfoque técnico y mi capacidad de construir soluciones reales.",
-  "cta-all": "Ver todos los proyectos"
+  "cta-all": "Ver todos los proyectos",
+  "breadcrumb-aria-label": "Migas de pan"
 }

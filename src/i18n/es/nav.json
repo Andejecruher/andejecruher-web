@@ -9,5 +9,14 @@
   "item-stack": "Stack",
   "item-about": "Sobre mí",
   "item-blog": "Blog",
-  "item-contact": "Contacto"
+  "item-contact": "Contacto",
+  "language-switcher-label": "Cambiar idioma",
+  "language-switch-aria": "Cambiar idioma a {{language}}",
+  "language-es": "Español",
+  "language-en": "Inglés",
+  "language-es-short": "ES",
+  "language-en-short": "EN",
+  "theme-toggle-label": "Cambiar tema visual",
+  "theme-toggle-dark": "Cambiar a tema oscuro",
+  "theme-toggle-light": "Cambiar a tema claro"
 }

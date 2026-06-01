@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getProjectBySlug, getProjects, statusColors } from '../../data/projects';
 import { getLang, useTranslations } from '../../i18n/utils';
+import { localizePath } from '../../i18n/routing';
 import { seoFromProject } from '../../seo/utils';
 
 export function getStaticPaths() {
@@ -15,10 +16,12 @@ const t = useTranslations(lang);
 const project = getProjectBySlug(slug, lang);
 
 if (!project) {
-  return Astro.redirect('/proyectos');
+  return Astro.redirect(localizePath('/proyectos', lang));
 }
 
 const categoryLabel = t(`projects:category-${project.categoryKey}`);
+const homeHref = localizePath('/', lang);
+const projectsHref = localizePath('/proyectos', lang);
 const seo = seoFromProject({
   name: project.name,
   description: project.description,
@@ -33,12 +36,12 @@ const seo = seoFromProject({
 <MainLayout {...seo}>
   <section class="relative pt-10 pb-8 px-4 overflow-hidden section-bg-secondary">
     <div class="max-w-4xl mx-auto relative z-10">
-      <nav class="flex items-center gap-2 text-xs font-mono mb-8 text-body-muted" aria-label="Breadcrumb">
-        <a href="/" class="link-muted hover:text-brand-primary transition-colors">{t('nav:item-home')}</a>
+      <nav class="flex items-center gap-2 text-xs font-mono mb-8 text-body-muted" aria-label={t('projects:breadcrumb-aria-label')}>
+        <a href={homeHref} class="link-muted hover:text-brand-primary transition-colors">{t('nav:item-home')}</a>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M9 18l6-6-6-6" />
         </svg>
-        <a href="/proyectos" class="link-muted hover:text-brand-primary transition-colors">{t('nav:item-projects')}</a>
+        <a href={projectsHref} class="link-muted hover:text-brand-primary transition-colors">{t('nav:item-projects')}</a>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M9 18l6-6-6-6" />
         </svg>
@@ -126,7 +129,7 @@ const seo = seoFromProject({
             {t('projects:repo-label')}
           </a>
         )}
-        <a href="/proyectos" class="btn btn-secondary inline-flex items-center gap-2">
+        <a href={projectsHref} class="btn btn-secondary inline-flex items-center gap-2">
           {t('projects:back-to-projects')}
         </a>
       </div>

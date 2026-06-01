@@ -152,7 +152,7 @@ const postsJson = posts.map((p) => ({
         } else {
           url.searchParams.set('category', category);
         }
-        history.replaceState(null, '', url.toString());
+        history.replaceState({}, '', url.toString());
       } catch (_) {}
     }
 

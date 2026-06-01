@@ -11,6 +11,9 @@ const projectsHref = localizePath('/proyectos', lang);
 const contactHref = localizePath('/contacto', lang);
 
 const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
+const [headlineLead, headlineRest = ''] = t('hero:headline').split('|');
+const headlineHighlight = lang === 'es' ? 'Automatización' : 'Automation';
+const headlineMiddle = headlineRest.replace('Automation', '').replace('Automatización', '').trim();
 ---
 
 <section
@@ -69,10 +72,10 @@ const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
       <h1
         class="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] text-heading"
       >
-        Full Stack Developer |
+        {headlineLead.trim()} |
         <br />
-        AI Agents &amp;
-        <span class="text-accent"> Automation</span>
+        {headlineMiddle}
+        <span class="text-accent"> {headlineHighlight}</span>
       </h1>
 
       <!-- Subtitle -->
@@ -227,7 +230,7 @@ const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
           <span class="terminal-dot terminal-dot-secondary"></span>
           <span class="terminal-dot terminal-dot-muted"></span>
         </div>
-        <div class="text-body-muted">// Building scalable solutions</div>
+        <div class="text-body-muted">{t('hero:code-comment')}</div>
         <div class="mt-1">
           <span class="text-brand-secondary">const</span>
           <span class="text-heading"> developer </span>
@@ -262,7 +265,7 @@ const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
         </div>
         <div class="pl-4">
           <span class="text-body-secondary">passion:</span>
-          <span class="text-accent"> "Solving problems with code"</span>
+          <span class="text-accent"> {JSON.stringify(t('hero:code-passion'))}</span>
         </div>
         <div><span class="text-heading">{'}'};</span></div>
         <div class="mt-3">
