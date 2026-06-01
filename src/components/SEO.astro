@@ -3,6 +3,7 @@ import { SITE_SEO } from '../seo/config';
 import type { SeoProps } from '../seo/types';
 import { resolveSeo } from '../seo/utils';
 import { getLang } from '../i18n/utils';
+import { getSeoAlternates } from '../i18n/routing';
 
 interface Props extends SeoProps {}
 
@@ -17,6 +18,7 @@ const seo = resolveSeo({ ...props, lang }, {
 
 const isArticle = seo.type === 'article';
 const isProfile = seo.type === 'profile';
+const seoAlternates = getSeoAlternates(Astro.url.pathname, Astro.site ?? SITE_SEO.siteUrl);
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -52,7 +54,7 @@ const blogPostingSchema =
       keywords: seo.tags.join(', '),
       ...(seo.section ? { articleSection: seo.section } : {}),
     }
-  : null;
+  : undefined;
 
 const creativeWorkSchema =
   isArticle && !seo.publishedTime
@@ -71,7 +73,7 @@ const creativeWorkSchema =
         keywords: seo.tags.join(', '),
         ...(seo.section ? { genre: seo.section } : {}),
       }
-    : null;
+    : undefined;
 
 const webPageSchema =
   !isArticle
@@ -92,7 +94,7 @@ const webPageSchema =
           }
         : {}),
     }
-  : null;
+  : undefined;
 ---
 
 <meta charset="UTF-8" />
@@ -103,7 +105,10 @@ const webPageSchema =
 <meta name="description" content={seo.description} />
 <meta name="author" content={seo.author} />
 <meta name="robots" content={seo.robots} />
-<link rel="canonical" href={seo.canonical} />
+<link rel="canonical" href={seoAlternates.canonical} />
+{seoAlternates.alternates.map((alternate) => (
+  <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+))}
 
 <link rel="icon" type="image/png" href={SITE_SEO.favicon} />
 

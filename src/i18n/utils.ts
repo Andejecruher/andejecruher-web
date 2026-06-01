@@ -33,7 +33,7 @@ import enExperienceData from './en/experience-data.json';
 import esProjectsData from './es/projects-data.json';
 import enProjectsData from './en/projects-data.json';
 
-type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
+type JsonValue = string | number | boolean | undefined | JsonObject | JsonValue[];
 interface JsonObject {
   [key: string]: JsonValue;
 }
@@ -99,7 +99,7 @@ function resolvePath(obj: JsonObject, path: string): string | undefined {
   const parts = path.split('.');
   let current: JsonValue = obj;
   for (const part of parts) {
-    if (current === null || typeof current !== 'object' || Array.isArray(current)) {
+    if (current === undefined || typeof current !== 'object' || Array.isArray(current)) {
       return undefined;
     }
     current = (current as JsonObject)[part];

@@ -1,4 +1,5 @@
 import { DEFAULT_LANG, type Lang } from '../i18n/config';
+import { localizePath } from '../i18n/routing';
 import { SITE_SEO } from './config';
 import type { ResolvedSeo, SeoProps } from './types';
 import { existsSync } from 'node:fs';
@@ -14,7 +15,7 @@ function stripTrailingSlash(url: string): string {
   return url.endsWith('/') && url.length > 1 ? url.slice(0, -1) : url;
 }
 
-export function toAbsoluteUrl(pathOrUrl: string, origin = SITE_SEO.siteUrl): string {
+export function toAbsoluteUrl(pathOrUrl: string, origin: string = SITE_SEO.siteUrl): string {
   if (/^https?:\/\//i.test(pathOrUrl)) {
     return pathOrUrl;
   }
@@ -27,7 +28,7 @@ export function toAbsoluteUrl(pathOrUrl: string, origin = SITE_SEO.siteUrl): str
 export function resolveCanonical(
   canonical: string | undefined,
   pathname: string,
-  origin = SITE_SEO.siteUrl,
+  origin: string = SITE_SEO.siteUrl,
 ): string {
   if (canonical) {
     return toAbsoluteUrl(canonical, origin);
@@ -147,7 +148,7 @@ export function seoFromProject(data: {
     description: data.description,
     image: data.image,
     imageAlt: `${data.name} — ${data.section}`,
-    canonical: `/proyectos/${data.slug}`,
+    canonical: localizePath(`/proyectos/${data.slug}`, data.lang ?? DEFAULT_LANG),
     type: 'article',
     section: data.section,
     tags: data.tags,

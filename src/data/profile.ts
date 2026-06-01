@@ -19,7 +19,7 @@ interface ProfileBase {
   email: string;
   phone: string;
   website: string;
-  cvUrl: string | null;
+  cvUrl?: string;
   availableForProjects: boolean;
 }
 
@@ -31,7 +31,6 @@ const profileBase: ProfileBase = {
   email: 'andejecruher@gmail.com',
   phone: '+52 322 318 8252',
   website: 'https://andejecruher.com',
-  cvUrl: null,
   availableForProjects: true,
 };
 
