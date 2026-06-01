@@ -46,21 +46,21 @@ namespace:key.anidado.con-kebab-case
 
 **Regla**: todas las keys usan `kebab-case`. Nunca `snake_case`.
 
-| ✅ Correcto | ❌ Incorrecto |
-|------------|--------------|
-| `nav:aria-label` | `nav:aria_label` |
+| ✅ Correcto            | ❌ Incorrecto          |
+| ---------------------- | ---------------------- |
+| `nav:aria-label`       | `nav:aria_label`       |
 | `hero:available-badge` | `hero:available_badge` |
-| `footer:built-with` | `footer:built_with` |
+| `footer:built-with`    | `footer:built_with`    |
 
 ## Namespaces disponibles
 
-| Namespace | Archivo | Dominio |
-|-----------|---------|---------|
+| Namespace | Archivo       | Dominio                 |
+| --------- | ------------- | ----------------------- |
 | `common`  | `common.json` | Strings globales (a11y) |
-| `nav`     | `nav.json` | Navegación, CTA header |
-| `hero`    | `hero.json` | Sección hero |
-| `footer`  | `footer.json` | Pie de página |
-| `cta`     | `cta.json` | Sección de contacto/CTA |
+| `nav`     | `nav.json`    | Navegación, CTA header  |
+| `hero`    | `hero.json`   | Sección hero            |
+| `footer`  | `footer.json` | Pie de página           |
+| `cta`     | `cta.json`    | Sección de contacto/CTA |
 
 ## Interpolación
 
@@ -71,7 +71,7 @@ Usá `{{varName}}` en el valor JSON y pasá las variables como segundo argumento
 ```
 
 ```ts
-t('common:greeting', { name: 'Mundo' }) // => "Hola, Mundo!"
+t('common:greeting', { name: 'Mundo' }); // => "Hola, Mundo!"
 ```
 
 ## Cadena de fallback
@@ -84,11 +84,11 @@ t('common:greeting', { name: 'Mundo' }) // => "Hola, Mundo!"
 
 `getLang(pathname)` lee el primer segmento de la ruta:
 
-| URL | Lang |
-|-----|------|
+| URL         | Lang |
+| ----------- | ---- |
 | `/sobre-mi` | `es` |
 | `/en/about` | `en` |
-| `/` | `es` |
+| `/`         | `es` |
 
 ## Agregar un nuevo namespace
 
@@ -105,7 +105,7 @@ const translations = {
 };
 ```
 
-3. Usar `t('myNs:some-key')` en los componentes.
+1. Usar `t('myNs:some-key')` en los componentes.
 
 ## Reglas de contenido
 
