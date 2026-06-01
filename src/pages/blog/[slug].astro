@@ -164,51 +164,20 @@ const formattedDate = post.data.pubDate.toLocaleDateString('es-ES', {
   {related.length > 0 && (
     <section class="px-4 pb-16">
       <div class="max-w-6xl mx-auto">
-        <div class="pt-12 border-t" style="border-color: var(--border-primary);">
-          <h2
-            class="text-xl font-semibold mb-8"
-            style="font-family: var(--font-heading); color: var(--text-primary);"
-          >
-            Artículos relacionados
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {related.map((relPost, i) => (
-              <article
-                class="group rounded-2xl overflow-hidden transition-all duration-300"
-                style="background: var(--surface-glass); border: 1px solid var(--border-primary);"
-                onmouseover="this.style.borderColor='var(--border-cyan)';"
-                onmouseout="this.style.borderColor='var(--border-primary)';"
-              >
-                <div class="p-5 flex flex-col gap-3">
-                  <span
-                    class="self-start px-2.5 py-1 rounded-full text-xs font-mono"
-                    style="background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2); color: var(--cyan-main);"
-                  >
-                    {relPost.data.category}
-                  </span>
-                  <h3 class="text-sm font-semibold leading-snug" style="font-family: var(--font-heading); color: var(--text-primary);">
-                    <a href={`/blog/${relPost.id.replace(/\.[^.]+$/, '')}`} class="hover:text-cyan-400 transition-colors duration-200">
-                      {relPost.data.title}
-                    </a>
-                  </h3>
-                  <p class="text-xs leading-relaxed line-clamp-2" style="color: var(--text-secondary);">
-                    {relPost.data.description}
-                  </p>
-                  <a
-                    href={`/blog/${relPost.id.replace(/\.[^.]+$/, '')}`}
-                    class="inline-flex items-center gap-1.5 text-xs font-semibold mt-1 transition-colors duration-200"
-                    style="color: var(--cyan-main);"
-                  >
-                    Leer artículo
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        <RelatedPosts
+          posts={related.map((p) => ({
+            slug: p.id.replace(/\.[^.]+$/, ''),
+            data: {
+              title: p.data.title,
+              description: p.data.description,
+              pubDate: p.data.pubDate,
+              category: p.data.category,
+              tags: p.data.tags,
+              image: p.data.image,
+              readingTime: p.data.readingTime,
+            },
+          }))}
+        />
       </div>
     </section>
   )}

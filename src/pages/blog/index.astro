@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import BlogHero from '../../components/blog/BlogHero.astro';
 import BlogCard from '../../components/blog/BlogCard.astro';
+import BlogLayout from '../../components/blog/BlogLayout.astro';
 import EmptyBlogState from '../../components/blog/EmptyBlogState.astro';
 
 const isDev = import.meta.env.DEV;
@@ -14,6 +15,7 @@ const allPosts = await getCollection('blog', ({ data }) => {
 function toSlug(id: string): string {
   return id.replace(/\.[^.]+$/, '');
 }
+
 // Sort by pubDate descending
 const posts = allPosts.sort(
   (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
@@ -22,13 +24,19 @@ const posts = allPosts.sort(
 // Derive unique categories
 const allCategories = [...new Set(posts.map((p) => p.data.category))];
 
-// Active category filter (URL param)
+// Fallback server-side filter (still works for non-JS environments / pre-renders)
 const { searchParams } = Astro.url;
 const activeCategory = searchParams.get('category') ?? 'all';
 
 const filteredPosts = activeCategory === 'all'
   ? posts
   : posts.filter((p) => p.data.category === activeCategory);
+
+// Serialise all posts to JSON for the client-side filter script
+const postsJson = posts.map((p) => ({
+  slug: toSlug(p.id),
+  category: p.data.category,
+}));
 ---
 
 <MainLayout
@@ -37,61 +45,150 @@ const filteredPosts = activeCategory === 'all'
 >
   <BlogHero postCount={posts.length} />
 
-  <section class="py-16 px-4" style="background: var(--bg-primary);">
-    <div class="max-w-6xl mx-auto">
-
-      <!-- Category Filter -->
-      {allCategories.length > 1 && (
-        <div class="mb-10">
-          <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: var(--text-muted); font-family: var(--font-heading);">
-            Filtrar por categoría
-          </p>
-          <div class="flex flex-wrap gap-2">
-            <a
-              href="/blog"
-              class={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 ${activeCategory === 'all' ? 'text-cyan-400' : 'hover:border-cyan-400/40'}`}
-              style={activeCategory === 'all'
-                ? 'background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);'
-                : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);'}
+  <BlogLayout>
+    <!-- Category Filter -->
+    {allCategories.length > 1 && (
+      <div class="mb-10" id="category-filter">
+        <p
+          class="text-xs font-semibold uppercase tracking-widest mb-3"
+          style="color: var(--text-muted); font-family: var(--font-heading);"
+        >
+          Filtrar por categoría
+        </p>
+        <div class="flex flex-wrap gap-2" role="list" aria-label="Categorías de artículos">
+          <button
+            data-category="all"
+            role="listitem"
+            class="category-btn px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
+            style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);"
+          >
+            Todos
+          </button>
+          {allCategories.map((cat) => (
+            <button
+              data-category={cat}
+              role="listitem"
+              class="category-btn px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
+              style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);"
             >
-              Todos
-            </a>
-            {allCategories.map((cat) => (
-              <a
-                href={`/blog?category=${encodeURIComponent(cat)}`}
-                class="px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
-                style={activeCategory === cat
-                  ? 'background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);'
-                  : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);'}
-              >
-                {cat}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <!-- Posts grid -->
-      {filteredPosts.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPosts.map((post, i) => (
-            <BlogCard
-              slug={toSlug(post.id)}
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              category={post.data.category}
-              tags={post.data.tags}
-              image={post.data.image}
-              readingTime={post.data.readingTime}
-              index={i}
-            />
+              {cat}
+            </button>
           ))}
         </div>
-      ) : (
-        <EmptyBlogState />
-      )}
+      </div>
+    )}
 
+    <!-- Posts grid — all posts rendered; JS hides/shows cards -->
+    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post, i) => (
+        <div data-post-category={post.data.category} class="post-card-wrapper">
+          <BlogCard
+            slug={toSlug(post.id)}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            category={post.data.category}
+            tags={post.data.tags}
+            image={post.data.image}
+            readingTime={post.data.readingTime}
+            index={i}
+          />
+        </div>
+      ))}
     </div>
-  </section>
+
+    <!-- Empty state — shown by JS when no cards match filter -->
+    <div id="empty-state" class="hidden">
+      <EmptyBlogState />
+    </div>
+  </BlogLayout>
 </MainLayout>
+
+<!--
+  Client-side category filter.
+  Works on static output without a server or React.
+  Falls back gracefully: if JS is disabled, ALL posts remain visible.
+  URL param (?category=) is also honoured on load.
+-->
+<script define:vars={{ allCategories, postsJson }}>
+  (function () {
+    // Active category — prefer URL param, then "all"
+    function getCategoryFromURL() {
+      try {
+        return new URL(window.location.href).searchParams.get('category') || 'all';
+      } catch (_) {
+        return 'all';
+      }
+    }
+
+    let active = getCategoryFromURL();
+
+    const ACTIVE_STYLE = {
+      background: 'rgba(34,211,238,0.1)',
+      border: '1px solid rgba(34,211,238,0.35)',
+      color: 'var(--cyan-main)',
+    };
+    const IDLE_STYLE = {
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.08)',
+      color: 'var(--text-secondary)',
+    };
+
+    function applyStyle(el, styleObj) {
+      Object.assign(el.style, styleObj);
+    }
+
+    function filterPosts(category) {
+      const wrappers = document.querySelectorAll('.post-card-wrapper');
+      let visibleCount = 0;
+
+      wrappers.forEach((wrapper) => {
+        const cat = wrapper.getAttribute('data-post-category');
+        const show = category === 'all' || cat === category;
+        wrapper.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) {
+        emptyState.classList.toggle('hidden', visibleCount > 0);
+      }
+    }
+
+    function updateButtons(category) {
+      document.querySelectorAll('.category-btn').forEach((btn) => {
+        const isActive = btn.getAttribute('data-category') === category;
+        applyStyle(btn, isActive ? ACTIVE_STYLE : IDLE_STYLE);
+      });
+    }
+
+    function updateURL(category) {
+      try {
+        const url = new URL(window.location.href);
+        if (category === 'all') {
+          url.searchParams.delete('category');
+        } else {
+          url.searchParams.set('category', category);
+        }
+        history.replaceState(null, '', url.toString());
+      } catch (_) {}
+    }
+
+    function setCategory(category) {
+      active = category;
+      filterPosts(category);
+      updateButtons(category);
+      updateURL(category);
+    }
+
+    // Wire up buttons
+    document.querySelectorAll('.category-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setCategory(btn.getAttribute('data-category') || 'all');
+      });
+    });
+
+    // Apply initial state from URL
+    setCategory(active);
+  })();
+</script>
