@@ -8,37 +8,31 @@ interface Props {
 const { badge, title, subtitle } = Astro.props;
 ---
 
-<section
-  class="relative py-20 px-4 overflow-hidden"
-  style="background: linear-gradient(180deg, #061014 0%, #020607 100%);"
->
-  <!-- Subtle radial glow -->
+<section class="relative py-20 px-4 overflow-hidden section-bg-page-header">
   <div
-    class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-20 pointer-events-none"
-    style="background: radial-gradient(ellipse at center, rgba(0,229,229,0.3) 0%, transparent 70%);"
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-20 pointer-events-none glow-radial-subtle"
     aria-hidden="true"
-  ></div>
+  >
+  </div>
 
   <div class="max-w-6xl mx-auto text-center relative z-10">
-    {badge && (
-      <span
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4"
-        style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: rgba(0,229,229,0.06);"
-      >
-        <span class="w-1.5 h-1.5 rounded-full bg-current inline-block" aria-hidden="true"></span>
-        {badge}
-      </span>
-    )}
-    <h1
-      class="text-4xl md:text-5xl font-bold tracking-tight text-balance mb-4"
-      style="font-family: var(--font-heading); color: #f2f7f8;"
-    >
+    {
+      badge && (
+        <span class="badge badge-accent mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-current inline-block" aria-hidden="true" />
+          {badge}
+        </span>
+      )
+    }
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-balance mb-4 text-heading">
       {title}
     </h1>
-    {subtitle && (
-      <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style="color: #a7b0b8;">
-        {subtitle}
-      </p>
-    )}
+    {
+      subtitle && (
+        <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto text-body-secondary">
+          {subtitle}
+        </p>
+      )
+    }
   </div>
 </section>

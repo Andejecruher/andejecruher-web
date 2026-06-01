@@ -1,0 +1,83 @@
+{
+  "items": {
+    "clupp": {
+      "role": "Full Stack Developer",
+      "period": "December 2024 - Present",
+      "location": "Mexico",
+      "modality": "Remote · Full time",
+      "description": "Development of scalable product-oriented web solutions, focused on dynamic interfaces, backend APIs and solid engineering practices.",
+      "responsibilities": [
+        "Built scalable web solutions with Next.js, React.js, Node.js and Firebase.",
+        "Implemented dynamic, responsive and intuitive product-focused interfaces.",
+        "Developed and integrated backend APIs and services for product capabilities.",
+        "Implemented authentication, data management and service integrations with Firebase.",
+        "Applied frontend and backend engineering best practices in a modern stack environment."
+      ],
+      "achievements": []
+    },
+    "diferente-web": {
+      "role": "Full Stack Developer",
+      "period": "September 2023 - June 2024",
+      "location": "Mexico",
+      "modality": "Remote · Full time",
+      "description": "API development and maintenance, external service integrations, e-commerce solutions and database management across full stack projects.",
+      "responsibilities": [
+        "Built and maintained APIs to integrate external services and improve system communication.",
+        "Integrated and customized e-commerce solutions with BigCommerce.",
+        "Managed MySQL and MongoDB data models with focus on scalability, security and performance.",
+        "Contributed to full stack projects across backend, frontend and third-party integrations."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "BigCommerce e-commerce integrations"
+      ]
+    },
+    "hoteles-buenaventura": {
+      "role": "Full Stack Developer",
+      "period": "April 2023 - July 2023",
+      "location": "Puerto Vallarta, Jalisco, Mexico",
+      "modality": "On-site",
+      "description": "Built an interactive calendar for date, booking and availability management, including REST API construction and a React.js frontend.",
+      "responsibilities": [
+        "Built an interactive calendar for date, booking and availability management.",
+        "Developed REST APIs with Laravel and MySQL for operational data management.",
+        "Implemented React.js frontend features for interactive date visualization and selection.",
+        "Integrated frontend and backend to improve end-user experience."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "Booking calendar for Hoteles Buenaventura"
+      ]
+    },
+    "the-rocket-code": {
+      "role": "Full Stack Developer",
+      "period": "March 2022 - May 2023",
+      "location": "Mexico",
+      "modality": "Remote · Full time",
+      "description": "Developed web features, migrated frontend systems and built APIs for efficient client-server communication.",
+      "responsibilities": [
+        "Developed application features using React.js.",
+        "Migrated a pricing quote tool from Next.js to React.js, improving structure and maintainability.",
+        "Built APIs with Node.js, Express and MongoDB for efficient frontend-backend communication.",
+        "Contributed to website and web application development for multiple clients."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "Web quote builder (Next.js to React.js migration)"
+      ]
+    },
+    "creativa-softline": {
+      "role": "Web Designer",
+      "period": "Early professional experience",
+      "location": "Tuxtla Gutierrez, Chiapas, Mexico",
+      "modality": "On-site",
+      "description": "Designed and built functional responsive websites. First professional experience in web development and implementation.",
+      "responsibilities": [
+        "Designed and developed functional, responsive and visually engaging websites.",
+        "Implemented interfaces with Bootstrap, Skeleton and Boilerplate.",
+        "Participated in design, layout and web implementation workflows."
+      ],
+      "achievements": []
+    }
+  }
+}

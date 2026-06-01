@@ -1,142 +1,127 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHeader from '../../components/ui/PageHeader.astro';
-import { projects, statusLabels, statusColors } from '../../data/projects';
+import { getProjects, statusColors } from '../../data/projects';
+import { getLang, useTranslations } from '../../i18n/utils';
+import { getPageSeo } from '../../seo/pages';
 
-const allCategories = ['Todos', ...new Set(projects.map((p) => p.category))];
-const allTechs = [...new Set(projects.flatMap((p) => p.technologies))].sort();
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const projects = getProjects(lang);
+const seo = getPageSeo('projects', lang);
 ---
 
-<MainLayout
-  title="Proyectos"
-  description="Proyectos destacados de Andejecruher — SaaS, AI Agents, Automatización, Integraciones y más. Trabajo real con impacto."
->
+<MainLayout {...seo}>
   <PageHeader
-    badge="Portfolio"
-    title="Proyectos destacados"
-    subtitle="Soluciones construidas con propósito: plataformas SaaS, agentes IA, integraciones y sistemas que funcionan en producción."
+    badge={t('projects:header-badge')}
+    title={t('projects:header-title')}
+    subtitle={t('projects:header-subtitle')}
   />
 
-  <section class="py-16 px-4" style="background: #020607;">
+  <section class="py-16 px-4 section-bg-primary">
     <div class="max-w-6xl mx-auto">
-
-      <!-- Filters -->
-      <div class="mb-10 flex flex-wrap gap-2" role="group" aria-label="Filtros de proyectos">
-        <button
-          class="filter-btn active px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200"
-          data-filter="all"
-          style="border: 1px solid rgba(0,229,229,0.4); color: #00e5e5; background: rgba(0,229,229,0.08);"
-        >
-          Todos
+      <div
+        class="mb-10 flex flex-wrap gap-2"
+        role="group"
+        aria-label={t('projects:filter-group-aria')}
+      >
+        <button class="filter-btn chip-filter chip-filter-active" data-filter="all">
+          {t('projects:filter-all')}
         </button>
-        {['SaaS', 'Laravel', 'Node.js', 'Python', 'React', 'Astro', 'IA'].map((tag) => (
-          <button
-            class="filter-btn px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200"
-            data-filter={tag}
-            style="border: 1px solid rgba(255,255,255,0.08); color: #6f7b85; background: transparent;"
-          >
-            {tag}
-          </button>
-        ))}
+        {
+          ['SaaS', 'Laravel', 'Node.js', 'Python', 'React', 'Astro', 'IA'].map((tag) => (
+            <button class="filter-btn chip-filter" data-filter={tag}>
+              {tag}
+            </button>
+          ))
+        }
       </div>
 
-      <!-- Projects grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
-        {projects.map((project) => (
-          <article
-            class="project-card group rounded-2xl p-6 flex flex-col gap-4 transition-all duration-300"
-            style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
-            data-tags={project.tags.join(',')}
-            onmouseover="this.style.borderColor='rgba(0,229,229,0.25)'; this.style.background='rgba(0,229,229,0.04)';"
-            onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.background='rgba(255,255,255,0.03)';"
-          >
-            <!-- Top row: status + category -->
-            <div class="flex items-center justify-between gap-3">
-              <span class="text-xs font-mono" style="color: #6f7b85;">{project.category}</span>
-              <span
-                class={`px-2.5 py-1 rounded-full text-xs font-mono border ${statusColors[project.status]}`}
-              >
-                {statusLabels[project.status]}
-              </span>
-            </div>
-
-            <!-- Name -->
-            <h2
-              class="text-xl font-semibold"
-              style="font-family: var(--font-heading); color: #f2f7f8;"
+        {
+          projects.map((project) => (
+            <article
+              class="project-card card card-interactive p-6 flex flex-col gap-4"
+              data-tags={project.tags.join(',')}
             >
-              {project.name}
-            </h2>
-
-            <!-- Description -->
-            <p class="text-sm leading-relaxed flex-1" style="color: #a7b0b8;">
-              {project.description}
-            </p>
-
-            <!-- Problem -->
-            <div
-              class="rounded-lg p-3"
-              style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);"
-            >
-              <p class="text-xs font-semibold uppercase tracking-widest mb-1" style="color: #6f7b85; font-family: var(--font-heading);">
-                Problema que resuelve
-              </p>
-              <p class="text-xs leading-relaxed" style="color: #a7b0b8;">{project.problem}</p>
-            </div>
-
-            <!-- Role -->
-            <p class="text-xs font-mono" style="color: #6f7b85;">
-              Rol: <span style="color: #a7b0b8;">{project.role}</span>
-            </p>
-
-            <!-- Tech tags -->
-            <div class="flex flex-wrap gap-1.5">
-              {project.technologies.map((tech) => (
-                <span
-                  class="px-2 py-0.5 rounded-md text-xs font-mono"
-                  style="background: rgba(0,229,229,0.06); border: 1px solid rgba(0,229,229,0.15); color: #00bfc6;"
-                >
-                  {tech}
+              <div class="flex items-center justify-between gap-3">
+                <span class="text-xs font-mono text-body-muted">
+                  {t(`projects:category-${project.categoryKey}`)}
                 </span>
-              ))}
-            </div>
+                <span class={`badge badge-neutral border ${statusColors[project.status]}`}>
+                  {t(`projects:status-${project.status}`)}
+                </span>
+              </div>
 
-            <!-- Links -->
-            <div class="flex gap-3 pt-2 border-t" style="border-color: rgba(255,255,255,0.06);">
-              {project.links.demo ? (
-                <a
-                  href={project.links.demo}
-                  class="inline-flex items-center gap-1.5 text-xs font-medium transition-colors duration-200"
-                  style="color: #00e5e5;"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onmouseover="this.style.color='#00bfc6';"
-                  onmouseout="this.style.color='#00e5e5';"
-                >
-                  Demo
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/>
-                  </svg>
+              <h2 class="text-xl font-semibold text-heading">
+                <a href={`/proyectos/${project.slug}`} class="hover:text-brand-primary transition-colors">
+                  {project.name}
                 </a>
-              ) : (
-                <span class="text-xs" style="color: #6f7b85;">Sin demo disponible</span>
-              )}
-              {project.links.repo && (
+              </h2>
+
+              <p class="text-sm leading-relaxed flex-1 text-body-secondary">
+                {project.description}
+              </p>
+
+              <div class="card-inner p-3">
+                <p class="text-label mb-1">{t('projects:problem-label')}</p>
+                <p class="text-xs leading-relaxed text-body-secondary">{project.problem}</p>
+              </div>
+
+              <p class="text-xs font-mono text-body-muted">
+                {t('projects:role-label')}: <span class="text-body-secondary">{project.role}</span>
+              </p>
+
+              <div class="flex flex-wrap gap-1.5">
+                {project.technologies.map((tech) => (
+                  <span class="chip-tech">{tech}</span>
+                ))}
+              </div>
+
+              <div class="flex gap-3 pt-2 border-t divider">
                 <a
-                  href={project.links.repo}
-                  class="inline-flex items-center gap-1.5 text-xs font-medium transition-colors duration-200"
-                  style="color: #a7b0b8;"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onmouseover="this.style.color='#f2f7f8';"
-                  onmouseout="this.style.color='#a7b0b8';"
+                  href={`/proyectos/${project.slug}`}
+                  class="inline-flex items-center gap-1.5 text-xs font-medium link-accent"
                 >
-                  Repositorio
+                  {t('projects:view-project')}
                 </a>
-              )}
-            </div>
-          </article>
-        ))}
+                {project.links.demo ? (
+                  <a
+                    href={project.links.demo}
+                    class="inline-flex items-center gap-1.5 text-xs font-medium link-accent"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t('projects:demo-label')}
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+                    </svg>
+                  </a>
+                ) : (
+                  <span class="text-xs text-body-muted">{t('projects:no-demo')}</span>
+                )}
+                {project.links.repo && (
+                  <a
+                    href={project.links.repo}
+                    class="inline-flex items-center gap-1.5 text-xs font-medium text-body-secondary hover:text-brand-primary transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t('projects:repo-label')}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -146,15 +131,16 @@ const allTechs = [...new Set(projects.flatMap((p) => p.technologies))].sort();
   const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.project-card');
 
-  const activeStyle = 'border: 1px solid rgba(0,229,229,0.4); color: #00e5e5; background: rgba(0,229,229,0.08);';
-  const inactiveStyle = 'border: 1px solid rgba(255,255,255,0.08); color: #6f7b85; background: transparent;';
-
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const filter = btn.dataset.filter ?? 'all';
 
-      filterBtns.forEach((b) => (b.style.cssText = inactiveStyle));
-      btn.style.cssText = activeStyle;
+      filterBtns.forEach((b) => {
+        b.classList.remove('chip-filter-active');
+        b.classList.add('chip-filter');
+      });
+      btn.classList.add('chip-filter-active');
+      btn.classList.remove('chip-filter');
 
       cards.forEach((card) => {
         const tags = card.dataset.tags ?? '';

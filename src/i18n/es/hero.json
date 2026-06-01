@@ -1,4 +1,6 @@
 {
+  "seo-title": "Andejecruher · Full Stack Developer",
+  "seo-description": "Andejecruher — Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones multicanal. Laravel · Node.js · Python · React.",
   "section-aria-label": "Presentación principal",
   "available-badge": "DISPONIBLE PARA PROYECTOS",
   "headline": "Full Stack Developer | AI Agents & Automation",
@@ -6,5 +8,9 @@
   "stats-aria-label": "Estadísticas",
   "cta-work": "Ver mis proyectos",
   "cta-resume": "Descargar CV",
-  "code-aria-label": "Fragmento de código decorativo"
+  "code-aria-label": "Fragmento de código decorativo",
+  "description": "Desarrollador Full Stack con experiencia en creación, mantenimiento e integración de aplicaciones web, APIs REST, plataformas SaaS y soluciones digitales orientadas a automatización.",
+  "stat-projects": "Proyectos",
+  "stat-experience": "Años de experiencia",
+  "stat-delivered": "Proyectos entregados"
 }

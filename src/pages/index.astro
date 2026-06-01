@@ -5,12 +5,14 @@ import FeaturedProjects from '../components/sections/home/FeaturedProjects.astro
 import Hero from '../components/sections/home/Hero.astro';
 import StackPreview from '../components/sections/home/StackPreview.astro';
 import MainLayout from '../layouts/MainLayout.astro';
+import { getLang } from '../i18n/utils';
+import { getPageSeo } from '../seo/pages';
+
+const lang = getLang(Astro.url.pathname);
+const seo = getPageSeo('home', lang);
 ---
 
-<MainLayout
-  title="Inicio"
-  description="Andejecruher — Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones multicanal. Laravel · Node.js · Python · React."
->
+<MainLayout {...seo}>
   <Hero />
   <ExperiencePreview />
   <FeaturedProjects />

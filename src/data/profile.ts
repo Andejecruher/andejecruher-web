@@ -1,31 +1,67 @@
-export const profile = {
+import type { Lang } from '../i18n/config';
+import { DEFAULT_LANG } from '../i18n/config';
+import esProfileData from '../i18n/es/profile-data.json';
+import enProfileData from '../i18n/en/profile-data.json';
+
+interface ProfileLocaleContent {
+  role: string;
+  tagline: string;
+  headline: string;
+  description: string;
+  aboutParagraphs: string[];
+  additionalInfo: string[];
+  location: string;
+}
+
+interface ProfileBase {
+  name: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  website: string;
+  cvUrl: string | null;
+  availableForProjects: boolean;
+}
+
+export type Profile = ProfileBase & ProfileLocaleContent;
+
+const profileBase: ProfileBase = {
   name: 'Andejecruher',
-  fullName: 'Antonio de Jesús Cruz Hernández',
-  role: 'Full Stack Developer',
-  tagline: 'SaaS · AI Agents · APIs REST',
-  headline: 'Full Stack Developer | React · Node.js · Laravel · Python · SaaS · APIs REST',
-  description:
-    'Desarrollador Full Stack con experiencia en creación, mantenimiento e integración de aplicaciones web, APIs REST, plataformas SaaS y soluciones digitales orientadas a automatización.',
-  about: `Soy desarrollador Full Stack con experiencia en creación, mantenimiento e integración de aplicaciones web, APIs REST, plataformas SaaS y soluciones digitales orientadas a automatización. Manejo frontend, backend, bases de datos relacionales y NoSQL, integraciones externas y desarrollo de productos escalables.
-
-Trabajo con JavaScript, PHP y Python utilizando tecnologías como Laravel, Node.js, Express, FastAPI y React para construir APIs, servicios backend y aplicaciones web modernas. También trabajo con Next.js, Firebase, MySQL, MongoDB, GraphQL y Docker.
-
-Mi enfoque combina calidad técnica, experiencia de usuario, arquitectura SaaS e integración de inteligencia artificial en productos digitales. Trabajo principalmente en sistemas backend y aplicaciones web que procesan información proveniente de múltiples canales de comunicación como WhatsApp, Instagram, Facebook y Telegram.
-
-Actualmente también exploro el desarrollo de agentes de inteligencia artificial y herramientas de automatización que permiten integrar capacidades de IA dentro de productos SaaS y optimizar flujos de trabajo.
-
-Durante este año estoy ampliando mi enfoque hacia prácticas de DevOps y cloud infrastructure, buscando fortalecer habilidades en automatización de despliegues, infraestructura como código, monitoreo de servicios y diseño de arquitecturas más resilientes y escalables.
-
-Mi objetivo profesional es evolucionar hacia el diseño de sistemas completos donde desarrollo de software, inteligencia artificial y prácticas DevOps trabajen de forma integrada dentro de productos SaaS modernos.`,
-  additionalInfo: [
-    'Perfil orientado a productos SaaS, automatización e inteligencia artificial aplicada.',
-    'Capacidad para trabajar de forma independiente o en equipo en entornos técnicos dinámicos.',
-    'Interés activo en DevOps, cloud infrastructure, CI/CD y agentes de IA.',
-  ],
+  fullName: 'Antonio de Jesus Cruz Hernandez',
   email: 'andejecruher@gmail.com',
   phone: '+52 322 318 8252',
-  location: 'México · Remoto · Disponible Worldwide',
   website: 'https://andejecruher.com',
-  cvUrl: null, // Set when CV is ready
+  cvUrl: null,
   availableForProjects: true,
 };
+
+const profileByLang: Record<Lang, ProfileLocaleContent> = {
+  es: {
+    role: esProfileData.role,
+    tagline: esProfileData.tagline,
+    headline: esProfileData.headline,
+    description: esProfileData.description,
+    aboutParagraphs: esProfileData['about-paragraphs'],
+    additionalInfo: esProfileData['additional-info'],
+    location: esProfileData.location,
+  },
+  en: {
+    role: enProfileData.role,
+    tagline: enProfileData.tagline,
+    headline: enProfileData.headline,
+    description: enProfileData.description,
+    aboutParagraphs: enProfileData['about-paragraphs'],
+    additionalInfo: enProfileData['additional-info'],
+    location: enProfileData.location,
+  },
+};
+
+export function getProfile(lang: Lang): Profile {
+  const localized = profileByLang[lang] ?? profileByLang[DEFAULT_LANG];
+  return {
+    ...profileBase,
+    ...localized,
+  };
+}
+
+export const profile = getProfile(DEFAULT_LANG);

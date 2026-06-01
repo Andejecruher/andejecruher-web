@@ -12,6 +12,26 @@ import esFooter from './es/footer.json';
 import enFooter from './en/footer.json';
 import esCta from './es/cta.json';
 import enCta from './en/cta.json';
+import esContact from './es/contact.json';
+import enContact from './en/contact.json';
+import esExperience from './es/experience.json';
+import enExperience from './en/experience.json';
+import esAbout from './es/about.json';
+import enAbout from './en/about.json';
+import esProjects from './es/projects.json';
+import enProjects from './en/projects.json';
+import esStack from './es/stack.json';
+import enStack from './en/stack.json';
+import esHome from './es/home.json';
+import enHome from './en/home.json';
+import esBlog from './es/blog.json';
+import enBlog from './en/blog.json';
+import esProfileData from './es/profile-data.json';
+import enProfileData from './en/profile-data.json';
+import esExperienceData from './es/experience-data.json';
+import enExperienceData from './en/experience-data.json';
+import esProjectsData from './es/projects-data.json';
+import enProjectsData from './en/projects-data.json';
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
 interface JsonObject {
@@ -25,6 +45,16 @@ const translations: Record<Lang, Record<string, JsonObject>> = {
     hero: esHero as JsonObject,
     footer: esFooter as JsonObject,
     cta: esCta as JsonObject,
+    contact: esContact as JsonObject,
+    experience: esExperience as JsonObject,
+    about: esAbout as JsonObject,
+    projects: esProjects as JsonObject,
+    stack: esStack as JsonObject,
+    home: esHome as JsonObject,
+    blog: esBlog as JsonObject,
+    'profile-data': esProfileData as JsonObject,
+    'experience-data': esExperienceData as JsonObject,
+    'projects-data': esProjectsData as JsonObject,
   },
   en: {
     common: enCommon as JsonObject,
@@ -32,6 +62,16 @@ const translations: Record<Lang, Record<string, JsonObject>> = {
     hero: enHero as JsonObject,
     footer: enFooter as JsonObject,
     cta: enCta as JsonObject,
+    contact: enContact as JsonObject,
+    experience: enExperience as JsonObject,
+    about: enAbout as JsonObject,
+    projects: enProjects as JsonObject,
+    stack: enStack as JsonObject,
+    home: enHome as JsonObject,
+    blog: enBlog as JsonObject,
+    'profile-data': enProfileData as JsonObject,
+    'experience-data': enExperienceData as JsonObject,
+    'projects-data': enProjectsData as JsonObject,
   },
 };
 

@@ -1,25 +1,41 @@
 ---
 import { navItems } from '../../data/navigation';
 import { getLang, useTranslations } from '../../i18n/utils';
+import { localizePath } from '../../i18n/routing';
 
 const currentPath = Astro.url.pathname;
 const lang = getLang(currentPath);
 const t = useTranslations(lang);
+const homeHref = localizePath('/', lang);
+const contactHref = localizePath('/contacto', lang);
+
+function normalizePath(path: string): string {
+  if (path !== '/' && path.endsWith('/')) return path.slice(0, -1);
+  return path;
+}
 
 function isActive(href: string): boolean {
-  if (href === '/') return currentPath === '/';
-  return currentPath.startsWith(href);
+  const normalizedCurrentPath = normalizePath(currentPath);
+  const normalizedHref = normalizePath(href);
+
+  if (normalizedHref === normalizePath(homeHref)) {
+    return normalizedCurrentPath === normalizedHref;
+  }
+
+  return (
+    normalizedCurrentPath === normalizedHref ||
+    normalizedCurrentPath.startsWith(`${normalizedHref}/`)
+  );
 }
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 px-4 py-3">
   <nav
-    class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl"
-    style="background: rgba(8, 17, 31, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.07);"
+    class="nav-shell max-w-6xl mx-auto flex items-center justify-between px-5 py-3"
     aria-label={t('nav:aria-label')}
   >
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Andejecruher - Inicio">
+    <a href={homeHref} class="flex items-center gap-3 flex-shrink-0" aria-label="Andejecruher">
       <img
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
         alt="Andejecruher Logo"
@@ -32,38 +48,27 @@ function isActive(href: string): boolean {
     <!-- Desktop nav -->
     <ul class="hidden lg:flex items-center gap-1" role="list">
       {
-        navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-lg ${
-                isActive(item.href) ? 'text-cyan-400' : 'text-[#94a3b8] hover:text-[#f1f5f9]'
-              }`}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-              {isActive(item.href) && (
-                <span
-                  class="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-4 rounded-full"
-                  style="background: #00e5e5;"
-                  aria-hidden="true"
-                />
-              )}
-            </a>
-          </li>
-        ))
+        navItems.map((item) => {
+          const href = localizePath(item.href, lang);
+          const active = isActive(href);
+          return (
+            <li>
+              <a
+                href={href}
+                class={`nav-link ${active ? 'nav-link-active' : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {t(`nav:item-${item.key}`)}
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
 
     <!-- CTA -->
     <div class="hidden lg:flex items-center">
-      <a
-        href="/contacto"
-        class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200"
-        style="background: transparent; border: 1px solid rgba(34,211,238,0.4); color: #22d3ee;"
-        onmouseover="this.style.background='rgba(34,211,238,0.08)'; this.style.borderColor='rgba(34,211,238,0.6)';"
-        onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(34,211,238,0.4)';"
-      >
+      <a href={contactHref} class="btn btn-secondary btn-sm">
         {t('nav:cta-connect')}
         <svg
           width="12"
@@ -82,8 +87,7 @@ function isActive(href: string): boolean {
     <!-- Mobile hamburger -->
     <button
       id="menu-toggle"
-      class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors"
-      style="color: #94a3b8;"
+      class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors text-body-muted hover:text-brand-primary"
       aria-label={t('nav:menu-open')}
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -97,34 +101,33 @@ function isActive(href: string): boolean {
   <!-- Mobile menu -->
   <div
     id="mobile-menu"
-    class="lg:hidden mt-2 rounded-2xl overflow-hidden transition-all duration-300 max-h-0 opacity-0"
-    style="background: rgba(8, 17, 31, 0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.07);"
+    class="nav-shell lg:hidden mt-2 overflow-hidden transition-all duration-300 max-h-0 opacity-0"
     aria-hidden="true"
   >
     <ul class="flex flex-col p-4 gap-1" role="list">
       {
-        navItems.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class={`block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
-                isActive(item.href)
-                  ? 'text-cyan-400 bg-cyan-500/10'
-                  : 'text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-white/5'
-              }`}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))
+        navItems.map((item) => {
+          const href = localizePath(item.href, lang);
+          const active = isActive(href);
+          return (
+            <li>
+              <a
+                href={href}
+                class={`block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                  active
+                    ? 'nav-link-mobile-active'
+                    : 'text-body-secondary hover:text-brand-primary hover:bg-white/5'
+                }`}
+                aria-current={active ? 'page' : undefined}
+              >
+                {t(`nav:item-${item.key}`)}
+              </a>
+            </li>
+          );
+        })
       }
-      <li class="pt-2 border-t border-white/5 mt-2">
-        <a
-          href="/contacto"
-          class="block px-4 py-3 text-sm font-semibold text-center rounded-xl transition-all duration-200"
-          style="border: 1px solid rgba(34,211,238,0.4); color: #22d3ee;"
-        >
+      <li class="pt-2 border-t divider mt-2">
+        <a href={contactHref} class="btn btn-secondary btn-sm w-full justify-center mt-1">
           {t('nav:cta-connect')}
         </a>
       </li>
@@ -165,7 +168,6 @@ function isActive(href: string): boolean {
     }
   });
 
-  // Close on outside click
   document.addEventListener('click', (e) => {
     if (open && !toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
       toggle?.click();

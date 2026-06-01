@@ -2,77 +2,19 @@
 import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import SEO from '../components/SEO.astro';
+import { getLang } from '../i18n/utils';
+import type { SeoProps } from '../seo/types';
 
-interface Props {
-  title: string;
-  description?: string;
-  canonical?: string;
-  ogImage?: string;
-}
+interface Props extends SeoProps {}
 
-const {
-  title,
-  description = 'Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones. Laravel · Node.js · Python · React.',
-  canonical = Astro.url.href,
-  ogImage = '/og-image.png',
-} = Astro.props;
-
-const fullTitle = title === 'Inicio' ? 'Andejecruher · Full Stack Developer' : `${title} · Andejecruher`;
+const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#020607" />
-
-    <title>{fullTitle}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:site_name" content="Andejecruher" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:site" content="@Andejecruher" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Schema.org Person -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Andejecruher",
-        "url": "https://andejecruher.com",
-        "sameAs": [
-          "https://github.com/Andejecruher",
-          "https://www.linkedin.com/in/andejecruher/",
-          "https://x.com/Andejecruher"
-        ],
-        "jobTitle": "Full Stack Developer",
-        "knowsAbout": ["Laravel", "Node.js", "Python", "React", "SaaS", "AI Agents", "Automation"]
-      }
-    </script>
+    <SEO {...Astro.props} lang={lang} />
   </head>
   <body>
     <Header />

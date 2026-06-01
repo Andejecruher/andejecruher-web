@@ -1,57 +1,58 @@
 ---
-import { profile } from '../../../data/profile';
-import { socialLinks } from '../../../data/socialLinks';
+import { getProfile } from '../../../data/profile';
 import { stats } from '../../../data/stats';
+import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
 
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
+const profile = getProfile(lang);
+const projectsHref = localizePath('/proyectos', lang);
+const contactHref = localizePath('/contacto', lang);
 
 const techBadges = [
   { name: 'SaaS', color: '#38bdf8' },
   { name: 'Laravel', color: '#fb7185' },
   { name: 'Python', color: '#fbbf24' },
   { name: 'Node.js', color: '#4ade80' },
-  { name: 'React', color: '#22d3ee' },
+  { name: 'React', color: 'var(--color-primary)' },
 ];
 ---
 
 <section
-  class="relative min-h-screen flex items-center overflow-hidden px-4 py-16"
-  style="background: linear-gradient(135deg, #060d18 0%, #08111f 60%, #060d18 100%);"
+  class="relative min-h-screen flex items-center overflow-hidden px-4 py-16 section-bg-hero"
   aria-label={t('hero:section-aria-label')}
 >
   <!-- Circuit decoration -->
   <svg
-    class="absolute top-0 right-0 opacity-5 pointer-events-none"
+    class="absolute top-0 right-0 opacity-5 pointer-events-none text-accent"
     width="600"
     height="600"
     viewBox="0 0 600 600"
     aria-hidden="true"
     fill="none"
   >
-    <circle cx="300" cy="300" r="280" stroke="#22d3ee" stroke-width="0.5"></circle>
-    <circle cx="300" cy="300" r="200" stroke="#22d3ee" stroke-width="0.5"></circle>
-    <circle cx="300" cy="300" r="120" stroke="#22d3ee" stroke-width="0.5"></circle>
-    <line x1="300" y1="20" x2="300" y2="580" stroke="#22d3ee" stroke-width="0.5"></line>
-    <line x1="20" y1="300" x2="580" y2="300" stroke="#22d3ee" stroke-width="0.5"></line>
-    <circle cx="300" cy="20" r="4" fill="#22d3ee"></circle>
-    <circle cx="300" cy="580" r="4" fill="#22d3ee"></circle>
-    <circle cx="20" cy="300" r="4" fill="#22d3ee"></circle>
-    <circle cx="580" cy="300" r="4" fill="#22d3ee"></circle>
+    <circle cx="300" cy="300" r="280" stroke="currentColor" stroke-width="0.5"></circle>
+    <circle cx="300" cy="300" r="200" stroke="currentColor" stroke-width="0.5"></circle>
+    <circle cx="300" cy="300" r="120" stroke="currentColor" stroke-width="0.5"></circle>
+    <line x1="300" y1="20" x2="300" y2="580" stroke="currentColor" stroke-width="0.5"></line>
+    <line x1="20" y1="300" x2="580" y2="300" stroke="currentColor" stroke-width="0.5"></line>
+    <circle cx="300" cy="20" r="4" fill="currentColor"></circle>
+    <circle cx="300" cy="580" r="4" fill="currentColor"></circle>
+    <circle cx="20" cy="300" r="4" fill="currentColor"></circle>
+    <circle cx="580" cy="300" r="4" fill="currentColor"></circle>
   </svg>
 
   <!-- Radial glow top-right -->
   <div
-    class="absolute -top-20 right-0 w-[500px] h-[500px] opacity-10 pointer-events-none"
-    style="background: radial-gradient(circle, rgba(34,211,238,0.5) 0%, transparent 65%);"
+    class="absolute -top-20 right-0 w-[500px] h-[500px] opacity-10 pointer-events-none glow-radial"
     aria-hidden="true"
   >
   </div>
   <!-- Radial glow bottom-left -->
   <div
     class="absolute bottom-0 left-1/4 w-72 h-72 opacity-8 pointer-events-none"
-    style="background: radial-gradient(circle, rgba(34,211,238,0.3) 0%, transparent 70%);"
+    style="background: radial-gradient(circle, rgba(0,217,245,0.3) 0%, transparent 70%);"
     aria-hidden="true"
   >
   </div>
@@ -63,13 +64,9 @@ const techBadges = [
     <div class="flex flex-col gap-6 animate-fade-in-up">
       <!-- Available badge -->
       <div class="flex items-center gap-2 w-fit">
-        <span
-          class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-medium uppercase tracking-widest"
-          style="border: 1px solid rgba(74,222,128,0.35); color: #4ade80; background: rgba(74,222,128,0.07);"
-        >
+        <span class="badge badge-success uppercase tracking-widest">
           <span
-            class="w-2 h-2 rounded-full animate-pulse inline-block flex-shrink-0"
-            style="background: #4ade80;"
+            class="w-2 h-2 rounded-full animate-pulse inline-block flex-shrink-0 bg-current"
             aria-hidden="true"></span>
           {t('hero:available-badge')}
         </span>
@@ -77,29 +74,24 @@ const techBadges = [
 
       <!-- Headline -->
       <h1
-        class="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1]"
-        style="font-family: var(--font-heading); color: #f1f5f9;"
+        class="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] text-heading"
       >
         Full Stack Developer |
         <br />
         AI Agents &amp;
-        <span style="color: #22d3ee;"> Automation</span>
+        <span class="text-accent"> Automation</span>
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-base md:text-lg leading-relaxed max-w-lg" style="color: #94a3b8;">
+      <p class="text-base md:text-lg leading-relaxed max-w-lg text-body-secondary">
         {profile.description}
       </p>
 
-      <!-- Tech badges with color indicator -->
+      <!-- Tech badges -->
       <div class="flex flex-wrap gap-2.5" role="list" aria-label={t('hero:tech-aria-label')}>
         {
           techBadges.map((tech) => (
-            <span
-              role="listitem"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
-              style="border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; background: rgba(255,255,255,0.04);"
-            >
+            <span role="listitem" class="chip">
               <span
                 class="w-1.5 h-1.5 rounded-full flex-shrink-0"
                 style={`background: ${tech.color};`}
@@ -111,15 +103,9 @@ const techBadges = [
         }
       </div>
 
-      <!-- CTAs: 2 main buttons matching reference -->
+      <!-- CTAs -->
       <div class="flex flex-wrap gap-3 pt-1">
-        <a
-          href="/proyectos"
-          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
-          style="background: #22d3ee; color: #060d18; font-weight: 700;"
-          onmouseover="this.style.background='#06b6d4'; this.style.boxShadow='0 0 28px rgba(34,211,238,0.4)';"
-          onmouseout="this.style.background='#22d3ee'; this.style.boxShadow='none';"
-        >
+        <a href={projectsHref} class="btn btn-primary">
           {t('hero:cta-work')}
           <svg
             width="14"
@@ -133,13 +119,7 @@ const techBadges = [
             <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
         </a>
-        <a
-          href="/contacto"
-          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
-          style="border: 1px solid rgba(255,255,255,0.14); color: #e2e8f0; background: rgba(255,255,255,0.05);"
-          onmouseover="this.style.background='rgba(255,255,255,0.09)'; this.style.borderColor='rgba(255,255,255,0.24)';"
-          onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.14)';"
-        >
+        <a href={contactHref} class="btn btn-ghost">
           <svg
             width="14"
             height="14"
@@ -159,26 +139,21 @@ const techBadges = [
 
       <!-- Stats strip -->
       <div
-        class="flex flex-wrap items-center gap-5 pt-5"
-        style="border-top: 1px solid rgba(255,255,255,0.07);"
+        class="flex flex-wrap items-center gap-5 pt-5 border-t divider-accent"
         aria-label={t('hero:stats-aria-label')}
       >
         {
           stats.map((stat, i) => (
             <>
               <div class="flex items-center gap-2.5">
-                <div
-                  class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.15);"
-                  aria-hidden="true"
-                >
+                <div class="icon-box icon-box-sm" aria-hidden="true">
                   {stat.icon === 'rocket' && (
                     <svg
                       width="14"
                       height="14"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="#22d3ee"
+                      stroke="currentColor"
                       stroke-width="2"
                     >
                       <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
@@ -193,7 +168,7 @@ const techBadges = [
                       height="14"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="#22d3ee"
+                      stroke="currentColor"
                       stroke-width="2"
                     >
                       <polyline points="16 18 22 12 16 6" />
@@ -206,7 +181,7 @@ const techBadges = [
                       height="14"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="#22d3ee"
+                      stroke="currentColor"
                       stroke-width="2"
                     >
                       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -221,7 +196,7 @@ const techBadges = [
                       height="14"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="#22d3ee"
+                      stroke="currentColor"
                       stroke-width="2"
                     >
                       <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -229,23 +204,14 @@ const techBadges = [
                   )}
                 </div>
                 <div>
-                  <div
-                    class="text-base font-bold leading-tight"
-                    style="color: #22d3ee; font-family: var(--font-heading);"
-                  >
+                  <div class="text-base font-bold leading-tight text-accent text-heading">
                     {stat.value}
                   </div>
-                  <div class="text-xs leading-tight" style="color: #64748b;">
-                    {stat.label}
-                  </div>
+                  <div class="text-xs leading-tight text-body-muted">{t(`hero:stat-${stat.key}`)}</div>
                 </div>
               </div>
               {i < stats.length - 1 && (
-                <span
-                  class="hidden sm:block text-xl leading-none"
-                  style="color: rgba(255,255,255,0.1);"
-                  aria-hidden="true"
-                >
+                <span class="hidden sm:block text-xl leading-none text-white/10" aria-hidden="true">
                   |
                 </span>
               )}
@@ -255,77 +221,74 @@ const techBadges = [
       </div>
     </div>
 
-    <!-- Right: code block + isotipo side by side -->
+    <!-- Right: code block + isotipo -->
     <div class="relative hidden lg:flex items-center justify-end gap-5 animate-fade-in delay-300">
-      <!-- Code block -->
       <div
-        class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed"
-        style="background: rgba(8,17,31,0.93); border: 1px solid rgba(34,211,238,0.14);"
+        class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed card-elevated"
+        style="border-color: var(--color-border-accent);"
         role="img"
         aria-label={t('hero:code-aria-label')}
       >
         <div class="flex gap-1.5 mb-4">
-          <span class="w-3 h-3 rounded-full" style="background: rgba(239,68,68,0.55);"></span>
-          <span class="w-3 h-3 rounded-full" style="background: rgba(234,179,8,0.55);"></span>
-          <span class="w-3 h-3 rounded-full" style="background: rgba(34,197,94,0.55);"></span>
+          <span class="w-3 h-3 rounded-full bg-red-500/55"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-500/55"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500/55"></span>
         </div>
-        <div style="color: #475569;">// Building scalable solutions</div>
+        <div class="text-body-muted">// Building scalable solutions</div>
         <div class="mt-1">
-          <span style="color: #06b6d4;">const</span>
-          <span style="color: #f1f5f9;"> developer </span>
-          <span style="color: #22d3ee;">=</span>
-          <span style="color: #f1f5f9;"> {'{'}</span>
+          <span class="text-brand-secondary">const</span>
+          <span class="text-heading"> developer </span>
+          <span class="text-accent">=</span>
+          <span class="text-heading"> {'{'}</span>
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">name:</span>
-          <span style="color: #22d3ee;"> "Andejecruher"</span><span style="color: #f1f5f9;">,</span>
+          <span class="text-body-secondary">name:</span>
+          <span class="text-accent"> "Andejecruher"</span><span class="text-heading">,</span>
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">role:</span>
-          <span style="color: #22d3ee;"> "Full Stack Developer"</span><span style="color: #f1f5f9;"
-            >,</span
+          <span class="text-body-secondary">role:</span>
+          <span class="text-accent"> "Full Stack Developer"</span><span class="text-heading">,</span
           >
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">focus:</span>
-          <span style="color: #f1f5f9;"> [</span>
-          <span style="color: #22d3ee;">"AI Agents"</span><span style="color: #f1f5f9;">, </span>
-          <span style="color: #22d3ee;">"Automation"</span><span style="color: #f1f5f9;">, </span>
-          <span style="color: #22d3ee;">"SaaS"</span>
-          <span style="color: #f1f5f9;">],</span>
+          <span class="text-body-secondary">focus:</span>
+          <span class="text-heading"> [</span>
+          <span class="text-accent">"AI Agents"</span><span class="text-heading">, </span>
+          <span class="text-accent">"Automation"</span><span class="text-heading">, </span>
+          <span class="text-accent">"SaaS"</span>
+          <span class="text-heading">],</span>
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">skills:</span>
-          <span style="color: #f1f5f9;"> [</span>
-          <span style="color: #22d3ee;">"Laravel"</span><span style="color: #f1f5f9;">, </span>
-          <span style="color: #22d3ee;">"Python"</span><span style="color: #f1f5f9;">, </span>
-          <span style="color: #22d3ee;">"Node.js"</span><span style="color: #f1f5f9;">, </span>
-          <span style="color: #22d3ee;">"React"</span>
-          <span style="color: #f1f5f9;">],</span>
+          <span class="text-body-secondary">skills:</span>
+          <span class="text-heading"> [</span>
+          <span class="text-accent">"Laravel"</span><span class="text-heading">, </span>
+          <span class="text-accent">"Python"</span><span class="text-heading">, </span>
+          <span class="text-accent">"Node.js"</span><span class="text-heading">, </span>
+          <span class="text-accent">"React"</span>
+          <span class="text-heading">],</span>
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">passion:</span>
-          <span style="color: #22d3ee;"> "Solving problems with code"</span>
+          <span class="text-body-secondary">passion:</span>
+          <span class="text-accent"> "Solving problems with code"</span>
         </div>
-        <div><span style="color: #f1f5f9;">{'}'};</span></div>
+        <div><span class="text-heading">{'}'};</span></div>
         <div class="mt-3">
-          <span style="color: #475569;">function </span>
-          <span style="color: #22d3ee;">buildSolution</span>
-          <span style="color: #f1f5f9;">() {'{'}</span>
+          <span class="text-body-muted">function </span>
+          <span class="text-accent">buildSolution</span>
+          <span class="text-heading">() {'{'}</span>
         </div>
         <div class="pl-4">
-          <span style="color: #94a3b8;">return </span>
-          <span style="color: #22d3ee;">impact</span>
-          <span style="color: #f1f5f9;">;</span>
+          <span class="text-body-secondary">return </span>
+          <span class="text-accent">impact</span>
+          <span class="text-heading">;</span>
         </div>
-        <div><span style="color: #f1f5f9;">{'}'}</span></div>
+        <div><span class="text-heading">{'}'}</span></div>
       </div>
 
       <!-- Isotipo -->
       <div class="relative flex-shrink-0">
         <div
-          class="absolute inset-0 rounded-full animate-pulse"
-          style="background: radial-gradient(circle, rgba(34,211,238,0.35) 0%, transparent 65%); opacity: 0.3;"
+          class="absolute inset-0 rounded-full animate-pulse glow-radial opacity-30"
           aria-hidden="true"
         >
         </div>

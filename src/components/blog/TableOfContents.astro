@@ -1,4 +1,6 @@
 ---
+import { getLang, useTranslations } from '../../i18n/utils';
+
 interface Heading {
   depth: number;
   slug: string;
@@ -10,32 +12,30 @@ interface Props {
 }
 
 const { headings } = Astro.props;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
 
-// Only show h2 and h3
 const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
-{filtered.length > 2 && (
-  <nav
-    class="rounded-xl p-5"
-    style="background: var(--surface-glass); border: 1px solid var(--border-primary);"
-    aria-label="Tabla de contenidos"
-  >
-    <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--text-muted); font-family: var(--font-heading);">
-      Contenidos
-    </p>
-    <ol class="flex flex-col gap-2" role="list">
-      {filtered.map((heading) => (
-        <li class={heading.depth === 3 ? 'pl-3' : ''}>
-          <a
-            href={`#${heading.slug}`}
-            class="text-sm leading-snug transition-colors duration-200 hover:text-cyan-400 block"
-            style={`color: ${heading.depth === 2 ? 'var(--text-secondary)' : 'var(--text-muted)'};`}
-          >
-            {heading.text}
-          </a>
-        </li>
-      ))}
-    </ol>
-  </nav>
-)}
+{
+  filtered.length > 2 && (
+    <nav class="glass-card rounded-xl p-5" aria-label={t('blog:toc-aria-label')}>
+      <p class="text-label mb-4">{t('blog:toc-title')}</p>
+      <ol class="flex flex-col gap-2" role="list">
+        {filtered.map((heading) => (
+          <li class={heading.depth === 3 ? 'pl-3' : ''}>
+            <a
+              href={`#${heading.slug}`}
+              class={`text-sm leading-snug transition-colors duration-200 hover:text-brand-primary block ${
+                heading.depth === 2 ? 'text-body-secondary' : 'text-body-muted'
+              }`}
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

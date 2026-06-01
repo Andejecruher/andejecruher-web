@@ -1,65 +1,61 @@
 ---
-import { experiences } from '../../../data/experience';
+import { getExperiences } from '../../../data/experience';
+import { localizePath } from '../../../i18n/routing';
+import { getLang, useTranslations } from '../../../i18n/utils';
 import SectionHeader from '../../ui/SectionHeader.astro';
 
-const preview = experiences.slice(0, 2);
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const preview = getExperiences(lang).slice(0, 2);
+const experienceHref = localizePath('/experiencia', lang);
 ---
 
-<section class="py-20 px-4" style="background: #061014;">
+<section class="py-20 px-4 section-bg-footer">
   <div class="max-w-6xl mx-auto">
     <SectionHeader
-      badge="Experiencia"
-      title="Trayectoria profesional"
-      subtitle="Historial de proyectos y roles que me han formado como desarrollador."
+      badge={t('experience:preview-badge')}
+      title={t('experience:preview-title')}
+      subtitle={t('experience:preview-subtitle')}
       align="left"
     />
 
     <div class="flex flex-col gap-6 mb-10">
-      {preview.map((exp, i) => (
-        <div
-          class={`rounded-2xl p-6 flex flex-col gap-4 transition-all duration-200 animate-fade-in-up delay-${(i + 1) * 100}`}
-          style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-            <div>
-              <h3
-                class="text-base font-semibold"
-                style="font-family: var(--font-heading); color: #f2f7f8;"
-              >
-                {exp.role}
-              </h3>
-              <p class="text-sm mt-1" style="color: #00e5e5;">{exp.company}</p>
+      {
+        preview.map((exp, i) => (
+          <div class={`card p-6 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}>
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div>
+                <h3 class="text-base font-semibold text-heading">{exp.role}</h3>
+                <p class="text-sm mt-1 text-accent">{exp.company}</p>
+              </div>
+              <div class="flex flex-col items-start sm:items-end gap-1">
+                <span class="text-xs font-mono text-body-muted">{exp.period}</span>
+                <span class="text-xs text-body-muted">{exp.modality}</span>
+              </div>
             </div>
-            <div class="flex flex-col items-start sm:items-end gap-1">
-              <span class="text-xs font-mono" style="color: #6f7b85;">{exp.period}</span>
-              <span class="text-xs" style="color: #6f7b85;">{exp.modality}</span>
+            <p class="text-sm leading-relaxed text-body-secondary">{exp.description}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {exp.technologies.slice(0, 5).map((tech) => (
+                <span class="chip-tech">{tech}</span>
+              ))}
             </div>
           </div>
-          <p class="text-sm leading-relaxed" style="color: #a7b0b8;">{exp.description}</p>
-          <div class="flex flex-wrap gap-1.5">
-            {exp.technologies.slice(0, 5).map((tech) => (
-              <span
-                class="px-2 py-0.5 rounded-md text-xs font-mono"
-                style="background: rgba(0,229,229,0.06); border: 1px solid rgba(0,229,229,0.15); color: #00bfc6;"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
-    <a
-      href="/experiencia"
-      class="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-200"
-      style="color: #00e5e5;"
-      onmouseover="this.style.color='#00bfc6';"
-      onmouseout="this.style.color='#00e5e5';"
-    >
-      Ver experiencia completa
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
+    <a href={experienceHref} class="inline-flex items-center gap-2 text-sm font-medium link-accent">
+      {t('experience:preview-cta')}
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7"></path>
       </svg>
     </a>
   </div>

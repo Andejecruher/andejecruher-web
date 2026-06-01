@@ -1,0 +1,83 @@
+{
+  "items": {
+    "clupp": {
+      "role": "Desarrollador Full Stack",
+      "period": "Diciembre 2024 - Actualidad",
+      "location": "Mexico",
+      "modality": "Remoto · Tiempo completo",
+      "description": "Desarrollo de soluciones web escalables orientadas a producto, con enfoque en interfaces dinamicas, APIs backend y buenas practicas de desarrollo.",
+      "responsibilities": [
+        "Desarrollo de soluciones web escalables con Next.js, React.js, Node.js y Firebase.",
+        "Construccion de interfaces dinamicas, responsivas e intuitivas orientadas a producto.",
+        "Desarrollo e integracion de APIs y servicios backend para funcionalidades del producto.",
+        "Implementacion de autenticacion, gestion de datos e integracion de servicios con Firebase.",
+        "Aplicacion de buenas practicas de desarrollo frontend y backend en un entorno tecnologico."
+      ],
+      "achievements": []
+    },
+    "diferente-web": {
+      "role": "Desarrollador Full Stack",
+      "period": "Septiembre 2023 - Junio 2024",
+      "location": "Mexico",
+      "modality": "Remoto · Tiempo completo",
+      "description": "Desarrollo y mantenimiento de APIs, integracion de servicios externos, soluciones e-commerce y administracion de bases de datos en proyectos full stack.",
+      "responsibilities": [
+        "Desarrollo y mantenimiento de APIs para integrar servicios externos y mejorar la comunicacion entre aplicaciones.",
+        "Integracion y personalizacion de soluciones e-commerce mediante BigCommerce.",
+        "Administracion de datos con MySQL y MongoDB, considerando escalabilidad, seguridad y eficiencia.",
+        "Participacion en proyectos full stack combinando backend, frontend e integraciones externas."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "Integraciones e-commerce con BigCommerce"
+      ]
+    },
+    "hoteles-buenaventura": {
+      "role": "Desarrollador Full Stack",
+      "period": "Abril 2023 - Julio 2023",
+      "location": "Puerto Vallarta, Jalisco, Mexico",
+      "modality": "Presencial",
+      "description": "Desarrollo de calendario interactivo para gestion de fechas, reservas y disponibilidad, con construccion de REST APIs y frontend en React.js.",
+      "responsibilities": [
+        "Desarrollo de calendario interactivo para gestion de fechas, reservas y disponibilidad.",
+        "Construccion de REST APIs con Laravel y MySQL para administrar informacion operativa.",
+        "Desarrollo de frontend con React.js para visualizacion y seleccion interactiva de fechas.",
+        "Integracion entre frontend y backend para mejorar la experiencia del usuario final."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "Calendario de reservas para Hoteles Buenaventura"
+      ]
+    },
+    "the-rocket-code": {
+      "role": "Desarrollador Full Stack",
+      "period": "Marzo 2022 - Mayo 2023",
+      "location": "Mexico",
+      "modality": "Remoto · Tiempo completo",
+      "description": "Desarrollo de funcionalidades web, migracion de sistemas frontend y construccion de APIs para comunicacion eficiente entre cliente y servidor.",
+      "responsibilities": [
+        "Desarrollo de funcionalidades para aplicaciones web utilizando React.js.",
+        "Migracion de cotizador de precios desde Next.js hacia React.js, mejorando estructura y mantenibilidad.",
+        "Desarrollo de APIs con Node.js, Express y MongoDB para comunicacion eficiente entre frontend y backend.",
+        "Participacion en creacion de sitios y aplicaciones web para distintos clientes."
+      ],
+      "achievements": [],
+      "related-projects": [
+        "Cotizador web (migracion Next.js -> React.js)"
+      ]
+    },
+    "creativa-softline": {
+      "role": "Disenador Web",
+      "period": "Experiencia inicial",
+      "location": "Tuxtla Gutierrez, Chiapas, Mexico",
+      "modality": "Presencial",
+      "description": "Diseno y desarrollo de sitios web funcionales y responsivos. Primera experiencia profesional en desarrollo e implementacion web.",
+      "responsibilities": [
+        "Diseno y desarrollo de sitios web funcionales, responsivos y visualmente atractivos.",
+        "Implementacion de interfaces con Bootstrap, Skeleton y Boilerplate.",
+        "Participacion en procesos de diseno, maquetacion e implementacion web."
+      ],
+      "achievements": []
+    }
+  }
+}

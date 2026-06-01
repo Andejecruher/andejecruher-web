@@ -1,0 +1,19 @@
+{
+  "page-title": "Sobre mí",
+  "page-description": "Conoce a Andejecruher — Full Stack Developer enfocado en SaaS, AI Agents, Automatización y Arquitectura de sistemas escalables.",
+  "header-badge": "Perfil",
+  "header-title": "Sobre mí",
+  "header-subtitle": "Desarrollador Full Stack con enfoque en sistemas que escalan, automatizan y resuelven problemas reales.",
+  "available-for-projects": "Disponible para proyectos",
+  "focus-areas-heading": "Áreas de enfoque",
+  "focus-backend-title": "Backend & APIs",
+  "focus-backend-desc": "Diseño y construcción de APIs REST robustas, microservicios y lógica de negocio con Laravel, Node.js y FastAPI.",
+  "focus-saas-title": "SaaS Architecture",
+  "focus-saas-desc": "Arquitectura multi-tenant, autenticación, autorización, billing y escalabilidad para plataformas SaaS modernas.",
+  "focus-ai-title": "AI Agents & Automation",
+  "focus-ai-desc": "Integración de LLMs, construcción de agentes conversacionales y automatización de flujos de trabajo con IA.",
+  "focus-messaging-title": "Messaging Integrations",
+  "focus-messaging-desc": "Conexión con WhatsApp Business API, Telegram, Instagram y Facebook para soluciones multicanal.",
+  "focus-devops-title": "DevOps Learning Path",
+  "focus-devops-desc": "Crecimiento activo en Docker, CI/CD, infraestructura como código, monitoreo y despliegues automatizados."
+}

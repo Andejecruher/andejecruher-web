@@ -1,13 +1,14 @@
 ---
+import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
 
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
+const contactHref = localizePath('/contacto', lang);
 ---
 
-<section class="py-24 px-4" style="background: #061014;">
+<section class="py-24 px-4 section-bg-footer">
   <div class="max-w-3xl mx-auto text-center">
-    <!-- Isotipo watermark -->
     <div class="flex justify-center mb-8 opacity-20" aria-hidden="true">
       <img
         src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png"
@@ -18,45 +19,37 @@ const t = useTranslations(lang);
       />
     </div>
 
-    <span
-      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-6"
-      style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: rgba(0,229,229,0.06);"
-    >
-      <span class="w-1.5 h-1.5 rounded-full bg-current inline-block animate-pulse" aria-hidden="true"></span>
+    <span class="badge badge-accent mb-6">
+      <span
+        class="w-1.5 h-1.5 rounded-full bg-current inline-block animate-pulse"
+        aria-hidden="true"></span>
       {t('cta:available-badge')}
     </span>
 
-    <h2
-      class="text-3xl md:text-4xl font-bold tracking-tight text-balance mb-4"
-      style="font-family: var(--font-heading); color: #f2f7f8;"
-    >
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-balance mb-4 text-heading">
       {t('cta:heading')}
     </h2>
 
-    <p class="text-base leading-relaxed mb-8 max-w-xl mx-auto" style="color: #a7b0b8;">
+    <p class="text-base leading-relaxed mb-8 max-w-xl mx-auto text-body-secondary">
       {t('cta:body')}
     </p>
 
     <div class="flex flex-wrap justify-center gap-3">
-      <a
-        href="/contacto"
-        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
-        style="background: #00e5e5; color: #020607;"
-        onmouseover="this.style.background='#00bfc6'; this.style.boxShadow='0 0 24px rgba(0,229,229,0.35)';"
-        onmouseout="this.style.background='#00e5e5'; this.style.boxShadow='none';"
-      >
+      <a href={contactHref} class="btn btn-primary">
         {t('cta:contact-btn')}
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </a>
-      <a
-        href="mailto:andejecruher@gmail.com"
-        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
-        style="border: 1px solid rgba(255,255,255,0.12); color: #f2f7f8; background: transparent;"
-        onmouseover="this.style.background='rgba(255,255,255,0.05)';"
-        onmouseout="this.style.background='transparent';"
-      >
+      <a href="mailto:andejecruher@gmail.com" class="btn btn-outline-light">
         andejecruher@gmail.com
       </a>
     </div>

@@ -1,9 +1,23 @@
+import type { Lang } from '../i18n/config';
+import { DEFAULT_LANG } from '../i18n/config';
+import enProjectsData from '../i18n/en/projects-data.json';
+import esProjectsData from '../i18n/es/projects-data.json';
+
 export type ProjectStatus = 'en-desarrollo' | 'demo' | 'produccion' | 'privado' | 'caso-profesional';
+
+export type ProjectCategoryKey =
+  | 'web-app'
+  | 'saas-civic-platform'
+  | 'landing-page-branding'
+  | 'digital-agency-web-app'
+  | 'messaging-ai-conversational'
+  | 'professional-portfolio'
+  | 'backend-api';
 
 export interface Project {
   name: string;
   slug: string;
-  category: string;
+  categoryKey: ProjectCategoryKey;
   tags: string[];
   description: string;
   problem: string;
@@ -18,16 +32,51 @@ export interface Project {
   image?: string;
 }
 
-export const projects: Project[] = [
+interface ProjectBase {
+  slug: string;
+  name: string;
+  categoryKey: ProjectCategoryKey;
+  tags: string[];
+  technologies: string[];
+  status: ProjectStatus;
+  featured: boolean;
+  links: {
+    demo?: string;
+    repo?: string;
+  };
+  image?: string;
+}
+
+interface ProjectLocaleContent {
+  description: string;
+  problem: string;
+  role: string;
+}
+
+interface ProjectsDataFile {
+  items: Record<string, ProjectLocaleContent>;
+}
+
+const projectsBase: ProjectBase[] = [
   {
     name: 'Insurance Boosters',
     slug: 'insurance-boosters-platform',
-    category: 'Aplicación Web',
+    categoryKey: 'web-app',
     tags: ['SaaS', 'Full Stack', 'Monorepo', 'TypeScript', 'Next.js', 'Express'],
-    description: 'Plataforma completa de gestión de seguros con arquitectura monorepo escalable. Sistema integral que incluye aplicación web frontend, API REST con Express, y servicios backend para cotización y automatización de workflows.',
-    problem: 'Las aseguradoras necesitan una plataforma moderna y escalable para gestionar cotizaciones, workflows automáticos, y comunicaciones vía Twilio, integrando APIs externas con un backend robusto capaz de procesar solicitudes en tiempo real.',
-    role: 'Desarrollador Full Stack',
-    technologies: ['Next.js 15', 'TypeScript', 'Express', 'Firebase', 'Twilio', 'OpenAI', 'Google Cloud', 'Deepgram', 'Socket.io', 'TanStack React Table', 'Radix UI', 'Tailwind CSS'],
+    technologies: [
+      'Next.js 15',
+      'TypeScript',
+      'Express',
+      'Firebase',
+      'Twilio',
+      'OpenAI',
+      'Google Cloud',
+      'Deepgram',
+      'Socket.io',
+      'TanStack React Table',
+      'Radix UI',
+      'Tailwind CSS',
+    ],
     status: 'privado',
     featured: true,
     links: {
@@ -38,11 +87,8 @@ export const projects: Project[] = [
   {
     name: 'Insurance Boosters Multicotizador',
     slug: 'multicotizador-seguros',
-    category: 'Aplicación Web',
-    tags: ['Frontend', 'Next.js', 'SaaS', 'Comparación', 'Cotizaciones'],
-    description: 'Frontend especializado para comparación multicotización de pólizas de seguros. Interfaz responsiva construida con Next.js 15 y Tailwind CSS, optimizada para comparación en tiempo real y generación de cotizaciones en PDF.',
-    problem: 'Los usuarios finales necesitan herramientas rápidas e intuitivas para comparar múltiples cotizaciones de seguros de diferentes aseguradoras y generar reportes en PDF sin complejidad técnica.',
-    role: 'Desarrollador Frontend',
+    categoryKey: 'web-app',
+    tags: ['Frontend', 'Next.js', 'SaaS', 'Comparison', 'Quotations'],
     technologies: ['Next.js 16', 'TypeScript', 'React 18', 'Tailwind CSS', 'Radix UI', 'React PDF', 'SWR', 'Framer Motion', 'Lucide Icons'],
     status: 'privado',
     featured: true,
@@ -54,13 +100,8 @@ export const projects: Project[] = [
   {
     name: 'Voz Ciudadana',
     slug: 'voz-ciudadana',
-    category: 'SaaS / Plataforma Cívica',
-    tags: ['SaaS', 'Node.js', 'IA', 'Automatización'],
-    description:
-      'Plataforma SaaS multi-tenant para gestión de reportes ciudadanos con integración de canales de mensajería y agentes IA para clasificación y respuesta automatizada.',
-    problem:
-      'Los municipios carecen de canales digitales unificados para recibir y gestionar reportes ciudadanos de forma eficiente.',
-    role: 'Desarrollador Full Stack & Arquitecto de sistema',
+    categoryKey: 'saas-civic-platform',
+    tags: ['SaaS', 'Node.js', 'AI', 'Automation'],
     technologies: ['Node.js', 'MySQL', 'WhatsApp API', 'FastAPI', 'Docker'],
     status: 'privado',
     featured: true,
@@ -72,13 +113,8 @@ export const projects: Project[] = [
   {
     name: 'Baklava Club de Mar',
     slug: 'baklava-club-de-mar',
-    category: 'Landing Page / Branding',
+    categoryKey: 'landing-page-branding',
     tags: ['Astro', 'Tailwind CSS', 'Landing Page'],
-    description:
-      'Landing page elegante y responsive para club de mar con diseño premium, galería de imágenes, sección de servicios y formulario de contacto.',
-    problem:
-      'El club necesitaba una presencia digital profesional que reflejara su propuesta de valor premium y atrajera nuevos socios.',
-    role: 'Desarrollador Frontend & Diseñador',
     technologies: ['Astro', 'Tailwind CSS', 'JavaScript'],
     status: 'produccion',
     featured: true,
@@ -90,28 +126,20 @@ export const projects: Project[] = [
   {
     name: 'Code Creatives',
     slug: 'code-creatives',
-    category: 'Agencia Digital / Web App',
+    categoryKey: 'digital-agency-web-app',
     tags: ['React', 'Node.js', 'MongoDB', 'SaaS'],
-    description:
-      'Plataforma web para agencia creativa con gestión de proyectos, portal de clientes, seguimiento de entregables y comunicación integrada.',
-    problem:
-      'La agencia gestionaba proyectos de forma manual generando fricciones con clientes y pérdida de visibilidad en el estado de los trabajos.',
-    role: 'Desarrollador Full Stack',
     technologies: ['React', 'Node.js', 'Express', 'MongoDB'],
     status: 'caso-profesional',
     featured: true,
-    links: {},
+    links: {
+      repo: 'https://github.com/Andejecruher/code-creatives',
+    },
   },
   {
     name: 'HunadChat',
     slug: 'hunadchat',
-    category: 'Mensajería / IA Conversacional',
-    tags: ['Node.js', 'Laravel', 'WhatsApp', 'IA Agents', 'Automatización'],
-    description:
-      'Sistema de mensajería multicanal con agentes conversacionales IA, integración de WhatsApp Business, flujos automatizados y panel de administración.',
-    problem:
-      'Las empresas necesitaban centralizar la atención al cliente de múltiples canales con respuestas inteligentes y automatizadas.',
-    role: 'Desarrollador Backend & Integrador',
+    categoryKey: 'messaging-ai-conversational',
+    tags: ['Node.js', 'Laravel', 'WhatsApp', 'AI Agents', 'Automation'],
     technologies: ['Node.js', 'Laravel', 'WhatsApp API', 'FastAPI', 'Python', 'MongoDB', 'Docker'],
     status: 'en-desarrollo',
     featured: true,
@@ -122,13 +150,8 @@ export const projects: Project[] = [
   {
     name: 'Andejecruher Web',
     slug: 'andejecruher-web',
-    category: 'Portafolio Profesional',
+    categoryKey: 'professional-portfolio',
     tags: ['portfolio', 'personal-branding', 'astro', 'seo', 'typescript'],
-    description:
-      'Portafolio profesional desarrollado con Astro, TypeScript y Tailwind CSS para presentar experiencia en desarrollo full stack, SaaS, automatización e inteligencia artificial.',
-    problem:
-      'Resuelve la necesidad de contar con una presencia profesional clara, rápida y optimizada para mostrar experiencia técnica, propuesta de valor y proyectos relevantes a reclutadores y potenciales clientes.',
-    role: 'Desarrollador Frontend & Diseñador',
     technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
     status: 'en-desarrollo',
     featured: true,
@@ -139,45 +162,53 @@ export const projects: Project[] = [
   {
     name: 'URL Shortener API',
     slug: 'url-shortener-api',
-    category: 'Backend / API',
+    categoryKey: 'backend-api',
     tags: ['api', 'rest', 'url-shortener', 'express', 'mongodb', 'backend'],
-    description:
-      'API REST para acortamiento de URLs con generación de códigos únicos, redirección, edición, eliminación y métricas de uso, diseñada con una estructura modular de backend.',
-    problem:
-      'Resuelve el caso de uso de transformar enlaces largos en URLs cortas y manejables, incorporando estadísticas básicas y operaciones CRUD para servicios ligeros, MVPs o integraciones internas.',
-    role: 'Desarrollador Backend',
-    technologies: [
-      'TypeScript',
-      'Node.js',
-      'Express',
-      'MongoDB',
-      'Mongoose',
-      'Jest',
-      'Supertest',
-      'Bun',
-      'Valibot',
-    ],
+    technologies: ['TypeScript', 'Node.js', 'Express', 'MongoDB', 'Mongoose', 'Jest', 'Supertest', 'Bun', 'Valibot'],
     status: 'caso-profesional',
     featured: true,
     links: {
       repo: 'https://github.com/Andejecruher/url-shortener-api',
     },
-    // TODO: Agregar demo o documentación publicada de la API si existe.
   },
 ];
 
-export const statusLabels: Record<ProjectStatus, string> = {
-  'en-desarrollo': 'En desarrollo',
-  demo: 'Demo',
-  produccion: 'Producción',
-  privado: 'Privado',
-  'caso-profesional': 'Caso profesional',
+const projectsByLang: Record<Lang, ProjectsDataFile> = {
+  es: esProjectsData as ProjectsDataFile,
+  en: enProjectsData as ProjectsDataFile,
 };
 
+function getProjectContent(lang: Lang, slug: string): ProjectLocaleContent {
+  const localized = projectsByLang[lang]?.items[slug];
+  if (localized) return localized;
+
+  const fallback = projectsByLang[DEFAULT_LANG]?.items[slug];
+  if (fallback) return fallback;
+
+  return {
+    description: '',
+    problem: '',
+    role: '',
+  };
+}
+
+export function getProjects(lang: Lang): Project[] {
+  return projectsBase.map((base) => ({
+    ...base,
+    ...getProjectContent(lang, base.slug),
+  }));
+}
+
+export function getProjectBySlug(slug: string, lang: Lang = DEFAULT_LANG): Project | undefined {
+  return getProjects(lang).find((project) => project.slug === slug);
+}
+
+export const projects = getProjects(DEFAULT_LANG);
+
 export const statusColors: Record<ProjectStatus, string> = {
-  'en-desarrollo': 'border-yellow-500/40 text-yellow-400',
-  demo: 'border-blue-500/40 text-blue-400',
-  produccion: 'border-green-500/40 text-green-400',
-  privado: 'border-gray-500/40 text-gray-400',
-  'caso-profesional': 'border-cyan-500/40 text-cyan-400',
+  'en-desarrollo': 'status-dev',
+  demo: 'status-demo',
+  produccion: 'status-prod',
+  privado: 'status-private',
+  'caso-profesional': 'status-professional',
 };

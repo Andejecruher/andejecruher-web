@@ -1,155 +1,149 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
 import PageHeader from '../components/ui/PageHeader.astro';
-import { experiences } from '../data/experience';
+import { getExperiences } from '../data/experience';
+import { getLang, useTranslations } from '../i18n/utils';
+import MainLayout from '../layouts/MainLayout.astro';
+import { getPageSeo } from '../seo/pages';
+
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const seo = getPageSeo('experience', lang);
+const experiences = getExperiences(lang);
 ---
 
-<MainLayout
-  title="Experiencia"
-  description="Trayectoria profesional de Andejecruher — Full Stack Developer. Proyectos, roles y logros en desarrollo web, SaaS e integraciones."
->
+<MainLayout {...seo}>
   <PageHeader
-    badge="Trayectoria"
-    title="Experiencia profesional"
-    subtitle="Roles, proyectos y aprendizajes que han definido mi perfil como desarrollador full stack."
+    badge={t('experience:header-badge')}
+    title={t('experience:header-title')}
+    subtitle={t('experience:header-subtitle')}
   />
 
-  <section class="py-16 px-4" style="background: #020607;">
+  <section class="py-16 px-4 section-bg-primary">
     <div class="max-w-4xl mx-auto">
-
-      <!-- Confidentiality note (reusable reference) -->
-      <div
-        class="rounded-xl p-4 mb-12 flex gap-3"
-        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
-        role="note"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6f7b85" stroke-width="2" class="flex-shrink-0 mt-0.5" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 16v-4M12 8h.01"/>
+      <div class="card p-4 mb-12 flex gap-3" role="note">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          class="flex-shrink-0 mt-0.5 text-body-muted"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 16v-4M12 8h.01"></path>
         </svg>
-        <p class="text-sm leading-relaxed" style="color: #6f7b85;">
-          Algunos proyectos profesionales listados aquí fueron desarrollados bajo confidencialidad. Los detalles técnicos, nombres internos e información sensible han sido omitidos por acuerdo con los clientes o empleadores.
+        <p class="text-sm leading-relaxed text-body-muted">
+          {t('experience:confidentiality-note')}
         </p>
       </div>
 
-      <!-- Timeline -->
       <div class="relative">
-        <!-- Vertical line -->
         <div
           class="absolute left-4 top-0 bottom-0 w-px hidden sm:block"
-          style="background: linear-gradient(180deg, rgba(0,229,229,0.4) 0%, rgba(0,229,229,0.05) 100%);"
+          style="background: linear-gradient(180deg, var(--color-border-accent-strong) 0%, rgba(0,217,245,0.05) 100%);"
           aria-hidden="true"
-        ></div>
+        >
+        </div>
 
         <ol class="flex flex-col gap-12" role="list">
-          {experiences.map((exp, i) => (
-            <li class="relative sm:pl-14 animate-fade-in-up" style={`animation-delay: ${i * 150}ms`}>
-              <!-- Timeline dot -->
-              <div
-                class="absolute left-0 top-1 w-8 h-8 rounded-full hidden sm:flex items-center justify-center flex-shrink-0"
-                style="background: #061014; border: 2px solid rgba(0,229,229,0.4); z-index: 1;"
-                aria-hidden="true"
+          {
+            experiences.map((exp, i) => (
+              <li
+                class="relative sm:pl-14 animate-fade-in-up"
+                style={`animation-delay: ${i * 150}ms`}
               >
-                <span class="w-2 h-2 rounded-full" style="background: #00e5e5;"></span>
-              </div>
-
-              <article
-                class="rounded-2xl p-6 md:p-8 flex flex-col gap-5 transition-all duration-200"
-                style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
-              >
-                <!-- Header -->
-                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                  <div>
-                    <h2
-                      class="text-xl font-semibold"
-                      style="font-family: var(--font-heading); color: #f2f7f8;"
-                    >
-                      {exp.role}
-                    </h2>
-                    <p class="text-sm mt-1 font-medium" style="color: #00e5e5;">
-                      {exp.company}
-                    </p>
-                  </div>
-                  <div class="flex flex-col items-start sm:items-end gap-1 flex-shrink-0">
-                    <span
-                      class="px-3 py-1 rounded-full text-xs font-mono"
-                      style="background: rgba(0,229,229,0.08); border: 1px solid rgba(0,229,229,0.2); color: #00bfc6;"
-                    >
-                      {exp.period}
-                    </span>
-                    <span class="text-xs" style="color: #6f7b85;">{exp.modality}</span>
-                  </div>
+                <div
+                  class="absolute left-0 top-1 w-8 h-8 rounded-full hidden sm:flex items-center justify-center flex-shrink-0 section-bg-footer border-2 z-[1]"
+                  style="border-color: var(--color-border-accent-strong);"
+                  aria-hidden="true"
+                >
+                  <span class="w-2 h-2 rounded-full bg-brand-primary" />
                 </div>
 
-                <!-- Description -->
-                <p class="text-sm leading-relaxed" style="color: #a7b0b8;">{exp.description}</p>
-
-                <!-- Responsibilities + Achievements grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: #6f7b85; font-family: var(--font-heading);">
-                      Responsabilidades
-                    </h3>
-                    <ul class="flex flex-col gap-2" role="list">
-                      {exp.responsibilities.map((r) => (
-                        <li class="flex gap-2 text-sm leading-relaxed" style="color: #a7b0b8;">
-                          <span class="text-cyan-500 mt-1.5 flex-shrink-0 text-xs" aria-hidden="true">▸</span>
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
+                <article class="card p-6 md:p-8 flex flex-col gap-5">
+                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div>
+                      <h2 class="text-xl font-semibold text-heading">{exp.role}</h2>
+                      <p class="text-sm mt-1 font-medium text-accent">{exp.company}</p>
+                    </div>
+                    <div class="flex flex-col items-start sm:items-end gap-1 flex-shrink-0">
+                      <span class="chip chip-accent">{exp.period}</span>
+                      <span class="text-xs text-body-muted">{exp.modality}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: #6f7b85; font-family: var(--font-heading);">
-                      Logros
-                    </h3>
-                    <ul class="flex flex-col gap-2" role="list">
-                      {exp.achievements.map((a) => (
-                        <li class="flex gap-2 text-sm leading-relaxed" style="color: #a7b0b8;">
-                          <span style="color: #00e5e5;" class="mt-1.5 flex-shrink-0 text-xs" aria-hidden="true">✓</span>
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
 
-                <!-- Technologies -->
-                <div>
-                  <h3 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: #6f7b85; font-family: var(--font-heading);">
-                    Tecnologías
-                  </h3>
-                  <div class="flex flex-wrap gap-2">
-                    {exp.technologies.map((tech) => (
-                      <span
-                        class="px-2.5 py-1 rounded-lg text-xs font-mono"
-                        style="background: rgba(0,229,229,0.06); border: 1px solid rgba(0,229,229,0.15); color: #00bfc6;"
+                  <p class="text-sm leading-relaxed text-body-secondary">{exp.description}</p>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 class="text-label mb-3">{t('experience:responsibilities')}</h3>
+                      <ul class="flex flex-col gap-2" role="list">
+                        {exp.responsibilities.map((r) => (
+                          <li class="flex gap-2 text-sm leading-relaxed text-body-secondary">
+                            <span
+                              class="text-accent mt-1.5 flex-shrink-0 text-xs"
+                              aria-hidden="true"
+                            >
+                              ▸
+                            </span>
+                            {r}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 class="text-label mb-3">{t('experience:achievements')}</h3>
+                      <ul class="flex flex-col gap-2" role="list">
+                        {exp.achievements.map((a) => (
+                          <li class="flex gap-2 text-sm leading-relaxed text-body-secondary">
+                            <span
+                              class="text-accent mt-1.5 flex-shrink-0 text-xs"
+                              aria-hidden="true"
+                            >
+                              ✓
+                            </span>
+                            {a}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 class="text-label mb-3">{t('experience:technologies')}</h3>
+                    <div class="flex flex-wrap gap-2">
+                      {exp.technologies.map((tech) => (
+                        <span class="chip-tech">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {exp.confidential && (
+                    <div class="card-inner flex gap-2 p-3" role="note">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="flex-shrink-0 mt-0.5 text-body-muted"
+                        aria-hidden="true"
                       >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Confidential note */}
-                {exp.confidential && (
-                  <div
-                    class="flex gap-2 rounded-lg p-3"
-                    style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);"
-                    role="note"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6f7b85" stroke-width="2" class="flex-shrink-0 mt-0.5" aria-hidden="true">
-                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                    <p class="text-xs" style="color: #6f7b85;">
-                      Proyecto desarrollado como parte de experiencia profesional. Algunos detalles técnicos, nombres internos o información sensible fueron omitidos por confidencialidad.
-                    </p>
-                  </div>
-                )}
-              </article>
-            </li>
-          ))}
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                      <p class="text-xs text-body-muted">
+                        {t('experience:confidential-item-note')}
+                      </p>
+                    </div>
+                  )}
+                </article>
+              </li>
+            ))
+          }
         </ol>
       </div>
     </div>

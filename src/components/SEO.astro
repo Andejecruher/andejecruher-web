@@ -1,0 +1,166 @@
+---
+import { SITE_SEO } from '../seo/config';
+import type { SeoProps } from '../seo/types';
+import { resolveSeo } from '../seo/utils';
+import { getLang } from '../i18n/utils';
+
+interface Props extends SeoProps {}
+
+const props = Astro.props;
+const lang = props.lang ?? getLang(Astro.url.pathname);
+
+const seo = resolveSeo({ ...props, lang }, {
+  pathname: Astro.url.pathname,
+  origin: Astro.site?.toString() ?? SITE_SEO.siteUrl,
+  lang,
+});
+
+const isArticle = seo.type === 'article';
+const isProfile = seo.type === 'profile';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE_SEO.author,
+  url: SITE_SEO.siteUrl,
+  sameAs: SITE_SEO.sameAs,
+  jobTitle: SITE_SEO.jobTitle,
+  knowsAbout: SITE_SEO.knowsAbout,
+};
+
+const blogPostingSchema =
+  isArticle && seo.publishedTime
+    ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: seo.title,
+      description: seo.description,
+      image: seo.image,
+      author: {
+        '@type': 'Person',
+        name: seo.author,
+        url: SITE_SEO.siteUrl,
+      },
+      publisher: {
+        '@type': 'Person',
+        name: SITE_SEO.siteName,
+        url: SITE_SEO.siteUrl,
+      },
+      datePublished: seo.publishedTime,
+      dateModified: seo.modifiedTime ?? seo.publishedTime,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': seo.canonical },
+      keywords: seo.tags.join(', '),
+      ...(seo.section ? { articleSection: seo.section } : {}),
+    }
+  : null;
+
+const creativeWorkSchema =
+  isArticle && !seo.publishedTime
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        name: seo.title,
+        description: seo.description,
+        url: seo.canonical,
+        image: seo.image,
+        author: {
+          '@type': 'Person',
+          name: seo.author,
+          url: SITE_SEO.siteUrl,
+        },
+        keywords: seo.tags.join(', '),
+        ...(seo.section ? { genre: seo.section } : {}),
+      }
+    : null;
+
+const webPageSchema =
+  !isArticle
+    ? {
+      '@context': 'https://schema.org',
+      '@type': isProfile ? 'ProfilePage' : 'WebPage',
+      name: seo.fullTitle,
+      description: seo.description,
+      url: seo.canonical,
+      inLanguage: seo.lang,
+      ...(isProfile
+        ? {
+            mainEntity: {
+              '@type': 'Person',
+              name: SITE_SEO.author,
+              url: SITE_SEO.siteUrl,
+            },
+          }
+        : {}),
+    }
+  : null;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content={SITE_SEO.themeColor} />
+
+<title>{seo.fullTitle}</title>
+<meta name="description" content={seo.description} />
+<meta name="author" content={seo.author} />
+<meta name="robots" content={seo.robots} />
+<link rel="canonical" href={seo.canonical} />
+
+<link rel="icon" type="image/png" href={SITE_SEO.favicon} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={seo.fullTitle} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:url" content={seo.canonical} />
+<meta property="og:type" content={seo.type} />
+<meta property="og:image" content={seo.image} />
+<meta property="og:image:alt" content={seo.imageAlt} />
+<meta property="og:image:width" content={String(seo.imageWidth)} />
+<meta property="og:image:height" content={String(seo.imageHeight)} />
+<meta property="og:site_name" content={seo.siteName} />
+<meta property="og:locale" content={seo.ogLocale} />
+{seo.ogLocaleAlternate && (
+  <meta property="og:locale:alternate" content={seo.ogLocaleAlternate} />
+)}
+
+{isArticle && seo.publishedTime && (
+  <>
+    <meta property="article:published_time" content={seo.publishedTime} />
+    {seo.modifiedTime && (
+      <meta property="article:modified_time" content={seo.modifiedTime} />
+    )}
+    <meta property="article:author" content={seo.author} />
+    {seo.section && <meta property="article:section" content={seo.section} />}
+    {seo.tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+  </>
+)}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seo.fullTitle} />
+<meta name="twitter:description" content={seo.description} />
+<meta name="twitter:image" content={seo.image} />
+<meta name="twitter:image:alt" content={seo.imageAlt} />
+<meta name="twitter:site" content={seo.twitterSite} />
+<meta name="twitter:creator" content={seo.twitterCreator} />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+{blogPostingSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+)}
+{creativeWorkSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(creativeWorkSchema)} />
+)}
+{webPageSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} />
+)}

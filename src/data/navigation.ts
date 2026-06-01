@@ -1,14 +1,15 @@
 export interface NavItem {
-  label: string;
+  /** i18n key segment — resolves to nav:item-{key} */
+  key: string;
   href: string;
 }
 
 export const navItems: NavItem[] = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Experiencia', href: '/experiencia' },
-  { label: 'Proyectos', href: '/proyectos' },
-  { label: 'Stack', href: '/stack' },
-  { label: 'Sobre mí', href: '/sobre-mi' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contacto', href: '/contacto' },
+  { key: 'home',        href: '/' },
+  { key: 'experience',  href: '/experiencia' },
+  { key: 'projects',    href: '/proyectos' },
+  { key: 'stack',       href: '/stack' },
+  { key: 'about',       href: '/sobre-mi' },
+  { key: 'blog',        href: '/blog' },
+  { key: 'contact',     href: '/contacto' },
 ];

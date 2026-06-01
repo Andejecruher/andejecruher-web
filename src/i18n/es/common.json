@@ -1,5 +1,7 @@
 {
   "a11y": {
     "skip-to-content": "Ir al contenido principal"
-  }
+  },
+  "seo-blog-title": "Blog",
+  "seo-blog-description": "Blog técnico de Andejecruher — artículos sobre Full Stack Development, Laravel, Node.js, Python, AI Agents, SaaS y DevOps."
 }

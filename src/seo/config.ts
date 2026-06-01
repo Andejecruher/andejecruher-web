@@ -1,0 +1,36 @@
+export const SITE_SEO = {
+  siteName: 'Andejecruher',
+  siteUrl: 'https://andejecruher.com',
+  author: 'Andejecruher',
+  jobTitle: 'Full Stack Developer',
+  defaultTitle: 'Andejecruher · Full Stack Developer',
+  defaultDescription:
+    'Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones. Laravel · Node.js · Python · React.',
+  defaultSocialImage: '/og-image.png',
+  defaultSocialImageAlt: 'Andejecruher — Full Stack Developer, SaaS, AI Agents y Automatización',
+  twitterSite: '@Andejecruher',
+  twitterCreator: '@Andejecruher',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  favicon:
+    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png',
+  themeColor: '#020607',
+  sameAs: [
+    'https://github.com/Andejecruher',
+    'https://www.linkedin.com/in/andejecruher/',
+    'https://x.com/Andejecruher',
+  ],
+  knowsAbout: [
+    'Laravel',
+    'Node.js',
+    'Python',
+    'React',
+    'SaaS',
+    'AI Agents',
+    'Automation',
+  ],
+  locales: {
+    es: 'es_ES',
+    en: 'en_US',
+  } as const,
+} as const;

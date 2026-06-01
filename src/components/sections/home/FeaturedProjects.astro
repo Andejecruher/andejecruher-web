@@ -1,75 +1,66 @@
 ---
-import { projects, statusLabels, statusColors } from '../../../data/projects';
+import { getProjects, statusColors } from '../../../data/projects';
+import { localizePath } from '../../../i18n/routing';
+import { getLang, useTranslations } from '../../../i18n/utils';
 import SectionHeader from '../../ui/SectionHeader.astro';
 
-const featured = projects.filter((p) => p.featured).slice(0, 3);
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const projectsHref = localizePath('/proyectos', lang);
+const featured = getProjects(lang)
+  .filter((p) => p.featured)
+  .slice(0, 3);
 ---
 
-<section class="py-20 px-4" style="background: #020607;">
+<section class="py-20 px-4 section-bg-primary">
   <div class="max-w-6xl mx-auto">
     <SectionHeader
-      badge="Proyectos"
-      title="Trabajo destacado"
-      subtitle="Selección de proyectos que reflejan mi enfoque técnico y mi capacidad de construir soluciones reales."
+      badge={t('projects:featured-badge')}
+      title={t('projects:featured-title')}
+      subtitle={t('projects:featured-subtitle')}
     />
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      {featured.map((project, i) => (
-        <article
-          class={`group rounded-2xl p-6 flex flex-col gap-4 transition-all duration-300 cursor-default animate-fade-in-up delay-${(i + 1) * 100}`}
-          style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
-          onmouseover="this.style.borderColor='rgba(0,229,229,0.25)'; this.style.background='rgba(0,229,229,0.04)';"
-          onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.background='rgba(255,255,255,0.03)';"
-        >
-          <!-- Status badge -->
-          <span
-            class={`self-start px-2.5 py-1 rounded-full text-xs font-mono border ${statusColors[project.status]}`}
+      {
+        featured.map((project, i) => (
+          <article
+            class={`card card-interactive p-6 flex flex-col gap-4 cursor-default animate-fade-in-up delay-${(i + 1) * 100}`}
           >
-            {statusLabels[project.status]}
-          </span>
+            <span class={`badge badge-neutral self-start border ${statusColors[project.status]}`}>
+              {t(`projects:status-${project.status}`)}
+            </span>
 
-          <!-- Category -->
-          <span class="text-xs font-mono" style="color: #6f7b85;">{project.category}</span>
+            <span class="text-xs font-mono text-body-muted">
+              {t(`projects:category-${project.categoryKey}`)}
+            </span>
 
-          <!-- Name -->
-          <h3
-            class="text-lg font-semibold"
-            style="font-family: var(--font-heading); color: #f2f7f8;"
-          >
-            {project.name}
-          </h3>
+            <h3 class="text-lg font-semibold text-heading">{project.name}</h3>
 
-          <!-- Description -->
-          <p class="text-sm leading-relaxed flex-1" style="color: #a7b0b8;">
-            {project.description}
-          </p>
+            <p class="text-sm leading-relaxed flex-1 text-body-secondary">{project.description}</p>
 
-          <!-- Tech tags -->
-          <div class="flex flex-wrap gap-1.5">
-            {project.technologies.slice(0, 4).map((tech) => (
-              <span
-                class="px-2 py-0.5 rounded-md text-xs font-mono"
-                style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #6f7b85;"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </article>
-      ))}
+            <div class="flex flex-wrap gap-1.5">
+              {project.technologies.slice(0, 4).map((tech) => (
+                <span class="chip badge-neutral">{tech}</span>
+              ))}
+            </div>
+          </article>
+        ))
+      }
     </div>
 
     <div class="text-center">
-      <a
-        href="/proyectos"
-        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
-        style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: transparent;"
-        onmouseover="this.style.background='rgba(0,229,229,0.08)';"
-        onmouseout="this.style.background='transparent';"
-      >
-        Ver todos los proyectos
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
+      <a href={projectsHref} class="btn btn-secondary btn-sm">
+        {t('projects:cta-all')}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
         </svg>
       </a>
     </div>

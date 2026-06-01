@@ -1,0 +1,44 @@
+{
+  "items": {
+    "insurance-boosters-platform": {
+      "description": "Complete insurance management platform with scalable monorepo architecture. End-to-end system including a frontend web app, Express REST API and backend services for quoting and workflow automation.",
+      "problem": "Insurance teams need a modern scalable platform to manage quotes, automated workflows and Twilio-based communications while integrating external APIs through a robust real-time backend.",
+      "role": "Full Stack Developer"
+    },
+    "multicotizador-seguros": {
+      "description": "Specialized frontend for multi-quote insurance comparison. Responsive interface built with Next.js 15 and Tailwind CSS, optimized for real-time comparison and PDF quote generation.",
+      "problem": "End users need fast intuitive tools to compare multiple insurance quotes from different providers and generate PDF reports without technical friction.",
+      "role": "Frontend Developer"
+    },
+    "voz-ciudadana": {
+      "description": "Multi-tenant SaaS platform for civic report management with messaging channel integrations and AI agents for classification and automated responses.",
+      "problem": "Municipal governments lack unified digital channels to efficiently receive and manage citizen reports.",
+      "role": "Full Stack Developer and System Architect"
+    },
+    "baklava-club-de-mar": {
+      "description": "Elegant responsive landing page for a beach club with premium visual design, image gallery, services section and contact form.",
+      "problem": "The club needed a professional digital presence that reflected its premium value proposition and attracted new members.",
+      "role": "Frontend Developer and Designer"
+    },
+    "code-creatives": {
+      "description": "Web platform for a creative agency with project management, client portal, deliverable tracking and integrated communication.",
+      "problem": "The agency handled projects manually, creating client friction and poor visibility into delivery status.",
+      "role": "Full Stack Developer"
+    },
+    "hunadchat": {
+      "description": "Multichannel messaging system with conversational AI agents, WhatsApp Business integration, automated workflows and an admin dashboard.",
+      "problem": "Companies needed to centralize customer support across multiple channels with intelligent automated responses.",
+      "role": "Backend Developer and Integrations Engineer"
+    },
+    "andejecruher-web": {
+      "description": "Professional portfolio built with Astro, TypeScript and Tailwind CSS to showcase full stack, SaaS, automation and AI development experience.",
+      "problem": "Solves the need for a clear, fast and optimized professional presence to present technical background, value proposition and relevant projects to recruiters and potential clients.",
+      "role": "Frontend Developer and Designer"
+    },
+    "url-shortener-api": {
+      "description": "REST API for URL shortening with unique code generation, redirects, edit/delete operations and usage metrics, built with a modular backend architecture.",
+      "problem": "Addresses the use case of converting long links into manageable short URLs, including basic analytics and CRUD operations for lightweight services, MVPs or internal integrations.",
+      "role": "Backend Developer"
+    }
+  }
+}

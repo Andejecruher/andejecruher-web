@@ -2,6 +2,12 @@
   "aria-label": "Main navigation",
   "menu-open": "Open menu",
   "menu-close": "Close menu",
-  "home": "Home",
-  "cta-connect": "Let's Connect"
+  "cta-connect": "Let's Connect",
+  "item-home": "Home",
+  "item-experience": "Experience",
+  "item-projects": "Projects",
+  "item-stack": "Stack",
+  "item-about": "About me",
+  "item-blog": "Blog",
+  "item-contact": "Contact"
 }

@@ -5,8 +5,13 @@ import BlogHero from '../../components/blog/BlogHero.astro';
 import BlogCard from '../../components/blog/BlogCard.astro';
 import BlogLayout from '../../components/blog/BlogLayout.astro';
 import EmptyBlogState from '../../components/blog/EmptyBlogState.astro';
+import { getLang, useTranslations } from '../../i18n/utils';
+import { getPageSeo } from '../../seo/pages';
 
 const isDev = import.meta.env.DEV;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const seo = getPageSeo('blog', lang);
 
 const allPosts = await getCollection('blog', ({ data }) => {
   return isDev ? true : !data.draft;
@@ -17,9 +22,7 @@ function toSlug(id: string): string {
 }
 
 // Sort by pubDate descending
-const posts = allPosts.sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
-);
+const posts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
 // Derive unique categories
 const allCategories = [...new Set(posts.map((p) => p.data.category))];
@@ -28,9 +31,8 @@ const allCategories = [...new Set(posts.map((p) => p.data.category))];
 const { searchParams } = Astro.url;
 const activeCategory = searchParams.get('category') ?? 'all';
 
-const filteredPosts = activeCategory === 'all'
-  ? posts
-  : posts.filter((p) => p.data.category === activeCategory);
+const filteredPosts =
+  activeCategory === 'all' ? posts : posts.filter((p) => p.data.category === activeCategory);
 
 // Serialise all posts to JSON for the client-side filter script
 const postsJson = posts.map((p) => ({
@@ -39,62 +41,52 @@ const postsJson = posts.map((p) => ({
 }));
 ---
 
-<MainLayout
-  title="Blog"
-  description="Blog técnico de Andejecruher — artículos sobre Full Stack Development, Laravel, Node.js, Python, AI Agents, SaaS y DevOps."
->
+<MainLayout {...seo}>
   <BlogHero postCount={posts.length} />
 
   <BlogLayout>
     <!-- Category Filter -->
-    {allCategories.length > 1 && (
-      <div class="mb-10" id="category-filter">
-        <p
-          class="text-xs font-semibold uppercase tracking-widest mb-3"
-          style="color: var(--text-muted); font-family: var(--font-heading);"
-        >
-          Filtrar por categoría
-        </p>
-        <div class="flex flex-wrap gap-2" role="list" aria-label="Categorías de artículos">
-          <button
-            data-category="all"
-            role="listitem"
-            class="category-btn px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
-            style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);"
-          >
-            Todos
-          </button>
-          {allCategories.map((cat) => (
+    {
+      allCategories.length > 1 && (
+        <div class="mb-10" id="category-filter">
+          <p class="text-label mb-3">{t('blog:filters-label')}</p>
+          <div class="flex flex-wrap gap-2" role="list" aria-label={t('blog:filters-aria-label')}>
             <button
-              data-category={cat}
+              data-category="all"
               role="listitem"
-              class="category-btn px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
-              style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);"
+              class="category-btn chip-filter chip-filter-active"
             >
-              {cat}
+              {t('blog:filters-all')}
             </button>
-          ))}
+            {allCategories.map((cat) => (
+              <button data-category={cat} role="listitem" class="category-btn chip-filter">
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-    )}
+      )
+    }
 
     <!-- Posts grid — all posts rendered; JS hides/shows cards -->
     <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.map((post, i) => (
-        <div data-post-category={post.data.category} class="post-card-wrapper">
-          <BlogCard
-            slug={toSlug(post.id)}
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            category={post.data.category}
-            tags={post.data.tags}
-            image={post.data.image}
-            readingTime={post.data.readingTime}
-            index={i}
-          />
-        </div>
-      ))}
+      {
+        posts.map((post, i) => (
+          <div data-post-category={post.data.category} class="post-card-wrapper">
+            <BlogCard
+              slug={toSlug(post.id)}
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              tags={post.data.tags}
+              image={post.data.image}
+              readingTime={post.data.readingTime}
+              index={i}
+            />
+          </div>
+        ))
+      }
     </div>
 
     <!-- Empty state — shown by JS when no cards match filter -->
@@ -112,7 +104,6 @@ const postsJson = posts.map((p) => ({
 -->
 <script define:vars={{ allCategories, postsJson }}>
   (function () {
-    // Active category — prefer URL param, then "all"
     function getCategoryFromURL() {
       try {
         return new URL(window.location.href).searchParams.get('category') || 'all';
@@ -122,21 +113,6 @@ const postsJson = posts.map((p) => ({
     }
 
     let active = getCategoryFromURL();
-
-    const ACTIVE_STYLE = {
-      background: 'rgba(34,211,238,0.1)',
-      border: '1px solid rgba(34,211,238,0.35)',
-      color: 'var(--cyan-main)',
-    };
-    const IDLE_STYLE = {
-      background: 'rgba(255,255,255,0.03)',
-      border: '1px solid rgba(255,255,255,0.08)',
-      color: 'var(--text-secondary)',
-    };
-
-    function applyStyle(el, styleObj) {
-      Object.assign(el.style, styleObj);
-    }
 
     function filterPosts(category) {
       const wrappers = document.querySelectorAll('.post-card-wrapper');
@@ -158,7 +134,13 @@ const postsJson = posts.map((p) => ({
     function updateButtons(category) {
       document.querySelectorAll('.category-btn').forEach((btn) => {
         const isActive = btn.getAttribute('data-category') === category;
-        applyStyle(btn, isActive ? ACTIVE_STYLE : IDLE_STYLE);
+        if (isActive) {
+          btn.classList.remove('chip-filter');
+          btn.classList.add('chip-filter-active');
+        } else {
+          btn.classList.remove('chip-filter-active');
+          btn.classList.add('chip-filter');
+        }
       });
     }
 
@@ -181,14 +163,12 @@ const postsJson = posts.map((p) => ({
       updateURL(category);
     }
 
-    // Wire up buttons
     document.querySelectorAll('.category-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         setCategory(btn.getAttribute('data-category') || 'all');
       });
     });
 
-    // Apply initial state from URL
     setCategory(active);
   })();
 </script>

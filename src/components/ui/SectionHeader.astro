@@ -11,24 +11,16 @@ const alignClass = align === 'center' ? 'text-center items-center' : 'text-left 
 ---
 
 <div class={`flex flex-col gap-3 mb-12 ${alignClass}`}>
-  {badge && (
-    <span
-      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium w-fit"
-      style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: rgba(0,229,229,0.06);"
-    >
-      <span class="w-1.5 h-1.5 rounded-full bg-current inline-block" aria-hidden="true"></span>
-      {badge}
-    </span>
-  )}
-  <h2
-    class="text-3xl md:text-4xl font-bold tracking-tight"
-    style="font-family: var(--font-heading); color: #f2f7f8;"
-  >
+  {
+    badge && (
+      <span class="badge badge-accent w-fit">
+        <span class="w-1.5 h-1.5 rounded-full bg-current inline-block" aria-hidden="true" />
+        {badge}
+      </span>
+    )
+  }
+  <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-heading">
     {title}
   </h2>
-  {subtitle && (
-    <p class="text-base leading-relaxed max-w-xl" style="color: #a7b0b8;">
-      {subtitle}
-    </p>
-  )}
+  {subtitle && <p class="text-base leading-relaxed max-w-xl text-body-secondary">{subtitle}</p>}
 </div>

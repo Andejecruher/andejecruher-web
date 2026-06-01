@@ -1,4 +1,6 @@
 ---
+import { getLang, useTranslations } from '../../i18n/utils';
+
 interface Props {
   category: string;
   pubDate: Date;
@@ -8,14 +10,17 @@ interface Props {
 }
 
 const { category, pubDate, updatedDate, readingTime, author } = Astro.props;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+const dateLocale = lang === 'en' ? 'en-US' : 'es-ES';
 
-const formattedPubDate = pubDate.toLocaleDateString('es-ES', {
+const formattedPubDate = pubDate.toLocaleDateString(dateLocale, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 
-const formattedUpdatedDate = updatedDate?.toLocaleDateString('es-ES', {
+const formattedUpdatedDate = updatedDate?.toLocaleDateString(dateLocale, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -25,69 +30,89 @@ const estimatedReadingTime = readingTime ?? 5;
 ---
 
 <div class="flex flex-wrap items-center gap-3 text-sm">
-  <!-- Category -->
-  <span
-    class="px-2.5 py-1 rounded-full text-xs font-mono font-medium"
-    style="background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2); color: var(--cyan-main);"
-  >
-    {category}
-  </span>
+  <span class="badge badge-accent">{category}</span>
 
-  <!-- Separator -->
-  <span style="color: var(--border-primary);">·</span>
+  <span class="text-body-muted opacity-50">·</span>
 
-  <!-- Author -->
-  <span class="text-xs font-mono flex items-center gap-1.5" style="color: var(--text-secondary);">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
+  <span class="text-xs font-mono flex items-center gap-1.5 text-body-secondary">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+      <circle cx="12" cy="7" r="4"></circle>
     </svg>
     {author}
   </span>
 
-  <!-- Separator -->
-  <span style="color: var(--border-primary);">·</span>
+  <span class="text-body-muted opacity-50">·</span>
 
-  <!-- Pub Date -->
   <time
     datetime={pubDate.toISOString()}
-    class="text-xs font-mono flex items-center gap-1.5"
-    style="color: var(--text-muted);"
+    class="text-xs font-mono flex items-center gap-1.5 text-body-muted"
   >
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-      <path d="M16 2v4M8 2v4M3 10h18"/>
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <path d="M16 2v4M8 2v4M3 10h18"></path>
     </svg>
     {formattedPubDate}
   </time>
 
-  {updatedDate && (
-    <>
-      <span style="color: var(--border-primary);">·</span>
-      <time
-        datetime={updatedDate.toISOString()}
-        class="text-xs font-mono flex items-center gap-1.5"
-        style="color: var(--text-muted);"
-        title="Actualizado"
-      >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <polyline points="23 4 23 10 17 10"/>
-          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-        </svg>
-        Act. {formattedUpdatedDate}
-      </time>
-    </>
-  )}
+  {
+    updatedDate && (
+      <>
+        <span class="text-body-muted opacity-50">·</span>
+        <time
+          datetime={updatedDate.toISOString()}
+          class="text-xs font-mono flex items-center gap-1.5 text-body-muted"
+          title={t('blog:meta-updated-title')}
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          {t('blog:meta-updated-prefix')} {formattedUpdatedDate}
+        </time>
+      </>
+    )
+  }
 
-  <!-- Separator -->
-  <span style="color: var(--border-primary);">·</span>
+  <span class="text-body-muted opacity-50">·</span>
 
-  <!-- Reading Time -->
-  <span class="text-xs font-mono flex items-center gap-1.5" style="color: var(--text-muted);">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M12 6v6l4 2"/>
+  <span class="text-xs font-mono flex items-center gap-1.5 text-body-muted">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 6v6l4 2"></path>
     </svg>
-    {estimatedReadingTime} min de lectura
+    {t('blog:meta-reading-time', { minutes: String(estimatedReadingTime) })}
   </span>
 </div>

@@ -1,4 +1,4 @@
-export type TechLevel = 'Principal' | 'Frecuente' | 'En aprendizaje' | 'Explorando';
+export type TechLevel = 'expert' | 'regular' | 'learning' | 'exploring';
 
 export interface Tech {
   name: string;
@@ -7,110 +7,102 @@ export interface Tech {
 }
 
 export interface StackCategory {
-  name: string;
-  description: string;
+  /** i18n key segment — resolves to stack:category-{key}-name / stack:category-{key}-desc */
+  key: string;
   techs: Tech[];
 }
 
 export const stackCategories: StackCategory[] = [
   {
-    name: 'Frontend',
-    description: 'Interfaces modernas y experiencias de usuario',
+    key: 'frontend',
     techs: [
-      { name: 'React', level: 'Principal' },
-      { name: 'Next.js', level: 'Principal' },
-      { name: 'Astro', level: 'Principal' },
-      { name: 'JavaScript', level: 'Principal' },
-      { name: 'TypeScript', level: 'Frecuente' },
-      { name: 'HTML5', level: 'Principal' },
-      { name: 'CSS3', level: 'Principal' },
-      { name: 'Tailwind CSS', level: 'Principal' },
-      { name: 'Bootstrap', level: 'Frecuente' },
-      { name: 'Vue.js', level: 'Frecuente' },
+      { name: 'React', level: 'expert' },
+      { name: 'Next.js', level: 'expert' },
+      { name: 'Astro', level: 'expert' },
+      { name: 'JavaScript', level: 'expert' },
+      { name: 'TypeScript', level: 'regular' },
+      { name: 'HTML5', level: 'expert' },
+      { name: 'CSS3', level: 'expert' },
+      { name: 'Tailwind CSS', level: 'expert' },
+      { name: 'Bootstrap', level: 'regular' },
+      { name: 'Vue.js', level: 'regular' },
     ],
   },
   {
-    name: 'Backend',
-    description: 'APIs, servicios y lógica de negocio',
+    key: 'backend',
     techs: [
-      { name: 'Laravel', level: 'Principal' },
-      { name: 'Node.js', level: 'Principal' },
-      { name: 'Express', level: 'Principal' },
-      { name: 'FastAPI', level: 'Frecuente' },
-      { name: 'PHP', level: 'Frecuente' },
-      { name: 'Python', level: 'Frecuente' },
-      { name: 'GraphQL', level: 'Frecuente' },
+      { name: 'Laravel', level: 'expert' },
+      { name: 'Node.js', level: 'expert' },
+      { name: 'Express', level: 'expert' },
+      { name: 'FastAPI', level: 'regular' },
+      { name: 'PHP', level: 'regular' },
+      { name: 'Python', level: 'regular' },
+      { name: 'GraphQL', level: 'regular' },
     ],
   },
   {
-    name: 'Bases de datos',
-    description: 'Almacenamiento y gestión de datos',
+    key: 'databases',
     techs: [
-      { name: 'MySQL', level: 'Principal' },
-      { name: 'MongoDB', level: 'Frecuente' },
-      { name: 'Firebase', level: 'Frecuente' },
-      { name: 'Redis', level: 'En aprendizaje' },
+      { name: 'MySQL', level: 'expert' },
+      { name: 'MongoDB', level: 'regular' },
+      { name: 'Firebase', level: 'regular' },
+      { name: 'Redis', level: 'learning' },
     ],
   },
   {
-    name: 'Arquitectura',
-    description: 'Diseño de sistemas escalables y mantenibles',
+    key: 'architecture',
     techs: [
-      { name: 'SaaS Multi-tenant', level: 'Frecuente' },
-      { name: 'APIs REST', level: 'Principal' },
-      { name: 'Microservicios', level: 'Frecuente' },
-      { name: 'Diseño de servicios backend', level: 'Frecuente' },
+      { name: 'SaaS Multi-tenant', level: 'regular' },
+      { name: 'REST APIs', level: 'expert' },
+      { name: 'Microservices', level: 'regular' },
+      { name: 'Backend service design', level: 'regular' },
     ],
   },
   {
-    name: 'IA & Automatización',
-    description: 'Agentes inteligentes e integraciones conversacionales',
+    key: 'ai',
     techs: [
-      { name: 'AI Agents', level: 'Frecuente' },
-      { name: 'LLM Integration', level: 'En aprendizaje' },
-      { name: 'Flujos conversacionales', level: 'Frecuente' },
-      { name: 'Automatización de procesos', level: 'Frecuente' },
+      { name: 'AI Agents', level: 'regular' },
+      { name: 'LLM Integration', level: 'learning' },
+      { name: 'Conversational flows', level: 'regular' },
+      { name: 'Process automation', level: 'regular' },
     ],
   },
   {
-    name: 'Integraciones',
-    description: 'Canales de mensajería y servicios externos',
+    key: 'integrations',
     techs: [
-      { name: 'WhatsApp Business API', level: 'Principal' },
-      { name: 'Instagram API', level: 'Frecuente' },
-      { name: 'Facebook API', level: 'Frecuente' },
-      { name: 'Telegram API', level: 'Frecuente' },
-      { name: 'BigCommerce', level: 'Frecuente' },
+      { name: 'WhatsApp Business API', level: 'expert' },
+      { name: 'Instagram API', level: 'regular' },
+      { name: 'Facebook API', level: 'regular' },
+      { name: 'Telegram API', level: 'regular' },
+      { name: 'BigCommerce', level: 'regular' },
     ],
   },
   {
-    name: 'Herramientas',
-    description: 'Flujo de trabajo y entorno de desarrollo',
+    key: 'tools',
     techs: [
-      { name: 'Git', level: 'Principal' },
-      { name: 'GitHub', level: 'Principal' },
-      { name: 'Docker', level: 'En aprendizaje' },
-      { name: 'Vercel', level: 'Principal' },
-      { name: 'Postman', level: 'Frecuente' },
-      { name: 'VS Code', level: 'Principal' },
+      { name: 'Git', level: 'expert' },
+      { name: 'GitHub', level: 'expert' },
+      { name: 'Docker', level: 'learning' },
+      { name: 'Vercel', level: 'expert' },
+      { name: 'Postman', level: 'regular' },
+      { name: 'VS Code', level: 'expert' },
     ],
   },
   {
-    name: 'DevOps Learning Path',
-    description: 'Área de crecimiento hacia infraestructura y operaciones',
+    key: 'devops',
     techs: [
-      { name: 'CI/CD', level: 'En aprendizaje' },
-      { name: 'Cloud Infrastructure', level: 'Explorando' },
-      { name: 'Automatización de despliegues', level: 'En aprendizaje' },
-      { name: 'Infraestructura como código', level: 'Explorando' },
-      { name: 'Monitoreo', level: 'Explorando' },
+      { name: 'CI/CD', level: 'learning' },
+      { name: 'Cloud Infrastructure', level: 'exploring' },
+      { name: 'Deployment automation', level: 'learning' },
+      { name: 'Infrastructure as code', level: 'exploring' },
+      { name: 'Monitoring', level: 'exploring' },
     ],
   },
 ];
 
 export const levelColors: Record<TechLevel, string> = {
-  Principal: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10',
-  Frecuente: 'border-blue-500/40 text-blue-300 bg-blue-500/10',
-  'En aprendizaje': 'border-yellow-500/40 text-yellow-400 bg-yellow-500/10',
-  Explorando: 'border-gray-500/40 text-gray-400 bg-gray-500/10',
+  expert: 'level-principal',
+  regular: 'level-frequent',
+  learning: 'level-learning',
+  exploring: 'level-exploring',
 };
