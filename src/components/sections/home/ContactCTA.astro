@@ -1,4 +1,8 @@
 ---
+import { getLang, useTranslations } from '../../../i18n/utils';
+
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
 ---
 
 <section class="py-24 px-4" style="background: #061014;">
@@ -19,18 +23,18 @@
       style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: rgba(0,229,229,0.06);"
     >
       <span class="w-1.5 h-1.5 rounded-full bg-current inline-block animate-pulse" aria-hidden="true"></span>
-      DISPONIBLE PARA PROYECTOS
+      {t('cta:available-badge')}
     </span>
 
     <h2
       class="text-3xl md:text-4xl font-bold tracking-tight text-balance mb-4"
       style="font-family: var(--font-heading); color: #f2f7f8;"
     >
-      Hablemos de tu próximo proyecto
+      {t('cta:heading')}
     </h2>
 
     <p class="text-base leading-relaxed mb-8 max-w-xl mx-auto" style="color: #a7b0b8;">
-      Construyo soluciones técnicas que resuelven problemas reales. Si tienes un proyecto en mente, un sistema que mejorar o una idea que escalar, estoy disponible para colaborar.
+      {t('cta:body')}
     </p>
 
     <div class="flex flex-wrap justify-center gap-3">
@@ -41,7 +45,7 @@
         onmouseover="this.style.background='#00bfc6'; this.style.boxShadow='0 0 24px rgba(0,229,229,0.35)';"
         onmouseout="this.style.background='#00e5e5'; this.style.boxShadow='none';"
       >
-        Contactarme
+        {t('cta:contact-btn')}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>

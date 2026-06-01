@@ -2,6 +2,10 @@
 import { profile } from '../../../data/profile';
 import { socialLinks } from '../../../data/socialLinks';
 import { stats } from '../../../data/stats';
+import { getLang, useTranslations } from '../../../i18n/utils';
+
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
 
 const techBadges = [
   { name: 'SaaS', color: '#38bdf8' },
@@ -15,7 +19,7 @@ const techBadges = [
 <section
   class="relative min-h-screen flex items-center overflow-hidden px-4 py-16"
   style="background: linear-gradient(135deg, #060d18 0%, #08111f 60%, #060d18 100%);"
-  aria-label="Presentación principal"
+  aria-label={t('hero:section-aria-label')}
 >
   <!-- Circuit decoration -->
   <svg
@@ -67,7 +71,7 @@ const techBadges = [
             class="w-2 h-2 rounded-full animate-pulse inline-block flex-shrink-0"
             style="background: #4ade80;"
             aria-hidden="true"></span>
-          AVAILABLE FOR PROJECTS
+          {t('hero:available-badge')}
         </span>
       </div>
 
@@ -88,7 +92,7 @@ const techBadges = [
       </p>
 
       <!-- Tech badges with color indicator -->
-      <div class="flex flex-wrap gap-2.5" role="list" aria-label="Tecnologías principales">
+      <div class="flex flex-wrap gap-2.5" role="list" aria-label={t('hero:tech-aria-label')}>
         {
           techBadges.map((tech) => (
             <span
@@ -116,7 +120,7 @@ const techBadges = [
           onmouseover="this.style.background='#06b6d4'; this.style.boxShadow='0 0 28px rgba(34,211,238,0.4)';"
           onmouseout="this.style.background='#22d3ee'; this.style.boxShadow='none';"
         >
-          View My Work
+          {t('hero:cta-work')}
           <svg
             width="14"
             height="14"
@@ -149,7 +153,7 @@ const techBadges = [
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          Download Resume
+          {t('hero:cta-resume')}
         </a>
       </div>
 
@@ -157,7 +161,7 @@ const techBadges = [
       <div
         class="flex flex-wrap items-center gap-5 pt-5"
         style="border-top: 1px solid rgba(255,255,255,0.07);"
-        aria-label="Estadísticas"
+        aria-label={t('hero:stats-aria-label')}
       >
         {
           stats.map((stat, i) => (
@@ -258,7 +262,7 @@ const techBadges = [
         class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed"
         style="background: rgba(8,17,31,0.93); border: 1px solid rgba(34,211,238,0.14);"
         role="img"
-        aria-label="Fragmento de código decorativo"
+        aria-label={t('hero:code-aria-label')}
       >
         <div class="flex gap-1.5 mb-4">
           <span class="w-3 h-3 rounded-full" style="background: rgba(239,68,68,0.55);"></span>

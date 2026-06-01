@@ -1,7 +1,10 @@
 ---
 import { navItems } from '../../data/navigation';
 import { socialLinks } from '../../data/socialLinks';
+import { getLang, useTranslations } from '../../i18n/utils';
 
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -20,7 +23,7 @@ const year = new Date().getFullYear();
           />
         </a>
         <p class="text-sm leading-relaxed" style="color: #6f7b85; max-width: 260px;">
-          Full Stack Developer. Construyo SaaS, AI Agents y automatizaciones que impulsan negocios.
+          {t('footer:tagline')}
         </p>
         <!-- Social links -->
         <div class="flex items-center gap-3 mt-6">
@@ -68,7 +71,7 @@ const year = new Date().getFullYear();
 
       <!-- Links -->
       <div>
-        <h3 class="text-sm font-semibold mb-4" style="color: #f2f7f8; font-family: var(--font-heading);">Navegación</h3>
+        <h3 class="text-sm font-semibold mb-4" style="color: #f2f7f8; font-family: var(--font-heading);">{t('footer:nav-title')}</h3>
         <ul class="flex flex-col gap-2" role="list">
           {navItems.map((item) => (
             <li>
@@ -88,7 +91,7 @@ const year = new Date().getFullYear();
 
       <!-- Contact info -->
       <div>
-        <h3 class="text-sm font-semibold mb-4" style="color: #f2f7f8; font-family: var(--font-heading);">Contacto</h3>
+        <h3 class="text-sm font-semibold mb-4" style="color: #f2f7f8; font-family: var(--font-heading);">{t('footer:contact-title')}</h3>
         <ul class="flex flex-col gap-3" role="list">
           <li>
             <a
@@ -114,7 +117,7 @@ const year = new Date().getFullYear();
               (+52) 322 318 8252
             </a>
           </li>
-          <li class="text-sm" style="color: #6f7b85;">Remote · Available Worldwide</li>
+          <li class="text-sm" style="color: #6f7b85;">{t('footer:remote-available')}</li>
         </ul>
       </div>
     </div>
@@ -125,10 +128,10 @@ const year = new Date().getFullYear();
       style="border-top: 1px solid rgba(255,255,255,0.06);"
     >
       <p class="text-xs" style="color: #6f7b85;">
-        &copy; {year} Andejecruher. Todos los derechos reservados.
+        &copy; {year} Andejecruher. {t('footer:copyright')}
       </p>
       <p class="text-xs font-mono" style="color: #6f7b85;">
-        Built with <span style="color: #00e5e5;">Astro</span> by Andejecruher.
+        {t('footer:built-with')} <span style="color: #00e5e5;">Astro</span> by Andejecruher.
       </p>
     </div>
   </div>

@@ -1,7 +1,10 @@
 ---
 import { navItems } from '../../data/navigation';
+import { getLang, useTranslations } from '../../i18n/utils';
 
 const currentPath = Astro.url.pathname;
+const lang = getLang(currentPath);
+const t = useTranslations(lang);
 
 function isActive(href: string): boolean {
   if (href === '/') return currentPath === '/';
@@ -13,7 +16,7 @@ function isActive(href: string): boolean {
   <nav
     class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl"
     style="background: rgba(8, 17, 31, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.07);"
-    aria-label="Navegación principal"
+    aria-label={t('nav:aria-label')}
   >
     <!-- Logo -->
     <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Andejecruher - Inicio">
@@ -61,7 +64,7 @@ function isActive(href: string): boolean {
         onmouseover="this.style.background='rgba(34,211,238,0.08)'; this.style.borderColor='rgba(34,211,238,0.6)';"
         onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(34,211,238,0.4)';"
       >
-        Let's Connect
+        {t('nav:cta-connect')}
         <svg
           width="12"
           height="12"
@@ -81,7 +84,7 @@ function isActive(href: string): boolean {
       id="menu-toggle"
       class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors"
       style="color: #94a3b8;"
-      aria-label="Abrir menú"
+      aria-label={t('nav:menu-open')}
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
@@ -122,7 +125,7 @@ function isActive(href: string): boolean {
           class="block px-4 py-3 text-sm font-semibold text-center rounded-xl transition-all duration-200"
           style="border: 1px solid rgba(34,211,238,0.4); color: #22d3ee;"
         >
-          Conectemos
+          {t('nav:cta-connect')}
         </a>
       </li>
     </ul>
