@@ -1,0 +1,46 @@
+---
+interface Props {
+  postCount: number;
+}
+
+const { postCount } = Astro.props;
+---
+
+<section
+  class="relative py-20 px-4 overflow-hidden"
+  style="background: linear-gradient(180deg, #061014 0%, var(--bg-primary) 100%);"
+>
+  <!-- Radial glow -->
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-20 pointer-events-none"
+    style="background: radial-gradient(ellipse at center, rgba(34,211,238,0.3) 0%, transparent 70%);"
+    aria-hidden="true"
+  ></div>
+
+  <div class="max-w-6xl mx-auto text-center relative z-10">
+    <span
+      class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium mb-4"
+      style="border: 1px solid rgba(34,211,238,0.3); color: var(--cyan-main); background: rgba(34,211,238,0.06);"
+    >
+      <span class="w-1.5 h-1.5 rounded-full bg-current inline-block" aria-hidden="true"></span>
+      Blog técnico
+    </span>
+
+    <h1
+      class="text-4xl md:text-5xl font-bold tracking-tight text-balance mb-4"
+      style="font-family: var(--font-heading); color: var(--text-primary);"
+    >
+      Notas y artículos
+    </h1>
+
+    <p class="text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-6" style="color: var(--text-secondary);">
+      Aprendizajes, soluciones y reflexiones técnicas sobre desarrollo full stack, IA, SaaS y automatización.
+    </p>
+
+    {postCount > 0 && (
+      <p class="text-sm font-mono" style="color: var(--text-muted);">
+        {postCount} {postCount === 1 ? 'artículo publicado' : 'artículos publicados'}
+      </p>
+    )}
+  </div>
+</section>

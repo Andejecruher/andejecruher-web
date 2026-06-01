@@ -1,134 +1,97 @@
 ---
+import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import PageHeader from '../../components/ui/PageHeader.astro';
+import BlogHero from '../../components/blog/BlogHero.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import EmptyBlogState from '../../components/blog/EmptyBlogState.astro';
 
-const categories = [
-  'Full Stack Development',
-  'Laravel',
-  'Node.js',
-  'Python',
-  'React',
-  'Astro',
-  'AI Agents',
-  'Automatización',
-  'DevOps',
-  'SaaS Architecture',
-];
+const isDev = import.meta.env.DEV;
 
-const placeholderPosts = [
-  {
-    title: 'Construcción de agentes IA con FastAPI y OpenAI',
-    category: 'AI Agents',
-    description: 'Cómo diseñar e implementar agentes conversacionales usando FastAPI como backend y la API de OpenAI para procesamiento de lenguaje natural.',
-    date: 'Próximamente',
-  },
-  {
-    title: 'SaaS Multi-tenant con Laravel: arquitectura y patrones',
-    category: 'Laravel',
-    description: 'Patrones de diseño para construir plataformas SaaS multi-tenant escalables con Laravel, incluyendo aislamiento de datos y gestión de planes.',
-    date: 'Próximamente',
-  },
-  {
-    title: 'Integraciones de WhatsApp Business API paso a paso',
-    category: 'Automatización',
-    description: 'Guía completa para integrar WhatsApp Business API en tus aplicaciones Node.js, incluyendo webhooks, mensajes y flujos automatizados.',
-    date: 'Próximamente',
-  },
-];
+const allPosts = await getCollection('blog', ({ data }) => {
+  return isDev ? true : !data.draft;
+});
+
+function toSlug(id: string): string {
+  return id.replace(/\.[^.]+$/, '');
+}
+// Sort by pubDate descending
+const posts = allPosts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+// Derive unique categories
+const allCategories = [...new Set(posts.map((p) => p.data.category))];
+
+// Active category filter (URL param)
+const { searchParams } = Astro.url;
+const activeCategory = searchParams.get('category') ?? 'all';
+
+const filteredPosts = activeCategory === 'all'
+  ? posts
+  : posts.filter((p) => p.data.category === activeCategory);
 ---
 
 <MainLayout
   title="Blog"
   description="Blog técnico de Andejecruher — artículos sobre Full Stack Development, Laravel, Node.js, Python, AI Agents, SaaS y DevOps."
 >
-  <PageHeader
-    badge="Blog técnico"
-    title="Notas y artículos"
-    subtitle="Aprendizajes, soluciones y reflexiones técnicas sobre desarrollo full stack, IA, SaaS y automatización."
-  />
+  <BlogHero postCount={posts.length} />
 
-  <section class="py-16 px-4" style="background: #020607;">
+  <section class="py-16 px-4" style="background: var(--bg-primary);">
     <div class="max-w-6xl mx-auto">
 
-      <!-- Coming soon banner -->
-      <div
-        class="rounded-2xl p-8 mb-16 text-center"
-        style="background: rgba(0,229,229,0.04); border: 1px solid rgba(0,229,229,0.15);"
-      >
-        <div class="flex justify-center mb-4" aria-hidden="true">
-          <div
-            class="w-12 h-12 rounded-xl flex items-center justify-center"
-            style="background: rgba(0,229,229,0.1); border: 1px solid rgba(0,229,229,0.2);"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
+      <!-- Category Filter -->
+      {allCategories.length > 1 && (
+        <div class="mb-10">
+          <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: var(--text-muted); font-family: var(--font-heading);">
+            Filtrar por categoría
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <a
+              href="/blog"
+              class={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 ${activeCategory === 'all' ? 'text-cyan-400' : 'hover:border-cyan-400/40'}`}
+              style={activeCategory === 'all'
+                ? 'background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);'
+                : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);'}
+            >
+              Todos
+            </a>
+            {allCategories.map((cat) => (
+              <a
+                href={`/blog?category=${encodeURIComponent(cat)}`}
+                class="px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200"
+                style={activeCategory === cat
+                  ? 'background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--cyan-main);'
+                  : 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: var(--text-secondary);'}
+              >
+                {cat}
+              </a>
+            ))}
           </div>
         </div>
-        <h2
-          class="text-xl font-semibold mb-3"
-          style="font-family: var(--font-heading); color: #f2f7f8;"
-        >
-          Blog técnico próximamente
-        </h2>
-        <p class="text-sm leading-relaxed max-w-lg mx-auto" style="color: #a7b0b8;">
-          Estoy preparando artículos sobre desarrollo full stack, arquitectura SaaS, agentes de IA y automatización. Próximamente disponibles.
-        </p>
-      </div>
+      )}
 
-      <!-- Categories -->
-      <div class="mb-12">
-        <h2
-          class="text-sm font-semibold uppercase tracking-widest mb-4"
-          style="color: #6f7b85; font-family: var(--font-heading);"
-        >
-          Categorías previstas
-        </h2>
-        <div class="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <span
-              class="px-3 py-1.5 rounded-lg text-xs font-mono"
-              style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #a7b0b8;"
-            >
-              {cat}
-            </span>
+      <!-- Posts grid -->
+      {filteredPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredPosts.map((post, i) => (
+            <BlogCard
+              slug={toSlug(post.id)}
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              tags={post.data.tags}
+              image={post.data.image}
+              readingTime={post.data.readingTime}
+              index={i}
+            />
           ))}
         </div>
-      </div>
+      ) : (
+        <EmptyBlogState />
+      )}
 
-      <!-- Placeholder cards -->
-      <div>
-        <h2
-          class="text-sm font-semibold uppercase tracking-widest mb-6"
-          style="color: #6f7b85; font-family: var(--font-heading);"
-        >
-          Artículos en preparación
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {placeholderPosts.map((post, i) => (
-            <article
-              class="rounded-2xl p-6 flex flex-col gap-4 opacity-60 animate-fade-in-up"
-              style={`background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-style: dashed; animation-delay: ${i * 100}ms`}
-            >
-              <span
-                class="self-start px-2.5 py-1 rounded-full text-xs font-mono"
-                style="background: rgba(0,229,229,0.06); border: 1px solid rgba(0,229,229,0.15); color: #00bfc6;"
-              >
-                {post.category}
-              </span>
-              <h3
-                class="text-sm font-semibold leading-snug"
-                style="font-family: var(--font-heading); color: #f2f7f8;"
-              >
-                {post.title}
-              </h3>
-              <p class="text-xs leading-relaxed flex-1" style="color: #6f7b85;">{post.description}</p>
-              <span class="text-xs font-mono" style="color: #6f7b85;">{post.date}</span>
-            </article>
-          ))}
-        </div>
-      </div>
     </div>
   </section>
 </MainLayout>

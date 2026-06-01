@@ -1,0 +1,258 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import BlogMeta from '../../components/blog/BlogMeta.astro';
+import BlogTags from '../../components/blog/BlogTags.astro';
+import RelatedPosts from '../../components/blog/RelatedPosts.astro';
+import TableOfContents from '../../components/blog/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.DEV ? true : !data.draft;
+  });
+  return posts.map((post) => ({
+    params: { slug: post.id.replace(/\.[^.]+$/, '') },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const slug = post.id.replace(/\.[^.]+$/, '');
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+
+// Auto-compute reading time if not in frontmatter
+const readingTime = post.data.readingTime ?? remarkPluginFrontmatter?.readingTime ?? 5;
+
+// Related posts: same category, exclude current
+const allPosts = await getCollection('blog', ({ data }) =>
+  import.meta.env.DEV ? true : !data.draft
+);
+const related = allPosts
+  .filter((p) => p.id.replace(/\.[^.]+$/, '') !== slug && p.data.category === post.data.category)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+const formattedDate = post.data.pubDate.toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BlogPostLayout
+  title={post.data.title}
+  description={post.data.description}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  author={post.data.author}
+  image={post.data.image}
+  tags={post.data.tags}
+  category={post.data.category}
+>
+  <!-- Hero / header -->
+  <section
+    class="relative pt-10 pb-8 px-4 overflow-hidden"
+    style="background: linear-gradient(180deg, #061014 0%, var(--bg-primary) 100%);"
+  >
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-15 pointer-events-none"
+      style="background: radial-gradient(ellipse at center, rgba(34,211,238,0.3) 0%, transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="max-w-3xl mx-auto relative z-10">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs font-mono mb-8" aria-label="Breadcrumb" style="color: var(--text-muted);">
+        <a href="/" class="hover:text-cyan-400 transition-colors duration-200">Inicio</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+        <a href="/blog" class="hover:text-cyan-400 transition-colors duration-200">Blog</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+        <span style="color: var(--text-secondary);" class="truncate max-w-48">{post.data.title}</span>
+      </nav>
+
+      <!-- Meta -->
+      <BlogMeta
+        category={post.data.category}
+        pubDate={post.data.pubDate}
+        updatedDate={post.data.updatedDate}
+        readingTime={readingTime}
+        author={post.data.author}
+      />
+
+      <!-- Title -->
+      <h1
+        class="text-3xl md:text-4xl font-bold tracking-tight text-balance mt-4 mb-4"
+        style="font-family: var(--font-heading); color: var(--text-primary);"
+      >
+        {post.data.title}
+      </h1>
+
+      <!-- Description -->
+      <p class="text-base md:text-lg leading-relaxed mb-6" style="color: var(--text-secondary);">
+        {post.data.description}
+      </p>
+
+      <!-- Tags -->
+      <BlogTags tags={post.data.tags} />
+    </div>
+  </section>
+
+  <!-- Featured image -->
+  {post.data.image && (
+    <div class="px-4 max-w-3xl mx-auto mt-8">
+      <img
+        src={post.data.image}
+        alt={post.data.title}
+        width="896"
+        height="504"
+        class="w-full rounded-2xl object-cover"
+        style="border: 1px solid var(--border-primary);"
+        loading="eager"
+      />
+    </div>
+  )}
+
+  <!-- Content + ToC layout -->
+  <div class="py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="lg:grid lg:grid-cols-[1fr_260px] lg:gap-12 items-start">
+
+        <!-- Article body -->
+        <article class="prose-blog max-w-3xl w-full">
+          <Content />
+        </article>
+
+        <!-- Sidebar: ToC -->
+        <aside class="hidden lg:block sticky top-24">
+          <TableOfContents headings={headings} />
+        </aside>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Post footer -->
+  <section class="px-4 pb-12">
+    <div class="max-w-3xl mx-auto">
+      <!-- Tags -->
+      <div class="mb-8">
+        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: var(--text-muted); font-family: var(--font-heading);">
+          Etiquetas
+        </p>
+        <BlogTags tags={post.data.tags} />
+      </div>
+
+      <!-- Back to blog -->
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-sm font-semibold transition-colors duration-200 mb-12"
+        style="color: var(--cyan-main);"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Volver al blog
+      </a>
+    </div>
+  </section>
+
+  <!-- Related posts -->
+  {related.length > 0 && (
+    <section class="px-4 pb-16">
+      <div class="max-w-6xl mx-auto">
+        <div class="pt-12 border-t" style="border-color: var(--border-primary);">
+          <h2
+            class="text-xl font-semibold mb-8"
+            style="font-family: var(--font-heading); color: var(--text-primary);"
+          >
+            Artículos relacionados
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {related.map((relPost, i) => (
+              <article
+                class="group rounded-2xl overflow-hidden transition-all duration-300"
+                style="background: var(--surface-glass); border: 1px solid var(--border-primary);"
+                onmouseover="this.style.borderColor='var(--border-cyan)';"
+                onmouseout="this.style.borderColor='var(--border-primary)';"
+              >
+                <div class="p-5 flex flex-col gap-3">
+                  <span
+                    class="self-start px-2.5 py-1 rounded-full text-xs font-mono"
+                    style="background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2); color: var(--cyan-main);"
+                  >
+                    {relPost.data.category}
+                  </span>
+                  <h3 class="text-sm font-semibold leading-snug" style="font-family: var(--font-heading); color: var(--text-primary);">
+                    <a href={`/blog/${relPost.id.replace(/\.[^.]+$/, '')}`} class="hover:text-cyan-400 transition-colors duration-200">
+                      {relPost.data.title}
+                    </a>
+                  </h3>
+                  <p class="text-xs leading-relaxed line-clamp-2" style="color: var(--text-secondary);">
+                    {relPost.data.description}
+                  </p>
+                  <a
+                    href={`/blog/${relPost.id.replace(/\.[^.]+$/, '')}`}
+                    class="inline-flex items-center gap-1.5 text-xs font-semibold mt-1 transition-colors duration-200"
+                    style="color: var(--cyan-main);"
+                  >
+                    Leer artículo
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="px-4 pb-20">
+    <div class="max-w-3xl mx-auto">
+      <div
+        class="rounded-2xl p-8 text-center"
+        style="background: rgba(34,211,238,0.04); border: 1px solid rgba(34,211,238,0.15);"
+      >
+        <h2
+          class="text-xl font-semibold mb-3"
+          style="font-family: var(--font-heading); color: var(--text-primary);"
+        >
+          ¿Te resultó útil este artículo?
+        </h2>
+        <p class="text-sm leading-relaxed mb-6 max-w-md mx-auto" style="color: var(--text-secondary);">
+          Si tenés preguntas, querés colaborar en un proyecto, o simplemente conectar — estoy disponible.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="/contacto"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
+            style="background: var(--cyan-main); color: #020607;"
+            onmouseover="this.style.background='#06b6d4';"
+            onmouseout="this.style.background='var(--cyan-main)';"
+          >
+            Escribime
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a
+            href="/blog"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
+            style="background: transparent; border: 1px solid rgba(34,211,238,0.3); color: var(--cyan-main);"
+            onmouseover="this.style.background='rgba(34,211,238,0.08)';"
+            onmouseout="this.style.background='transparent';"
+          >
+            Ver todos los artículos
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BlogPostLayout>

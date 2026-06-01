@@ -1,0 +1,109 @@
+---
+title: "Construyendo mi portafolio con Astro: decisiones técnicas y aprendizajes"
+description: "Por qué elegí Astro para mi portafolio personal, cómo estructuré el proyecto con Content Collections, y qué aprendí en el camino sobre performance, SEO y Developer Experience."
+pubDate: 2025-01-15
+category: "Astro"
+tags: ["astro", "frontend", "performance", "seo", "content-collections"]
+image: "/blog/portafolio-astro.jpg"
+author: "Andejecruher"
+draft: false
+readingTime: 8
+---
+
+## Por qué Astro
+
+Cuando llegó el momento de renovar mi portafolio, tenía varias opciones sobre la mesa: Next.js (que uso en proyectos de producción), Remix, Nuxt, o simplemente HTML/CSS plano. Elegí **Astro** por una razón concreta: el portafolio es mayormente contenido estático, y Astro hace eso mejor que cualquier otro framework moderno.
+
+El argumento central de Astro es simple pero poderoso — *ship zero JavaScript by default*. Para un sitio donde el 90% del contenido no necesita interactividad del lado del cliente, eso se traduce directamente en mejor performance y menor time-to-interactive.
+
+## La arquitectura del proyecto
+
+Estructuré el proyecto siguiendo una separación clara de responsabilidades:
+
+```
+src/
+├── components/
+│   ├── layout/       # Header, Footer
+│   ├── sections/     # Secciones de cada página
+│   └── ui/           # Componentes reutilizables
+├── content/
+│   └── blog/         # Posts en .md / .mdx
+├── data/             # Datos estáticos (proyectos, stack, etc.)
+├── layouts/          # MainLayout, BlogPostLayout
+├── pages/            # Routing basado en archivos
+└── styles/           # CSS global y design tokens
+```
+
+Esta estructura me permite escalar el proyecto sin que crezca en complejidad arbitraria. Cada directorio tiene una responsabilidad única y clara.
+
+## Content Collections: el game changer
+
+La feature que más me cambió el flujo de trabajo fue **Content Collections**. Antes de Astro 2.0, manejar posts de blog significaba parsear archivos Markdown manualmente o depender de integraciones externas.
+
+Con Content Collections, defino el schema de mis posts en TypeScript:
+
+```typescript
+import { defineCollection, z } from 'astro:content';
+
+const blog = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    category: z.string(),
+    tags: z.array(z.string()),
+    author: z.string(),
+    draft: z.boolean(),
+  }),
+});
+```
+
+Esto me da **type safety** en tiempo de compilación para todo el frontmatter. Si olvido un campo requerido en un post, el build falla con un error claro. No hay sorpresas en producción.
+
+## Decisiones de diseño: glassmorphism dark
+
+El sistema visual del portafolio se basa en tres principios:
+
+1. **Fondo oscuro profundo** — `#060d18` como base, con gradientes sutiles
+2. **Glassmorphism** — cards con `backdrop-filter: blur()` y bordes semitransparentes
+3. **Acento cyan/turquesa** — `#22d3ee` para highlights, links y elementos interactivos
+
+Para mantener consistencia, definí CSS custom properties en `:root`:
+
+```css
+:root {
+  --bg-primary: #060d18;
+  --cyan-main: #22d3ee;
+  --text-primary: #f1f5f9;
+  --border-primary: rgba(255, 255, 255, 0.07);
+  --surface-glass: rgba(255, 255, 255, 0.04);
+}
+```
+
+Usar variables CSS en lugar de hardcodear colores en cada componente me permite experimentar con el tema sin buscar y reemplazar en 50 archivos.
+
+## Performance: resultados reales
+
+Después del deploy en producción, los resultados de Lighthouse fueron:
+
+- **Performance**: 98/100
+- **Accessibility**: 100/100
+- **Best Practices**: 100/100
+- **SEO**: 100/100
+
+El 98 en performance se debe principalmente a las imágenes optimizadas con `<Image />` de `@astrojs/image` y al hecho de que Astro genera HTML estático puro sin JavaScript innecesario.
+
+## Lo que haría diferente
+
+Si empezara de nuevo, invertiría más tiempo en:
+
+- **Diseñar el sistema tipográfico primero** — tomé decisiones tipográficas sobre la marcha y tuve que ajustar en varios lugares
+- **Definir los breakpoints desde el inicio** — terminé con algunos breakpoints ad-hoc que complican el CSS responsive
+- **Usar Astro Image desde el día uno** — agregarlo después de tener todo el HTML fue más trabajo de lo esperado
+
+## Conclusión
+
+Astro fue la elección correcta para este proyecto. La Developer Experience es excelente, el output es performático por defecto, y Content Collections hace que manejar un blog sea un placer en lugar de un dolor.
+
+Si estás considerando Astro para tu próximo proyecto de contenido o portafolio, mi recomendación es directa: *hacelo*.
