@@ -49,6 +49,6 @@ export const statusLabels: Record<Education['status'], string> = {
 };
 
 export const statusColors: Record<Education['status'], string> = {
-    completado: 'border-green-500/40 text-green-400',
-    'en-curso': 'border-cyan-500/40 text-cyan-400',
+    completado: 'badge-success',
+    'en-curso': 'badge-accent',
 };

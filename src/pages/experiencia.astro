@@ -41,8 +41,7 @@ const experiences = getExperiences(lang);
 
       <div class="relative">
         <div
-          class="absolute left-4 top-0 bottom-0 w-px hidden sm:block"
-          style="background: linear-gradient(180deg, var(--color-border-accent-strong) 0%, rgba(0,217,245,0.05) 100%);"
+          class="absolute left-4 top-0 bottom-0 w-px hidden sm:block timeline-line-accent"
           aria-hidden="true"
         >
         </div>
@@ -55,8 +54,7 @@ const experiences = getExperiences(lang);
                 style={`animation-delay: ${i * 150}ms`}
               >
                 <div
-                  class="absolute left-0 top-1 w-8 h-8 rounded-full hidden sm:flex items-center justify-center flex-shrink-0 section-bg-footer border-2 z-[1]"
-                  style="border-color: var(--color-border-accent-strong);"
+                  class="absolute left-0 top-1 w-8 h-8 rounded-full hidden sm:flex items-center justify-center flex-shrink-0 section-bg-footer border-2 border-accent-strong z-[1]"
                   aria-hidden="true"
                 >
                   <span class="w-2 h-2 rounded-full bg-brand-primary" />
