@@ -1,0 +1,165 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import { profile } from '../data/profile';
+import { focusAreas } from '../data/focusAreas';
+import { socialLinks } from '../data/socialLinks';
+
+const aboutParagraphs = profile.about.trim().split('\n\n');
+---
+
+<MainLayout
+  title="Sobre mí"
+  description="Conoce a Andejecruher — Full Stack Developer enfocado en SaaS, AI Agents, Automatización y Arquitectura de sistemas escalables."
+>
+  <PageHeader
+    badge="Perfil"
+    title="Sobre mí"
+    subtitle="Desarrollador Full Stack con enfoque en sistemas que escalan, automatizan y resuelven problemas reales."
+  />
+
+  <section class="py-16 px-4" style="background: #020607;">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Profile grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
+
+        <!-- Left: avatar + links -->
+        <div class="flex flex-col items-center lg:items-start gap-6">
+          <!-- Avatar: isotipo AC -->
+          <div
+            class="relative w-48 h-48 rounded-2xl flex items-center justify-center"
+            style="background: rgba(0,229,229,0.05); border: 1px solid rgba(0,229,229,0.2);"
+          >
+            <div
+              class="absolute inset-0 rounded-2xl opacity-20"
+              style="background: radial-gradient(circle at center, rgba(0,229,229,0.3) 0%, transparent 70%);"
+              aria-hidden="true"
+            ></div>
+            <img
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png"
+              alt="Andejecruher AC isotipo"
+              width="160"
+              height="160"
+              class="w-32 h-32 object-contain relative z-10"
+            />
+          </div>
+
+          <div>
+            <h2
+              class="text-xl font-semibold"
+              style="font-family: var(--font-heading); color: #f2f7f8;"
+            >
+              {profile.name}
+            </h2>
+            <p class="text-sm mt-1" style="color: #00e5e5;">{profile.role}</p>
+            <p class="text-xs mt-2" style="color: #6f7b85;">{profile.location}</p>
+          </div>
+
+          <!-- Social links -->
+          <div class="flex flex-wrap gap-2">
+            {socialLinks.map((link) => (
+              <a
+                href={link.href}
+                class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono transition-all duration-200"
+                style="border: 1px solid rgba(255,255,255,0.08); color: #a7b0b8; background: transparent;"
+                onmouseover="this.style.borderColor='rgba(0,229,229,0.3)'; this.style.color='#00e5e5';"
+                onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.color='#a7b0b8';"
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+                aria-label={link.label}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          <!-- Availability status -->
+          {profile.availableForProjects && (
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono"
+              style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: rgba(0,229,229,0.06);"
+            >
+              <span class="w-2 h-2 rounded-full bg-current animate-pulse inline-block" aria-hidden="true"></span>
+              Disponible para proyectos
+            </span>
+          )}
+        </div>
+
+        <!-- Right: bio -->
+        <div class="lg:col-span-2 flex flex-col gap-5">
+          {aboutParagraphs.map((para) => (
+            <p class="text-base leading-relaxed" style="color: #a7b0b8;">{para}</p>
+          ))}
+        </div>
+      </div>
+
+      <!-- Focus areas -->
+      <div>
+        <h2
+          class="text-2xl font-semibold mb-8 text-center"
+          style="font-family: var(--font-heading); color: #f2f7f8;"
+        >
+          Áreas de enfoque
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {focusAreas.map((area, i) => (
+            <div
+              class="rounded-2xl p-5 flex flex-col gap-3 transition-all duration-200 animate-fade-in-up"
+              style={`background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); animation-delay: ${i * 100}ms`}
+              onmouseover="this.style.borderColor='rgba(0,229,229,0.25)'; this.style.background='rgba(0,229,229,0.04)';"
+              onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.background='rgba(255,255,255,0.03)';"
+            >
+              <!-- Icon placeholder -->
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center"
+                style="background: rgba(0,229,229,0.1); border: 1px solid rgba(0,229,229,0.2);"
+                aria-hidden="true"
+              >
+                {area.icon === 'server' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
+                    <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/>
+                    <rect width="20" height="8" x="2" y="14" rx="2" ry="2"/>
+                    <line x1="6" x2="6.01" y1="6" y2="6"/>
+                    <line x1="6" x2="6.01" y1="18" y2="18"/>
+                  </svg>
+                )}
+                {area.icon === 'cloud' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/>
+                  </svg>
+                )}
+                {area.icon === 'cpu' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
+                    <rect width="16" height="16" x="4" y="4" rx="2"/>
+                    <rect width="6" height="6" x="9" y="9" rx="1"/>
+                    <path d="M15 2v2M9 2v2M2 9h2M2 15h2M15 20v2M9 20v2M20 9h2M20 15h2"/>
+                  </svg>
+                )}
+                {area.icon === 'message' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  </svg>
+                )}
+                {area.icon === 'settings' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00e5e5" stroke-width="2">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                )}
+              </div>
+
+              <h3
+                class="text-sm font-semibold"
+                style="font-family: var(--font-heading); color: #f2f7f8;"
+              >
+                {area.title}
+              </h3>
+              <p class="text-xs leading-relaxed" style="color: #a7b0b8;">{area.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</MainLayout>

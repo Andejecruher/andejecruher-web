@@ -1,0 +1,171 @@
+---
+import { navItems } from '../../data/navigation';
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 px-4 py-3">
+  <nav
+    class="max-w-6xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl"
+    style="background: rgba(8, 17, 31, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.07);"
+    aria-label="Navegación principal"
+  >
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="Andejecruher - Inicio">
+      <img
+        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
+        alt="Andejecruher Logo"
+        width="180"
+        height="44"
+        class="h-9 w-auto object-contain"
+      />
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden lg:flex items-center gap-1" role="list">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-lg ${
+                isActive(item.href) ? 'text-cyan-400' : 'text-[#94a3b8] hover:text-[#f1f5f9]'
+              }`}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+              {isActive(item.href) && (
+                <span
+                  class="absolute bottom-0 left-1/2 -translate-x-1/2 h-px w-4 rounded-full"
+                  style="background: #00e5e5;"
+                  aria-hidden="true"
+                />
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- CTA -->
+    <div class="hidden lg:flex items-center">
+      <a
+        href="/contacto"
+        class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-xl transition-all duration-200"
+        style="background: transparent; border: 1px solid rgba(34,211,238,0.4); color: #22d3ee;"
+        onmouseover="this.style.background='rgba(34,211,238,0.08)'; this.style.borderColor='rgba(34,211,238,0.6)';"
+        onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(34,211,238,0.4)';"
+      >
+        Let's Connect
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="menu-toggle"
+      class="lg:hidden flex flex-col gap-1.5 p-2 rounded-lg transition-colors"
+      style="color: #94a3b8;"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="block h-px w-6 bg-current transition-all duration-300" id="bar1"></span>
+      <span class="block h-px w-6 bg-current transition-all duration-300" id="bar2"></span>
+      <span class="block h-px w-4 bg-current transition-all duration-300" id="bar3"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden mt-2 rounded-2xl overflow-hidden transition-all duration-300 max-h-0 opacity-0"
+    style="background: rgba(8, 17, 31, 0.97); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.07);"
+    aria-hidden="true"
+  >
+    <ul class="flex flex-col p-4 gap-1" role="list">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={`block px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                isActive(item.href)
+                  ? 'text-cyan-400 bg-cyan-500/10'
+                  : 'text-[#94a3b8] hover:text-[#f1f5f9] hover:bg-white/5'
+              }`}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-2 border-t border-white/5 mt-2">
+        <a
+          href="/contacto"
+          class="block px-4 py-3 text-sm font-semibold text-center rounded-xl transition-all duration-200"
+          style="border: 1px solid rgba(34,211,238,0.4); color: #22d3ee;"
+        >
+          Conectemos
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<!-- Spacer -->
+<div class="h-20" aria-hidden="true"></div>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const bar1 = document.getElementById('bar1');
+  const bar2 = document.getElementById('bar2');
+  const bar3 = document.getElementById('bar3');
+  let open = false;
+
+  toggle?.addEventListener('click', () => {
+    open = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu?.setAttribute('aria-hidden', String(!open));
+
+    if (open) {
+      menu!.style.maxHeight = menu!.scrollHeight + 'px';
+      menu!.style.opacity = '1';
+      bar1!.style.transform = 'translateY(6px) rotate(45deg)';
+      bar2!.style.opacity = '0';
+      bar3!.style.transform = 'translateY(-6px) rotate(-45deg)';
+      bar3!.style.width = '24px';
+    } else {
+      menu!.style.maxHeight = '0';
+      menu!.style.opacity = '0';
+      bar1!.style.transform = '';
+      bar2!.style.opacity = '1';
+      bar3!.style.transform = '';
+      bar3!.style.width = '16px';
+    }
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (open && !toggle?.contains(e.target as Node) && !menu?.contains(e.target as Node)) {
+      toggle?.click();
+    }
+  });
+</script>

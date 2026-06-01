@@ -1,0 +1,338 @@
+---
+import { profile } from '../../../data/profile';
+import { socialLinks } from '../../../data/socialLinks';
+import { stats } from '../../../data/stats';
+
+const techBadges = [
+  { name: 'SaaS', color: '#38bdf8' },
+  { name: 'Laravel', color: '#fb7185' },
+  { name: 'Python', color: '#fbbf24' },
+  { name: 'Node.js', color: '#4ade80' },
+  { name: 'React', color: '#22d3ee' },
+];
+---
+
+<section
+  class="relative min-h-screen flex items-center overflow-hidden px-4 py-16"
+  style="background: linear-gradient(135deg, #060d18 0%, #08111f 60%, #060d18 100%);"
+  aria-label="Presentación principal"
+>
+  <!-- Circuit decoration -->
+  <svg
+    class="absolute top-0 right-0 opacity-5 pointer-events-none"
+    width="600"
+    height="600"
+    viewBox="0 0 600 600"
+    aria-hidden="true"
+    fill="none"
+  >
+    <circle cx="300" cy="300" r="280" stroke="#22d3ee" stroke-width="0.5"></circle>
+    <circle cx="300" cy="300" r="200" stroke="#22d3ee" stroke-width="0.5"></circle>
+    <circle cx="300" cy="300" r="120" stroke="#22d3ee" stroke-width="0.5"></circle>
+    <line x1="300" y1="20" x2="300" y2="580" stroke="#22d3ee" stroke-width="0.5"></line>
+    <line x1="20" y1="300" x2="580" y2="300" stroke="#22d3ee" stroke-width="0.5"></line>
+    <circle cx="300" cy="20" r="4" fill="#22d3ee"></circle>
+    <circle cx="300" cy="580" r="4" fill="#22d3ee"></circle>
+    <circle cx="20" cy="300" r="4" fill="#22d3ee"></circle>
+    <circle cx="580" cy="300" r="4" fill="#22d3ee"></circle>
+  </svg>
+
+  <!-- Radial glow top-right -->
+  <div
+    class="absolute -top-20 right-0 w-[500px] h-[500px] opacity-10 pointer-events-none"
+    style="background: radial-gradient(circle, rgba(34,211,238,0.5) 0%, transparent 65%);"
+    aria-hidden="true"
+  >
+  </div>
+  <!-- Radial glow bottom-left -->
+  <div
+    class="absolute bottom-0 left-1/4 w-72 h-72 opacity-8 pointer-events-none"
+    style="background: radial-gradient(circle, rgba(34,211,238,0.3) 0%, transparent 70%);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10"
+  >
+    <!-- Left: content -->
+    <div class="flex flex-col gap-6 animate-fade-in-up">
+      <!-- Available badge -->
+      <div class="flex items-center gap-2 w-fit">
+        <span
+          class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-medium uppercase tracking-widest"
+          style="border: 1px solid rgba(74,222,128,0.35); color: #4ade80; background: rgba(74,222,128,0.07);"
+        >
+          <span
+            class="w-2 h-2 rounded-full animate-pulse inline-block flex-shrink-0"
+            style="background: #4ade80;"
+            aria-hidden="true"></span>
+          AVAILABLE FOR PROJECTS
+        </span>
+      </div>
+
+      <!-- Headline -->
+      <h1
+        class="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1]"
+        style="font-family: var(--font-heading); color: #f1f5f9;"
+      >
+        Full Stack Developer |
+        <br />
+        AI Agents &amp;
+        <span style="color: #22d3ee;"> Automation</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base md:text-lg leading-relaxed max-w-lg" style="color: #94a3b8;">
+        {profile.description}
+      </p>
+
+      <!-- Tech badges with color indicator -->
+      <div class="flex flex-wrap gap-2.5" role="list" aria-label="Tecnologías principales">
+        {
+          techBadges.map((tech) => (
+            <span
+              role="listitem"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style="border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; background: rgba(255,255,255,0.04);"
+            >
+              <span
+                class="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                style={`background: ${tech.color};`}
+                aria-hidden="true"
+              />
+              {tech.name}
+            </span>
+          ))
+        }
+      </div>
+
+      <!-- CTAs: 2 main buttons matching reference -->
+      <div class="flex flex-wrap gap-3 pt-1">
+        <a
+          href="/proyectos"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
+          style="background: #22d3ee; color: #060d18; font-weight: 700;"
+          onmouseover="this.style.background='#06b6d4'; this.style.boxShadow='0 0 28px rgba(34,211,238,0.4)';"
+          onmouseout="this.style.background='#22d3ee'; this.style.boxShadow='none';"
+        >
+          View My Work
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+        <a
+          href="/contacto"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200"
+          style="border: 1px solid rgba(255,255,255,0.14); color: #e2e8f0; background: rgba(255,255,255,0.05);"
+          onmouseover="this.style.background='rgba(255,255,255,0.09)'; this.style.borderColor='rgba(255,255,255,0.24)';"
+          onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.borderColor='rgba(255,255,255,0.14)';"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Resume
+        </a>
+      </div>
+
+      <!-- Stats strip -->
+      <div
+        class="flex flex-wrap items-center gap-5 pt-5"
+        style="border-top: 1px solid rgba(255,255,255,0.07);"
+        aria-label="Estadísticas"
+      >
+        {
+          stats.map((stat, i) => (
+            <>
+              <div class="flex items-center gap-2.5">
+                <div
+                  class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style="background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.15);"
+                  aria-hidden="true"
+                >
+                  {stat.icon === 'rocket' && (
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#22d3ee"
+                      stroke-width="2"
+                    >
+                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+                      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+                    </svg>
+                  )}
+                  {stat.icon === 'code' && (
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#22d3ee"
+                      stroke-width="2"
+                    >
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                  )}
+                  {stat.icon === 'users' && (
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#22d3ee"
+                      stroke-width="2"
+                    >
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  )}
+                  {stat.icon === 'zap' && (
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#22d3ee"
+                      stroke-width="2"
+                    >
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                  )}
+                </div>
+                <div>
+                  <div
+                    class="text-base font-bold leading-tight"
+                    style="color: #22d3ee; font-family: var(--font-heading);"
+                  >
+                    {stat.value}
+                  </div>
+                  <div class="text-xs leading-tight" style="color: #64748b;">
+                    {stat.label}
+                  </div>
+                </div>
+              </div>
+              {i < stats.length - 1 && (
+                <span
+                  class="hidden sm:block text-xl leading-none"
+                  style="color: rgba(255,255,255,0.1);"
+                  aria-hidden="true"
+                >
+                  |
+                </span>
+              )}
+            </>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Right: code block + isotipo side by side -->
+    <div class="relative hidden lg:flex items-center justify-end gap-5 animate-fade-in delay-300">
+      <!-- Code block -->
+      <div
+        class="flex-1 min-w-0 rounded-2xl p-5 font-mono text-xs leading-relaxed"
+        style="background: rgba(8,17,31,0.93); border: 1px solid rgba(34,211,238,0.14);"
+        role="img"
+        aria-label="Fragmento de código decorativo"
+      >
+        <div class="flex gap-1.5 mb-4">
+          <span class="w-3 h-3 rounded-full" style="background: rgba(239,68,68,0.55);"></span>
+          <span class="w-3 h-3 rounded-full" style="background: rgba(234,179,8,0.55);"></span>
+          <span class="w-3 h-3 rounded-full" style="background: rgba(34,197,94,0.55);"></span>
+        </div>
+        <div style="color: #475569;">// Building scalable solutions</div>
+        <div class="mt-1">
+          <span style="color: #06b6d4;">const</span>
+          <span style="color: #f1f5f9;"> developer </span>
+          <span style="color: #22d3ee;">=</span>
+          <span style="color: #f1f5f9;"> {'{'}</span>
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">name:</span>
+          <span style="color: #22d3ee;"> "Andejecruher"</span><span style="color: #f1f5f9;">,</span>
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">role:</span>
+          <span style="color: #22d3ee;"> "Full Stack Developer"</span><span style="color: #f1f5f9;"
+            >,</span
+          >
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">focus:</span>
+          <span style="color: #f1f5f9;"> [</span>
+          <span style="color: #22d3ee;">"AI Agents"</span><span style="color: #f1f5f9;">, </span>
+          <span style="color: #22d3ee;">"Automation"</span><span style="color: #f1f5f9;">, </span>
+          <span style="color: #22d3ee;">"SaaS"</span>
+          <span style="color: #f1f5f9;">],</span>
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">skills:</span>
+          <span style="color: #f1f5f9;"> [</span>
+          <span style="color: #22d3ee;">"Laravel"</span><span style="color: #f1f5f9;">, </span>
+          <span style="color: #22d3ee;">"Python"</span><span style="color: #f1f5f9;">, </span>
+          <span style="color: #22d3ee;">"Node.js"</span><span style="color: #f1f5f9;">, </span>
+          <span style="color: #22d3ee;">"React"</span>
+          <span style="color: #f1f5f9;">],</span>
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">passion:</span>
+          <span style="color: #22d3ee;"> "Solving problems with code"</span>
+        </div>
+        <div><span style="color: #f1f5f9;">{'}'};</span></div>
+        <div class="mt-3">
+          <span style="color: #475569;">function </span>
+          <span style="color: #22d3ee;">buildSolution</span>
+          <span style="color: #f1f5f9;">() {'{'}</span>
+        </div>
+        <div class="pl-4">
+          <span style="color: #94a3b8;">return </span>
+          <span style="color: #22d3ee;">impact</span>
+          <span style="color: #f1f5f9;">;</span>
+        </div>
+        <div><span style="color: #f1f5f9;">{'}'}</span></div>
+      </div>
+
+      <!-- Isotipo -->
+      <div class="relative flex-shrink-0">
+        <div
+          class="absolute inset-0 rounded-full animate-pulse"
+          style="background: radial-gradient(circle, rgba(34,211,238,0.35) 0%, transparent 65%); opacity: 0.3;"
+          aria-hidden="true"
+        >
+        </div>
+        <img
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png"
+          alt="Andejecruher AC isotipo"
+          width="240"
+          height="240"
+          class="relative z-10 w-48 h-48 object-contain animate-float"
+        />
+      </div>
+    </div>
+  </div>
+</section>

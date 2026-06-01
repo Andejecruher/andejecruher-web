@@ -1,0 +1,61 @@
+---
+import { stackCategories } from '../../../data/stack';
+import SectionHeader from '../../ui/SectionHeader.astro';
+
+const mainCategories = stackCategories.slice(0, 3);
+---
+
+<section class="py-20 px-4" style="background: #020607;">
+  <div class="max-w-6xl mx-auto">
+    <SectionHeader
+      badge="Stack"
+      title="Tecnologías que uso"
+      subtitle="Mis herramientas principales para construir soluciones robustas y escalables."
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      {mainCategories.map((cat, i) => (
+        <div
+          class={`rounded-2xl p-6 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}
+          style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);"
+        >
+          <h3
+            class="text-sm font-semibold"
+            style="font-family: var(--font-heading); color: #f2f7f8;"
+          >
+            {cat.name}
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {cat.techs.map((tech) => (
+              <span
+                class="px-2.5 py-1 rounded-lg text-xs font-mono"
+                style={
+                  tech.level === 'Principal'
+                    ? 'background: rgba(0,229,229,0.08); border: 1px solid rgba(0,229,229,0.2); color: #00e5e5;'
+                    : 'background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #a7b0b8;'
+                }
+              >
+                {tech.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center">
+      <a
+        href="/stack"
+        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
+        style="border: 1px solid rgba(0,229,229,0.3); color: #00e5e5; background: transparent;"
+        onmouseover="this.style.background='rgba(0,229,229,0.08)';"
+        onmouseout="this.style.background='transparent';"
+      >
+        Ver stack completo
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

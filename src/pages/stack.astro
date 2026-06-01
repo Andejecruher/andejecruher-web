@@ -1,0 +1,71 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import { stackCategories, levelColors } from '../data/stack';
+---
+
+<MainLayout
+  title="Stack Técnico"
+  description="Stack tecnológico de Andejecruher — Frontend, Backend, Bases de datos, IA, DevOps y herramientas. Sin porcentajes artificiales."
+>
+  <PageHeader
+    badge="Tecnologías"
+    title="Stack técnico"
+    subtitle="Las herramientas que uso para construir productos digitales robustos. Sin porcentajes artificiales, con honestidad sobre mi nivel real."
+  />
+
+  <section class="py-16 px-4" style="background: #020607;">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Legend -->
+      <div class="flex flex-wrap gap-3 mb-12 justify-center" role="legend" aria-label="Niveles de dominio">
+        {Object.entries(levelColors).map(([level, cls]) => (
+          <span class={`px-3 py-1 rounded-full text-xs font-mono border ${cls}`}>
+            {level}
+          </span>
+        ))}
+      </div>
+
+      <!-- Categories grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {stackCategories.map((cat, i) => (
+          <div
+            class="rounded-2xl p-6 flex flex-col gap-5 animate-fade-in-up"
+            style={`background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); animation-delay: ${i * 100}ms`}
+          >
+            <div>
+              <h2
+                class="text-lg font-semibold mb-1"
+                style="font-family: var(--font-heading); color: #f2f7f8;"
+              >
+                {cat.name}
+              </h2>
+              <p class="text-xs" style="color: #6f7b85;">{cat.description}</p>
+            </div>
+
+            <div class="flex flex-col gap-3">
+              {cat.techs.map((tech) => (
+                <div class="flex items-center justify-between gap-4">
+                  <span class="text-sm font-mono" style="color: #a7b0b8;">{tech.name}</span>
+                  <span class={`px-2.5 py-0.5 rounded-full text-xs font-mono border flex-shrink-0 ${levelColors[tech.level]}`}>
+                    {tech.level}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Note -->
+      <div
+        class="mt-12 rounded-xl p-5 text-center"
+        style="background: rgba(0,229,229,0.04); border: 1px solid rgba(0,229,229,0.12);"
+      >
+        <p class="text-sm leading-relaxed" style="color: #a7b0b8;">
+          Mi enfoque principal está en <span style="color: #00e5e5;">Backend Engineering</span>, <span style="color: #00e5e5;">SaaS Architecture</span> e <span style="color: #00e5e5;">Integraciones inteligentes</span>. El stack es un medio, no un fin.
+        </p>
+      </div>
+    </div>
+  </section>
+</MainLayout>

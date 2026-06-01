@@ -1,0 +1,30 @@
+---
+import { stats } from '../../../data/stats';
+---
+
+<section
+  class="py-16 px-4"
+  style="background: #08111f; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);"
+>
+  <div class="max-w-6xl mx-auto">
+    <dl class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {
+        stats.map((stat, i) => (
+          <div
+            class={`flex flex-col items-center text-center gap-2 animate-fade-in-up delay-${(i + 1) * 100}`}
+          >
+            <dt
+              class="text-4xl font-bold"
+              style="font-family: var(--font-heading); color: #22d3ee;"
+            >
+              {stat.value}
+            </dt>
+            <dd class="text-sm" style="color: #94a3b8;">
+              {stat.label}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

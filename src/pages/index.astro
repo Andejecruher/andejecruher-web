@@ -1,0 +1,19 @@
+---
+import ContactCTA from '../components/sections/home/ContactCTA.astro';
+import ExperiencePreview from '../components/sections/home/ExperiencePreview.astro';
+import FeaturedProjects from '../components/sections/home/FeaturedProjects.astro';
+import Hero from '../components/sections/home/Hero.astro';
+import StackPreview from '../components/sections/home/StackPreview.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout
+  title="Inicio"
+  description="Andejecruher — Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones multicanal. Laravel · Node.js · Python · React."
+>
+  <Hero />
+  <ExperiencePreview />
+  <FeaturedProjects />
+  <StackPreview />
+  <ContactCTA />
+</MainLayout>
