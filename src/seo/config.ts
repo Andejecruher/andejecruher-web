@@ -12,9 +12,8 @@ export const SITE_SEO = {
   twitterCreator: '@Andejecruher',
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  favicon:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png',
-  themeColor: '#020607',
+  favicon: '/favicon.svg',
+  themeColor: '#020b11',
   sameAs: [
     'https://github.com/Andejecruher',
     'https://www.linkedin.com/in/andejecruher/',

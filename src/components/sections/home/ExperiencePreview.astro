@@ -10,7 +10,7 @@ const preview = getExperiences(lang).slice(0, 2);
 const experienceHref = localizePath('/experiencia', lang);
 ---
 
-<section class="py-20 px-4 section-bg-footer">
+<section class="section-spacing section-bg-secondary">
   <div class="max-w-6xl mx-auto">
     <SectionHeader
       badge={t('experience:preview-badge')}
@@ -22,14 +22,16 @@ const experienceHref = localizePath('/experiencia', lang);
     <div class="flex flex-col gap-6 mb-10">
       {
         preview.map((exp, i) => (
-          <div class={`card p-6 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}>
+          <article
+            class={`card card-interactive p-6 md:p-7 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}
+          >
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
               <div>
-                <h3 class="text-base font-semibold text-heading">{exp.role}</h3>
+                <h3 class="text-lg font-semibold text-heading">{exp.role}</h3>
                 <p class="text-sm mt-1 text-accent">{exp.company}</p>
               </div>
               <div class="flex flex-col items-start sm:items-end gap-1">
-                <span class="text-xs font-mono text-body-muted">{exp.period}</span>
+                <span class="chip chip-accent">{exp.period}</span>
                 <span class="text-xs text-body-muted">{exp.modality}</span>
               </div>
             </div>
@@ -39,7 +41,7 @@ const experienceHref = localizePath('/experiencia', lang);
                 <span class="chip-tech">{tech}</span>
               ))}
             </div>
-          </div>
+          </article>
         ))
       }
     </div>

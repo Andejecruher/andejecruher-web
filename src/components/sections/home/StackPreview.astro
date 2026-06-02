@@ -10,7 +10,7 @@ const mainCategories = stackCategories.slice(0, 3);
 const stackHref = localizePath('/stack', lang);
 ---
 
-<section class="py-20 px-4 section-bg-primary">
+<section class="section-spacing section-bg-secondary">
   <div class="max-w-6xl mx-auto">
     <SectionHeader
       badge={t('home:stack-preview-badge')}
@@ -21,8 +21,10 @@ const stackHref = localizePath('/stack', lang);
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       {
         mainCategories.map((cat, i) => (
-          <div class={`card p-6 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}>
-            <h3 class="text-sm font-semibold text-heading">
+          <article
+            class={`card card-interactive p-6 md:p-7 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}
+          >
+            <h3 class="text-base font-semibold text-heading">
               {t(`stack:category-${cat.key}-name`)}
             </h3>
             <div class="flex flex-wrap gap-2">
@@ -32,7 +34,7 @@ const stackHref = localizePath('/stack', lang);
                 </span>
               ))}
             </div>
-          </div>
+          </article>
         ))
       }
     </div>

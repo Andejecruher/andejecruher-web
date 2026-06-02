@@ -5,26 +5,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          primary: '#00d9f5',
-          'primary-hover': '#00bfd8',
-          secondary: '#0087a8',
-          'secondary-dark': '#0b4f6c',
+          primary: 'var(--color-primary)',
+          'primary-hover': 'var(--color-primary-hover)',
+          secondary: 'var(--color-secondary)',
+          'secondary-dark': 'var(--color-secondary-dark)',
         },
         surface: {
-          DEFAULT: '#07101a',
-          elevated: '#091521',
-          soft: 'rgba(255, 255, 255, 0.03)',
+          DEFAULT: 'var(--color-surface)',
+          elevated: 'var(--color-surface-elevated)',
+          soft: 'var(--color-surface-soft)',
         },
         bg: {
-          primary: '#02070b',
-          secondary: '#050b12',
-          tertiary: '#07111c',
-          footer: '#061014',
+          primary: 'var(--color-bg-primary)',
+          secondary: 'var(--color-bg-secondary)',
+          tertiary: 'var(--color-bg-tertiary)',
+          footer: 'var(--color-bg-footer)',
         },
         cyan: {
-          400: '#00d9f5',
-          500: '#00bfd8',
-          600: '#0087a8',
+          400: 'var(--color-primary)',
+          500: 'var(--color-primary-hover)',
+          600: 'var(--color-secondary)',
         },
       },
       fontFamily: {
@@ -36,14 +36,13 @@ export default {
         '6xl': '1180px',
       },
       boxShadow: {
-        'glow-primary': '0 0 32px rgba(0, 217, 245, 0.22)',
-        'glow-primary-strong': '0 0 28px rgba(0, 217, 245, 0.4)',
-        soft: '0 18px 60px rgba(0, 0, 0, 0.35)',
+        'glow-primary': 'var(--shadow-glow-primary)',
+        'glow-primary-strong': 'var(--shadow-glow-primary-strong)',
+        soft: 'var(--shadow-soft)',
       },
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(135deg, #00d9f5 0%, #0087a8 100%)',
-        'gradient-hero':
-          'radial-gradient(circle at 75% 45%, rgba(0, 217, 245, 0.16), transparent 34%), linear-gradient(135deg, #02070b 0%, #07111c 55%, #031827 100%)',
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-hero': 'var(--gradient-hero)',
       },
     },
   },

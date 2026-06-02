@@ -1,17 +1,19 @@
 ---
 import PageHeader from '../components/ui/PageHeader.astro';
+import { getProfile } from '../data/profile';
 import { getLang, useTranslations } from '../i18n/utils';
 import MainLayout from '../layouts/MainLayout.astro';
 import { getPageSeo } from '../seo/pages';
 
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
+const profile = getProfile(lang);
 
 const contactMethods = [
   {
     label: 'Email',
-    value: 'andejecruher@gmail.com',
-    href: 'mailto:andejecruher@gmail.com',
+    value: profile.email,
+    href: `mailto:${profile.email}`,
     description: t('contact:method-email-description'),
     icon: 'email',
     external: false,
@@ -51,7 +53,7 @@ const seo = getPageSeo('contact', lang);
     subtitle={t('contact:header-subtitle')}
   />
 
-  <section class="py-16 px-4 section-bg-primary">
+  <section class="section-spacing section-bg-primary">
     <div class="max-w-6xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div class="flex flex-col gap-6">

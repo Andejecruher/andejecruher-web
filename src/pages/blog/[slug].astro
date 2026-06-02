@@ -54,7 +54,7 @@ const contactHref = localizePath('/contacto', lang);
   <!-- Hero / header -->
   <section class="relative pt-10 pb-8 px-4 overflow-hidden section-bg-page-header">
     <div
-      class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-15 pointer-events-none glow-radial-subtle"
+      class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 opacity-[0.1] pointer-events-none glow-radial-subtle"
       aria-hidden="true"
     >
     </div>
@@ -64,9 +64,7 @@ const contactHref = localizePath('/contacto', lang);
         class="flex items-center gap-2 text-xs font-mono mb-8 text-body-muted"
         aria-label={t('blog:breadcrumb-aria-label')}
       >
-        <a href={homeHref} class="link-muted hover:text-brand-primary"
-          >{t('blog:breadcrumb-home')}</a
-        >
+        <a href={homeHref} class="link-muted">{t('blog:breadcrumb-home')}</a>
         <svg
           width="12"
           height="12"
@@ -78,9 +76,7 @@ const contactHref = localizePath('/contacto', lang);
         >
           <path d="M9 18l6-6-6-6"></path>
         </svg>
-        <a href={blogHref} class="link-muted hover:text-brand-primary"
-          >{t('blog:breadcrumb-blog')}</a
-        >
+        <a href={blogHref} class="link-muted">{t('blog:breadcrumb-blog')}</a>
         <svg
           width="12"
           height="12"
@@ -123,7 +119,7 @@ const contactHref = localizePath('/contacto', lang);
           alt={post.data.title}
           width="896"
           height="504"
-          class="w-full rounded-2xl object-cover border border-[var(--color-border)]"
+          class="w-full rounded-2xl object-cover border divider"
           loading="eager"
         />
       </div>

@@ -15,12 +15,12 @@ const {
   title,
   subtitle,
   maxWidth = 'max-w-6xl',
-  paddingY = 'py-16',
+  paddingY = 'section-spacing',
   class: extraClass = '',
 } = Astro.props;
 ---
 
-<section class={`${paddingY} px-4 section-bg-primary`}>
+<section class={`${paddingY} section-bg-primary`}>
   <div class={`${maxWidth} mx-auto ${extraClass}`}>
     {
       (title || subtitle) && (

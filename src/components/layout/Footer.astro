@@ -1,4 +1,6 @@
 ---
+import logoDark from '../../assets/logo-dark.png';
+import logoLight from '../../assets/logo-light.png';
 import { navItems } from '../../data/navigation';
 import { getProfile } from '../../data/profile';
 import { socialLinks } from '../../data/socialLinks';
@@ -11,7 +13,6 @@ const year = new Date().getFullYear();
 const profile = getProfile(lang);
 const homeHref = localizePath('/', lang);
 const contactHref = localizePath('/contacto', lang);
-const logoSrc = 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png';
 const featuredSocials = socialLinks.filter((link) =>
   ['github', 'linkedin', 'twitter', 'email'].includes(link.icon),
 );
@@ -20,17 +21,19 @@ interface FooterContactLink {
   label: string;
   value: string;
   href: string;
-  icon: 'email' | 'website' | 'github' | 'linkedin';
+  icon: 'email' | 'whatsapp' | 'github' | 'linkedin';
   external: boolean;
-}
-
-function isFooterContactLink(link: FooterContactLink | false | undefined): link is FooterContactLink {
-  return Boolean(link);
 }
 
 const githubLink = socialLinks.find((link) => link.icon === 'github');
 const linkedInLink = socialLinks.find((link) => link.icon === 'linkedin');
-const contactLinks = [
+const whatsappNumber = '(+52) 322 318 8252';
+const whatsappMessage =
+  lang === 'es'
+    ? 'Hola Antonio, me interesa hablar contigo sobre un proyecto web.'
+    : 'Hi Antonio, I would like to talk with you about a web project.';
+const whatsappHref = `https://wa.me/523223188252?text=${encodeURIComponent(whatsappMessage)}`;
+const contactLinks: FooterContactLink[] = [
   {
     label: t('footer:email-label'),
     value: profile.email,
@@ -39,45 +42,57 @@ const contactLinks = [
     external: false,
   },
   {
-    label: t('footer:website-label'),
-    value: profile.website.replace(/^https?:\/\//, ''),
-    href: profile.website,
-    icon: 'website',
+    label: t('footer:whatsapp-label'),
+    value: whatsappNumber,
+    href: whatsappHref,
+    icon: 'whatsapp',
     external: true,
   },
-  githubLink && {
+];
+
+if (githubLink) {
+  contactLinks.push({
     label: githubLink.label,
     value: githubLink.href.replace(/^https?:\/\//, ''),
     href: githubLink.href,
     icon: 'github',
     external: githubLink.external,
-  },
-  linkedInLink && {
+  });
+}
+
+if (linkedInLink) {
+  contactLinks.push({
     label: linkedInLink.label,
     value: linkedInLink.href.replace(/^https?:\/\//, '').replace(/\/$/, ''),
     href: linkedInLink.href,
     icon: 'linkedin',
     external: linkedInLink.external,
-  },
-].filter(isFooterContactLink);
+  });
+}
 ---
 
-<footer class="section-bg-footer border-t divider" aria-labelledby="footer-heading">
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:py-24">
-    <div class="footer-shell relative overflow-hidden rounded-[1.75rem] border divider p-6 sm:rounded-[2rem] sm:p-8 lg:p-10 xl:p-12">
-      <div class="footer-glow footer-glow-primary" aria-hidden="true"></div>
-      <div class="footer-glow footer-glow-secondary" aria-hidden="true"></div>
-
-      <div class="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.75fr_1.05fr] xl:grid-cols-[1.35fr_0.7fr_1fr_0.95fr] xl:gap-12">
+<footer class="section-bg-footer" aria-labelledby="footer-heading">
+  <div class="w-full">
+    <div class="footer-shell relative overflow-hidden px-4 py-8 sm:px-8 sm:py-10 lg:px-12">
+      <div
+        class="relative grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_0.75fr_1.05fr] xl:grid-cols-[1.35fr_0.7fr_1fr_0.95fr] xl:gap-12"
+      >
         <!-- Identity -->
         <section aria-labelledby="footer-heading" class="footer-identity space-y-6">
           <a href={homeHref} class="footer-logo inline-flex items-center" aria-label={profile.name}>
             <img
-              src={logoSrc}
+              src={logoDark.src}
               alt={`${profile.name} Logo`}
-              width="260"
-              height="64"
-              class="h-16 w-auto max-w-[250px] object-contain sm:h-[4.5rem]"
+              width={logoDark.width}
+              height={logoDark.height}
+              data-theme-logo
+              data-logo-light-src={logoLight.src}
+              data-logo-dark-src={logoDark.src}
+              data-logo-light-width={String(logoLight.width)}
+              data-logo-dark-width={String(logoDark.width)}
+              data-logo-light-height={String(logoLight.height)}
+              data-logo-dark-height={String(logoDark.height)}
+              class="footer-logo-image h-12 w-auto max-w-[190px] object-contain sm:h-14 sm:max-w-[230px]"
             />
           </a>
 
@@ -97,12 +112,12 @@ const contactLinks = [
             </p>
           </div>
 
-          {featuredSocials.length > 0 && (
-            <nav aria-label={t('footer:social-title')} class="space-y-3">
-              <h3 class="footer-section-title text-heading">{t('footer:social-title')}</h3>
-              <div class="flex flex-wrap items-center gap-3">
-                {
-                  featuredSocials.map((link) => (
+          {
+            featuredSocials.length > 0 && (
+              <nav aria-label={t('footer:social-title')} class="space-y-3">
+                <h3 class="footer-section-title text-heading">{t('footer:social-title')}</h3>
+                <div class="flex flex-wrap items-center gap-3">
+                  {featuredSocials.map((link) => (
                     <a
                       href={link.href}
                       class="social-btn footer-social-btn"
@@ -111,32 +126,58 @@ const contactLinks = [
                       aria-label={link.label}
                     >
                       {link.icon === 'github' && (
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <svg
+                          width="19"
+                          height="19"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
                           <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
                         </svg>
                       )}
                       {link.icon === 'linkedin' && (
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <svg
+                          width="19"
+                          height="19"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
                           <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                         </svg>
                       )}
                       {link.icon === 'twitter' && (
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <svg
+                          width="19"
+                          height="19"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
                           <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                         </svg>
                       )}
                       {link.icon === 'email' && (
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <svg
+                          width="19"
+                          height="19"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          aria-hidden="true"
+                        >
                           <rect width="20" height="16" x="2" y="4" rx="2" />
                           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                         </svg>
                       )}
                     </a>
-                  ))
-                }
-              </div>
-            </nav>
-          )}
+                  ))}
+                </div>
+              </nav>
+            )
+          }
         </section>
 
         <!-- Navigation -->
@@ -149,7 +190,7 @@ const contactLinks = [
               navItems.map((item) => (
                 <li>
                   <a href={localizePath(item.href, lang)} class="footer-link group">
-                    <span class="footer-link-dot" aria-hidden="true"></span>
+                    <span class="footer-link-dot" aria-hidden="true" />
                     <span>{t(`nav:item-${item.key}`)}</span>
                   </a>
                 </li>
@@ -175,15 +216,21 @@ const contactLinks = [
                   >
                     <span class="footer-contact-icon" aria-hidden="true">
                       {link.icon === 'email' && (
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg
+                          width="17"
+                          height="17"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
                           <rect width="20" height="16" x="2" y="4" rx="2" />
                           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                         </svg>
                       )}
-                      {link.icon === 'website' && (
-                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <circle cx="12" cy="12" r="10" />
-                          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      {link.icon === 'whatsapp' && (
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19.2 4.8A10.69 10.69 0 0 0 11.6 1.6c-5.91 0-10.73 4.81-10.73 10.73 0 1.89.49 3.73 1.42 5.36L1 22.4l4.84-1.27a10.7 10.7 0 0 0 5.74 1.67h.01c5.91 0 10.73-4.81 10.73-10.73 0-2.87-1.12-5.56-3.12-7.27zm-7.6 16.18h-.01a8.92 8.92 0 0 1-4.53-1.24l-.32-.19-2.87.75.77-2.8-.2-.32a8.89 8.89 0 0 1-1.35-4.69c0-4.92 4-8.92 8.91-8.92 2.38 0 4.62.93 6.31 2.62a8.86 8.86 0 0 1 2.62 6.31c0 4.92-4 8.92-8.91 8.92zm4.89-6.68c-.27-.13-1.59-.79-1.84-.87-.24-.09-.42-.13-.6.13-.18.27-.69.87-.84 1.05-.16.18-.31.2-.58.07-.27-.13-1.14-.42-2.17-1.32-.8-.71-1.34-1.57-1.5-1.84-.16-.27-.02-.41.12-.55.12-.12.27-.31.4-.47.13-.16.18-.27.27-.44.09-.18.04-.33-.02-.47-.07-.13-.6-1.45-.82-1.99-.22-.52-.43-.45-.59-.45h-.5c-.18 0-.47.07-.72.34-.24.27-.94.93-.94 2.25 0 1.33.96 2.61 1.09 2.79.13.18 1.88 2.88 4.56 4.04.63.27 1.13.43 1.52.56.64.21 1.22.18 1.68.11.51-.07 1.59-.65 1.82-1.28.22-.63.22-1.17.16-1.29-.07-.11-.24-.18-.52-.31z" />
                         </svg>
                       )}
                       {link.icon === 'github' && (
@@ -198,9 +245,7 @@ const contactLinks = [
                       )}
                     </span>
                     <span class="min-w-0">
-                      <span class="block text-xs font-semibold uppercase tracking-[0.14em] text-body-muted">
-                        {link.label}
-                      </span>
+                      <span class="text-label">{link.label}</span>
                       <span class="block truncate text-sm text-body-secondary">{link.value}</span>
                     </span>
                   </a>
@@ -211,13 +256,28 @@ const contactLinks = [
         </section>
 
         <!-- CTA -->
-        <aside class="footer-cta-card rounded-2xl border divider-accent p-5 sm:p-6 lg:col-span-3 xl:col-span-1" aria-label={t('footer:cta-title')}>
-          <div class="footer-cta-orb" aria-hidden="true"></div>
+        <aside
+          class="footer-cta-card rounded-2xl border divider-accent p-5 sm:p-6 lg:col-span-3 xl:col-span-1"
+          aria-label={t('footer:cta-title')}
+        >
           <p class="footer-section-title text-heading">{t('footer:cta-title')}</p>
-          <p class="mt-3 text-sm leading-relaxed text-body-secondary">{t('footer:cta-description')}</p>
-          <a href={contactHref} class="btn btn-secondary btn-sm mt-6 w-full justify-center sm:w-auto xl:w-full">
+          <p class="mt-3 text-sm leading-relaxed text-body-secondary">
+            {t('footer:cta-description')}
+          </p>
+          <a
+            href={contactHref}
+            class="btn btn-secondary btn-sm mt-6 w-full justify-center sm:w-auto xl:w-full"
+          >
             {t('nav:cta-connect')}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
               <path d="M5 12h14M12 5l7 7-7 7"></path>
             </svg>
           </a>
@@ -225,12 +285,16 @@ const contactLinks = [
       </div>
 
       <!-- Bottom bar -->
-      <div class="footer-bottom relative mt-10 flex flex-col gap-3 border-t divider pt-6 text-center sm:mt-12 lg:flex-row lg:items-center lg:justify-between lg:text-left">
+      <div
+        class="footer-bottom relative mt-10 flex flex-col gap-3 border-t divider pt-6 text-center sm:mt-12 lg:flex-row lg:items-center lg:justify-between lg:text-left"
+      >
         <p class="text-xs text-body-muted">
-          &copy; {year} {profile.name}. {t('footer:copyright')}
+          &copy; {year}
+          {profile.name}. {t('footer:copyright')}
         </p>
         <p class="text-xs font-mono text-body-muted">
-          {t('footer:built-with')} <span class="text-accent">Astro</span> · {t('footer:signature')}
+          {t('footer:built-with')}
+          <span class="text-accent">Astro</span> · {t('footer:signature')}
         </p>
       </div>
     </div>

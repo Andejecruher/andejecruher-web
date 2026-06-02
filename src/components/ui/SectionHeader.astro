@@ -8,9 +8,11 @@ interface Props {
 
 const { badge, title, subtitle, align = 'center' } = Astro.props;
 const alignClass = align === 'center' ? 'text-center items-center' : 'text-left items-start';
+const lineClass =
+  align === 'center' ? 'section-heading-line' : 'section-heading-line section-heading-line-left';
 ---
 
-<div class={`flex flex-col gap-3 mb-12 ${alignClass}`}>
+<div class={`flex flex-col gap-3 mb-12 md:mb-14 ${alignClass}`}>
   {
     badge && (
       <span class="badge badge-accent w-fit">
@@ -19,8 +21,13 @@ const alignClass = align === 'center' ? 'text-center items-center' : 'text-left 
       </span>
     )
   }
-  <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-heading">
+  <h2 class="section-heading font-bold text-heading text-balance">
     {title}
   </h2>
-  {subtitle && <p class="text-base leading-relaxed max-w-xl text-body-secondary">{subtitle}</p>}
+  {
+    subtitle && (
+      <p class="text-base md:text-lg leading-relaxed max-w-2xl text-body-secondary">{subtitle}</p>
+    )
+  }
+  <span class={lineClass} aria-hidden="true"></span>
 </div>

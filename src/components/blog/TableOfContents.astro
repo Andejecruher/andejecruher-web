@@ -27,7 +27,7 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
           <li class={heading.depth === 3 ? 'pl-3' : ''}>
             <a
               href={`#${heading.slug}`}
-              class={`text-sm leading-snug transition-colors duration-200 hover:text-brand-primary block ${
+              class={`text-sm leading-snug link-muted block ${
                 heading.depth === 2 ? 'text-body-secondary' : 'text-body-muted'
               }`}
             >

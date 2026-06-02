@@ -3,6 +3,8 @@ import { navItems } from '../../data/navigation';
 import { SUPPORTED_LANGS } from '../../i18n/config';
 import { getLang, useTranslations } from '../../i18n/utils';
 import { localizePath } from '../../i18n/routing';
+import logoLight from '../../assets/logo-light.png';
+import logoDark from '../../assets/logo-dark.png';
 
 const currentPath = Astro.url.pathname;
 const lang = getLang(currentPath);
@@ -45,10 +47,18 @@ function isActive(href: string): boolean {
     <!-- Logo -->
     <a href={homeHref} class="site-logo flex items-center flex-shrink-0" aria-label="Andejecruher">
       <img
-        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-light-SN0TQe1GiqMYkHyYngYcVSY4JeDgHC.png"
+        src={logoDark.src}
         alt="Andejecruher Logo"
-        width="220"
-        height="54"
+        width={logoDark.width}
+        height={logoDark.height}
+        data-site-logo
+        data-theme-logo
+        data-logo-light-src={logoLight.src}
+        data-logo-dark-src={logoDark.src}
+        data-logo-light-width={String(logoLight.width)}
+        data-logo-dark-width={String(logoDark.width)}
+        data-logo-light-height={String(logoLight.height)}
+        data-logo-dark-height={String(logoDark.height)}
         class="h-12 w-auto max-w-[190px] object-contain sm:h-14 sm:max-w-[230px] lg:h-12 xl:h-14"
       />
     </a>
@@ -106,11 +116,31 @@ function isActive(href: string): boolean {
         data-theme-label-dark={t('nav:theme-toggle-dark')}
         data-theme-label-light={t('nav:theme-toggle-light')}
       >
-        <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <svg
+          class="theme-icon theme-icon-sun"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
           <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+          ></path>
         </svg>
-        <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <svg
+          class="theme-icon theme-icon-moon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
@@ -167,7 +197,7 @@ function isActive(href: string): boolean {
                   class={`mobile-menu-link block min-h-11 px-4 py-3 text-sm font-semibold rounded-xl transition-colors duration-200 ${
                     active
                       ? 'nav-link-mobile-active'
-                      : 'text-body-secondary hover:text-brand-primary brand-hover-surface'
+                      : 'text-body-secondary link-muted brand-hover-surface'
                   }`}
                   aria-current={active ? 'page' : undefined}
                 >
@@ -211,18 +241,41 @@ function isActive(href: string): boolean {
           data-theme-label-light={t('nav:theme-toggle-light')}
         >
           <span class="relative inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
-            <svg class="theme-icon theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg
+              class="theme-icon theme-icon-sun"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
               <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+              ></path>
             </svg>
-            <svg class="theme-icon theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg
+              class="theme-icon theme-icon-moon"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
           </span>
           <span>{t('nav:theme-toggle-label')}</span>
         </button>
 
-        <a href={contactHref} class="mobile-menu-link btn btn-secondary btn-sm w-full justify-center">
+        <a
+          href={contactHref}
+          class="mobile-menu-link btn btn-secondary btn-sm w-full justify-center"
+        >
           {t('nav:cta-connect')}
           <svg
             width="14"
@@ -240,9 +293,6 @@ function isActive(href: string): boolean {
     </div>
   </div>
 </header>
-
-<!-- Spacer -->
-<div class="h-24" aria-hidden="true"></div>
 
 <script>
   function getElementById<T extends HTMLElement>(id: string) {
@@ -326,9 +376,7 @@ function isActive(href: string): boolean {
     }
   });
 
-  const themeToggles = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-theme-toggle]'),
-  );
+  const themeToggles = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-toggle]'));
   const storageKey = 'andejecruher-theme';
 
   function getPreferredTheme() {
@@ -343,18 +391,41 @@ function isActive(href: string): boolean {
     root.classList.toggle('theme-light', theme === 'light');
     root.classList.toggle('theme-dark', theme === 'dark');
 
+    document.querySelectorAll<HTMLImageElement>('[data-theme-logo]').forEach((logo) => {
+      const nextLogoSrc = theme === 'light' ? logo.dataset.logoLightSrc : logo.dataset.logoDarkSrc;
+      const nextLogoWidth =
+        theme === 'light' ? logo.dataset.logoLightWidth : logo.dataset.logoDarkWidth;
+      const nextLogoHeight =
+        theme === 'light' ? logo.dataset.logoLightHeight : logo.dataset.logoDarkHeight;
+
+      if (nextLogoSrc) {
+        logo.src = nextLogoSrc;
+      }
+      if (nextLogoWidth) {
+        logo.width = Number.parseInt(nextLogoWidth, 10);
+      }
+      if (nextLogoHeight) {
+        logo.height = Number.parseInt(nextLogoHeight, 10);
+      }
+    });
+
     themeToggles.forEach((themeToggle) => {
       themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
       themeToggle.setAttribute(
         'aria-label',
         theme === 'dark'
-          ? themeToggle.dataset.themeLabelLight ?? 'Switch to light theme'
-          : themeToggle.dataset.themeLabelDark ?? 'Switch to dark theme',
+          ? (themeToggle.dataset.themeLabelLight ?? 'Switch to light theme')
+          : (themeToggle.dataset.themeLabelDark ?? 'Switch to dark theme'),
       );
     });
   }
 
   applyTheme(getPreferredTheme());
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    applyTheme(currentTheme);
+  });
 
   themeToggles.forEach((themeToggle) => {
     themeToggle.addEventListener('click', () => {

@@ -1,5 +1,8 @@
 ---
+import isotipoDark from '../assets/isotipo-dark.png';
+import isotipoLight from '../assets/isotipo.png';
 import PageHeader from '../components/ui/PageHeader.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
 import { focusAreas } from '../data/focusAreas';
 import { getProfile } from '../data/profile';
 import { socialLinks } from '../data/socialLinks';
@@ -21,21 +24,28 @@ const seo = getPageSeo('about', lang);
     subtitle={t('about:header-subtitle')}
   />
 
-  <section class="py-16 px-4 section-bg-primary">
+  <section class="section-spacing section-bg-primary">
     <div class="max-w-6xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
         <div class="flex flex-col items-center lg:items-start gap-6">
           <div class="relative w-48 h-48 rounded-2xl flex items-center justify-center panel-accent">
             <div
-              class="absolute inset-0 rounded-2xl opacity-20 glow-radial-subtle"
+              class="absolute inset-0 rounded-2xl opacity-[0.1] glow-radial-subtle"
               aria-hidden="true"
             >
             </div>
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-IIAIcMQqZWR250f9s2EFuIHjBdUhm9.png"
+              src={isotipoDark.src}
               alt="Andejecruher AC isotipo"
-              width="160"
-              height="160"
+              width={isotipoDark.width}
+              height={isotipoDark.height}
+              data-theme-logo
+              data-logo-light-src={isotipoLight.src}
+              data-logo-dark-src={isotipoDark.src}
+              data-logo-light-width={String(isotipoLight.width)}
+              data-logo-dark-width={String(isotipoDark.width)}
+              data-logo-light-height={String(isotipoLight.height)}
+              data-logo-dark-height={String(isotipoDark.height)}
               class="w-32 h-32 object-contain relative z-10"
             />
           </div>
@@ -51,7 +61,7 @@ const seo = getPageSeo('about', lang);
               socialLinks.map((link) => (
                 <a
                   href={link.href}
-                  class="chip link-muted hover:border-brand-primary hover:text-brand-primary"
+                  class="chip chip-interactive link-muted"
                   target={link.external ? '_blank' : undefined}
                   rel={link.external ? 'noopener noreferrer' : undefined}
                   aria-label={link.label}
@@ -66,7 +76,7 @@ const seo = getPageSeo('about', lang);
             profile.availableForProjects && (
               <span class="badge badge-accent">
                 <span
-                  class="w-2 h-2 rounded-full bg-current animate-pulse inline-block"
+                  class="w-1.5 h-1.5 rounded-full bg-current animate-pulse inline-block"
                   aria-hidden="true"
                 />
                 {t('about:available-for-projects')}
@@ -85,9 +95,7 @@ const seo = getPageSeo('about', lang);
       </div>
 
       <div>
-        <h2 class="text-2xl font-semibold mb-8 text-center text-heading">
-          {t('about:focus-areas-heading')}
-        </h2>
+        <SectionHeader title={t('about:focus-areas-heading')} align="center" />
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {
             focusAreas.map((area, i) => (
