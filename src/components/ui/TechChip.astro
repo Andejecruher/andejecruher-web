@@ -1,0 +1,39 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getTechIconEntry } from '../../data/techIcons';
+
+interface Props {
+  label: string;
+  icon?: string;
+  color?: string;
+  variant?: 'default' | 'accent' | 'tech';
+  class?: string;
+}
+
+const { label, icon, color, variant = 'default', class: className = '' } = Astro.props;
+
+const entry = getTechIconEntry(label);
+const iconName = icon ?? entry?.icon;
+const iconColor = color ?? entry?.color;
+const variantClass =
+  variant === 'accent' ? 'chip chip-accent' : variant === 'tech' ? 'chip-tech' : 'chip';
+---
+
+<span
+  role="listitem"
+  class:list={[variantClass, className]}
+  style={iconColor ? `--tech-icon-color: ${iconColor}` : undefined}
+>
+  {
+    iconName && (
+      <Icon
+        name={iconName}
+        class="tech-chip-icon"
+        size={14}
+        aria-hidden="true"
+        style={iconColor ? `color: ${iconColor}` : undefined}
+      />
+    )
+  }
+  {label}
+</span>

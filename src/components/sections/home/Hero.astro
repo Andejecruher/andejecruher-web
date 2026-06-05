@@ -1,21 +1,22 @@
 ---
 import isotipoDark from '../../../assets/isotipo-dark.png';
 import isotipoLight from '../../../assets/isotipo.png';
+import { getHeroHeadline } from '../../../data/heroHeadline';
 import { getProfile } from '../../../data/profile';
 import { stats } from '../../../data/stats';
 import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
+import TechChip from '../../ui/TechChip.astro';
+import TypewriterText from '../../ui/TypewriterText.astro';
 
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const profile = getProfile(lang);
+const headline = getHeroHeadline(lang);
 const projectsHref = localizePath('/proyectos', lang);
 const contactHref = localizePath('/contacto', lang);
 
 const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
-const [headlineLead, headlineRest = ''] = t('hero:headline').split('|');
-const headlineHighlight = lang === 'es' ? 'Automatización' : 'Automation';
-const headlineMiddle = headlineRest.replace('Automation', '').replace('Automatización', '').trim();
 ---
 
 <section
@@ -68,10 +69,10 @@ const headlineMiddle = headlineRest.replace('Automation', '').replace('Automatiz
       <h1
         class="text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.1] text-heading"
       >
-        {headlineLead.trim()} |
+        <TypewriterText phrases={headline.line1Phrases} />
         <br />
-        {headlineMiddle}
-        <span class="text-accent"> {headlineHighlight}</span>
+        {headline.line2}
+        <span class="text-accent"> {headline.line2Accent}</span>
       </h1>
 
       <!-- Subtitle -->
@@ -81,19 +82,7 @@ const headlineMiddle = headlineRest.replace('Automation', '').replace('Automatiz
 
       <!-- Tech badges -->
       <div class="flex flex-wrap gap-2.5" role="list" aria-label={t('hero:tech-aria-label')}>
-        {
-          techBadges.map((tech, index) => (
-            <span role="listitem" class="chip">
-              <span
-                class={`brand-dot w-1.5 h-1.5 ${
-                  index % 3 === 1 ? 'brand-dot-soft' : index % 3 === 2 ? 'brand-dot-muted' : ''
-                }`}
-                aria-hidden="true"
-              />
-              {tech}
-            </span>
-          ))
-        }
+        {techBadges.map((tech) => <TechChip label={tech} />)}
       </div>
 
       <!-- CTAs -->

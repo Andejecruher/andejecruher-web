@@ -1,0 +1,89 @@
+---
+interface Props {
+  phrases: string[];
+  class?: string;
+  cursorClass?: string;
+  typeSpeed?: number;
+  deleteSpeed?: number;
+  pauseAfterType?: number;
+  pauseAfterDelete?: number;
+}
+
+const {
+  phrases,
+  class: className = '',
+  cursorClass = 'typewriter-cursor',
+  typeSpeed,
+  deleteSpeed,
+  pauseAfterType,
+  pauseAfterDelete,
+} = Astro.props;
+
+const initialPhrase = phrases[0] ?? '';
+const longestPhrase = phrases.reduce(
+  (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
+  initialPhrase,
+);
+---
+
+<span
+  class:list={['typewriter', className]}
+  data-typewriter
+  data-phrases={JSON.stringify(phrases)}
+  data-type-speed={typeSpeed}
+  data-delete-speed={deleteSpeed}
+  data-pause-after-type={pauseAfterType}
+  data-pause-after-delete={pauseAfterDelete}
+  aria-live="polite"
+>
+  <span class="typewriter-track">
+    <span class="typewriter-sizer" aria-hidden="true">{longestPhrase}</span>
+    <span class="typewriter-text" data-typewriter-text>{initialPhrase}</span>
+  </span>
+  <span class:list={['typewriter-cursor', cursorClass]} aria-hidden="true">|</span>
+</span>
+
+<script>
+  import { createTypewriter } from '../../lib/typewriter';
+
+  const instances = new Map<HTMLElement, ReturnType<typeof createTypewriter>>();
+
+  function parseNumber(value: string | undefined): number | undefined {
+    if (!value) return undefined;
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  function initTypewriter(root: HTMLElement) {
+    if (instances.has(root)) return;
+
+    const textEl = root.querySelector<HTMLElement>('[data-typewriter-text]');
+    if (!textEl) return;
+
+    let phrases: string[] = [];
+    try {
+      phrases = JSON.parse(root.dataset.phrases ?? '[]');
+    } catch {
+      phrases = [];
+    }
+
+    if (!phrases.length) return;
+
+    const instance = createTypewriter(textEl, {
+      phrases,
+      typeSpeed: parseNumber(root.dataset.typeSpeed),
+      deleteSpeed: parseNumber(root.dataset.deleteSpeed),
+      pauseAfterType: parseNumber(root.dataset.pauseAfterType),
+      pauseAfterDelete: parseNumber(root.dataset.pauseAfterDelete),
+    });
+
+    instances.set(root, instance);
+  }
+
+  function initAll() {
+    document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach(initTypewriter);
+  }
+
+  initAll();
+  document.addEventListener('astro:page-load', initAll);
+</script>
