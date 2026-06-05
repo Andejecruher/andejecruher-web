@@ -1,7 +1,7 @@
 import type { Lang } from '../i18n/config';
 import { DEFAULT_LANG } from '../i18n/config';
-import esProfileData from '../i18n/es/profile-data.json';
 import enProfileData from '../i18n/en/profile-data.json';
+import esProfileData from '../i18n/es/profile-data.json';
 
 interface ProfileLocaleContent {
   role: string;
@@ -30,7 +30,7 @@ const profileBase: ProfileBase = {
   fullName: 'Antonio de Jesus Cruz Hernandez',
   email: 'andejecruher@gmail.com',
   phone: '+52 322 318 8252',
-  website: 'https://andejecruher.com',
+  website: 'https://andejecruher-web.vercel.app',
   availableForProjects: true,
 };
 

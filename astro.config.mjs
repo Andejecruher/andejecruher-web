@@ -1,13 +1,9 @@
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://andejecruher.com',
-  integrations: [
-    tailwind(),
-    sitemap(),
-    mdx(),
-  ],
+  site: 'https://andejecruher-web.vercel.app',
+  integrations: [tailwind(), sitemap(), mdx()],
 });
