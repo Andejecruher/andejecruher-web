@@ -6,7 +6,7 @@ export const SITE_SEO = {
   defaultTitle: 'Andejecruher · Full Stack Developer',
   defaultDescription:
     'Full Stack Developer especializado en SaaS, AI Agents, Automatización e Integraciones. Laravel · Node.js · Python · React.',
-  defaultSocialImage: '/og-image.png',
+  defaultSocialImage: '/og-image.jpg',
   defaultSocialImageAlt: 'Andejecruher — Full Stack Developer, SaaS, AI Agents y Automatización',
   twitterSite: '@Andejecruher',
   twitterCreator: '@Andejecruher',
