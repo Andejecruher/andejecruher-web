@@ -1,6 +1,6 @@
 export const SITE_SEO = {
   siteName: 'Andejecruher',
-  siteUrl: 'https://andejecruher.com',
+  siteUrl: 'https://andejecruher-web.vercel.app',
   author: 'Andejecruher',
   jobTitle: 'Full Stack Developer',
   defaultTitle: 'Andejecruher · Full Stack Developer',
