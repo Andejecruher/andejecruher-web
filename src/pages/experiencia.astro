@@ -1,4 +1,5 @@
 ---
+import TechChip from '@/components/ui/TechChip.astro';
 import PageHeader from '../components/ui/PageHeader.astro';
 import { getExperiences } from '../data/experience';
 import { getLang, useTranslations } from '../i18n/utils';
@@ -20,25 +21,6 @@ const experiences = getExperiences(lang);
 
   <section class="section-spacing section-bg-primary">
     <div class="max-w-4xl mx-auto">
-      <div class="card p-4 mb-12 flex gap-3" role="note">
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          class="flex-shrink-0 mt-0.5 text-body-muted"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M12 16v-4M12 8h.01"></path>
-        </svg>
-        <p class="text-sm leading-relaxed text-body-muted">
-          {t('experience:confidentiality-note')}
-        </p>
-      </div>
-
       <div class="relative">
         <div
           class="absolute left-4 top-0 bottom-0 w-px hidden sm:block timeline-line-accent"
@@ -66,13 +48,25 @@ const experiences = getExperiences(lang);
                       <h2 class="text-xl font-semibold text-heading">{exp.role}</h2>
                       <p class="text-sm mt-1 font-medium text-accent">{exp.company}</p>
                     </div>
-                    <div class="flex flex-col items-start sm:items-end gap-1 flex-shrink-0">
-                      <span class="chip chip-accent">{exp.period}</span>
-                      <span class="text-xs text-body-muted">{exp.modality}</span>
-                    </div>
+                    <span class="chip chip-accent flex-shrink-0">{exp.period}</span>
                   </div>
 
                   <p class="text-sm leading-relaxed text-body-secondary">{exp.description}</p>
+
+                  <dl class="grid grid-cols-1 sm:grid-cols-3 gap-3 card-inner p-3">
+                    <div>
+                      <dt class="text-label">{t('experience:period-label')}</dt>
+                      <dd class="text-sm text-body-secondary mt-1">{exp.period}</dd>
+                    </div>
+                    <div>
+                      <dt class="text-label">{t('experience:location-label')}</dt>
+                      <dd class="text-sm text-body-secondary mt-1">{exp.location}</dd>
+                    </div>
+                    <div>
+                      <dt class="text-label">{t('experience:modality-label')}</dt>
+                      <dd class="text-sm text-body-secondary mt-1">{exp.modality}</dd>
+                    </div>
+                  </dl>
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -113,10 +107,29 @@ const experiences = getExperiences(lang);
                     <h3 class="text-label mb-3">{t('experience:technologies')}</h3>
                     <div class="flex flex-wrap gap-2">
                       {exp.technologies.map((tech) => (
-                        <span class="chip-tech">{tech}</span>
+                        <TechChip label={tech} />
                       ))}
                     </div>
                   </div>
+
+                  {exp.relatedPortfolioProjects.length > 0 && (
+                    <div>
+                      <h3 class="text-label mb-3">{t('experience:related-projects')}</h3>
+                      <div class="flex flex-wrap gap-2">
+                        {exp.relatedPortfolioProjects.map((project) => (
+                          <a
+                            href={project.href}
+                            class="chip inline-flex items-center gap-1.5 border border-divider hover:border-accent hover:text-accent transition-colors"
+                          >
+                            <span>{project.name}</span>
+                            <span class="text-[10px] text-body-muted">
+                              • {t(`projects:category-${project.categoryKey}`)}
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {exp.confidential && (
                     <div class="card-inner flex gap-2 p-3" role="note">

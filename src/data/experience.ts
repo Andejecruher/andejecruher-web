@@ -1,7 +1,10 @@
 import type { Lang } from '../i18n/config';
 import { DEFAULT_LANG } from '../i18n/config';
-import esExperienceData from '../i18n/es/experience-data.json';
 import enExperienceData from '../i18n/en/experience-data.json';
+import esExperienceData from '../i18n/es/experience-data.json';
+import { localizePath } from '../i18n/routing';
+import type { ProjectCategoryKey } from './projects';
+import { getProjects } from './projects';
 
 type ExperienceId =
   | 'clupp'
@@ -18,7 +21,7 @@ interface ExperienceLocaleContent {
   description: string;
   responsibilities: string[];
   achievements: string[];
-  relatedProjects?: string[];
+  relatedProjects: string[];
 }
 
 interface ExperienceLocaleRawContent {
@@ -29,6 +32,7 @@ interface ExperienceLocaleRawContent {
   description: string;
   responsibilities: string[];
   achievements: string[];
+  relatedProjects?: string[];
   'related-projects'?: string[];
 }
 
@@ -39,10 +43,19 @@ interface ExperienceBase {
   confidential?: boolean;
 }
 
+export interface ExperienceRelatedProject {
+  slug: string;
+  name: string;
+  href: string;
+  categoryKey: ProjectCategoryKey;
+}
+
 export interface Experience extends ExperienceLocaleContent {
+  id: ExperienceId;
   company: string;
   technologies: string[];
   confidential?: boolean;
+  relatedPortfolioProjects: ExperienceRelatedProject[];
 }
 
 interface ExperienceDataFile {
@@ -53,7 +66,7 @@ const experiencesBase: ExperienceBase[] = [
   {
     id: 'clupp',
     company: 'Clupp',
-    technologies: ['Next.js', 'React.js', 'Node.js', 'Firebase'],
+    technologies: ['Next.js', 'React', 'Node.js', 'Firebase'],
     confidential: false,
   },
   {
@@ -65,13 +78,13 @@ const experiencesBase: ExperienceBase[] = [
   {
     id: 'hoteles-buenaventura',
     company: 'Hoteles Buenaventura',
-    technologies: ['Laravel', 'MySQL', 'React.js'],
+    technologies: ['Laravel', 'MySQL', 'React'],
     confidential: false,
   },
   {
     id: 'the-rocket-code',
     company: 'The Rocket Code',
-    technologies: ['React.js', 'Next.js', 'Node.js', 'Express', 'MongoDB'],
+    technologies: ['React', 'Next.js', 'Node.js', 'Express', 'MongoDB'],
     confidential: false,
   },
   {
@@ -87,6 +100,10 @@ const experienceByLang: Record<Lang, ExperienceDataFile> = {
   en: enExperienceData as ExperienceDataFile,
 };
 
+function normalizeRelatedProjects(localized: ExperienceLocaleRawContent): string[] {
+  return localized.relatedProjects ?? localized['related-projects'] ?? [];
+}
+
 function getExperienceContent(lang: Lang, id: ExperienceId): ExperienceLocaleContent {
   const localized = experienceByLang[lang]?.items[id];
   if (localized) {
@@ -98,7 +115,7 @@ function getExperienceContent(lang: Lang, id: ExperienceId): ExperienceLocaleCon
       description: localized.description,
       responsibilities: localized.responsibilities,
       achievements: localized.achievements,
-      relatedProjects: localized['related-projects'],
+      relatedProjects: normalizeRelatedProjects(localized),
     };
   }
 
@@ -112,7 +129,7 @@ function getExperienceContent(lang: Lang, id: ExperienceId): ExperienceLocaleCon
       description: fallback.description,
       responsibilities: fallback.responsibilities,
       achievements: fallback.achievements,
-      relatedProjects: fallback['related-projects'],
+      relatedProjects: normalizeRelatedProjects(fallback),
     };
   }
 
@@ -124,14 +141,35 @@ function getExperienceContent(lang: Lang, id: ExperienceId): ExperienceLocaleCon
     description: '',
     responsibilities: [],
     achievements: [],
+    relatedProjects: [],
   };
 }
 
+function getProjectHref(lang: Lang, slug: string): string {
+  return localizePath(`/proyectos/${slug}`, lang);
+}
+
 export function getExperiences(lang: Lang): Experience[] {
-  return experiencesBase.map((base) => ({
-    ...base,
-    ...getExperienceContent(lang, base.id),
-  }));
+  const projectsBySlug = new Map(getProjects(lang).map((project) => [project.slug, project]));
+
+  return experiencesBase.map((base) => {
+    const localized = getExperienceContent(lang, base.id);
+    const relatedPortfolioProjects = localized.relatedProjects
+      .map((slug) => projectsBySlug.get(slug))
+      .filter((project): project is NonNullable<typeof project> => Boolean(project))
+      .map((project) => ({
+        slug: project.slug,
+        name: project.name,
+        href: getProjectHref(lang, project.slug),
+        categoryKey: project.categoryKey,
+      }));
+
+    return {
+      ...base,
+      ...localized,
+      relatedPortfolioProjects,
+    };
+  });
 }
 
 export const experiences = getExperiences(DEFAULT_LANG);

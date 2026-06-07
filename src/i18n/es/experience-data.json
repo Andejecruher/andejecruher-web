@@ -5,31 +5,34 @@
       "period": "Diciembre 2024 - Actualidad",
       "location": "Mexico",
       "modality": "Remoto · Tiempo completo",
-      "description": "Desarrollo de soluciones web escalables orientadas a producto, con enfoque en interfaces dinamicas, APIs backend y buenas practicas de desarrollo.",
+      "description": "Participo en el desarrollo de una plataforma SaaS para el sector asegurador, impulsando funcionalidades de negocio con foco en rendimiento, escalabilidad y experiencia de usuario.",
       "responsibilities": [
-        "Desarrollo de soluciones web escalables con Next.js, React.js, Node.js y Firebase.",
-        "Construccion de interfaces dinamicas, responsivas e intuitivas orientadas a producto.",
-        "Desarrollo e integracion de APIs y servicios backend para funcionalidades del producto.",
-        "Implementacion de autenticacion, gestion de datos e integracion de servicios con Firebase.",
-        "Aplicacion de buenas practicas de desarrollo frontend y backend en un entorno tecnologico."
+        "Diseno e implementacion de modulos frontend y backend para procesos de cotizacion y operacion interna.",
+        "Integracion de servicios y APIs para habilitar flujos criticos del producto en tiempo real.",
+        "Mantenimiento evolutivo de la arquitectura con enfoque en calidad de codigo, observabilidad y mantenibilidad.",
+        "Colaboracion con equipos de producto y negocio para convertir necesidades operativas en entregables tecnicos."
       ],
-      "achievements": []
+      "achievements": [
+        "Contribui a la evolucion de la plataforma principal y del multicotizador, mejorando estabilidad y tiempos de entrega.",
+        "Estandarice practicas de implementacion que redujeron retrabajos y facilitaron la colaboracion entre equipos."
+      ],
+      "relatedProjects": ["insurance-boosters-platform", "multicotizador-seguros"]
     },
     "diferente-web": {
       "role": "Desarrollador Full Stack",
       "period": "Septiembre 2023 - Junio 2024",
       "location": "Mexico",
       "modality": "Remoto · Tiempo completo",
-      "description": "Desarrollo y mantenimiento de APIs, integracion de servicios externos, soluciones e-commerce y administracion de bases de datos en proyectos full stack.",
+      "description": "Lidere el desarrollo tecnico de soluciones e-commerce e integraciones personalizadas para optimizar operaciones comerciales y conectividad entre sistemas.",
       "responsibilities": [
-        "Desarrollo y mantenimiento de APIs para integrar servicios externos y mejorar la comunicacion entre aplicaciones.",
-        "Integracion y personalizacion de soluciones e-commerce mediante BigCommerce.",
-        "Administracion de datos con MySQL y MongoDB, considerando escalabilidad, seguridad y eficiencia.",
-        "Participacion en proyectos full stack combinando backend, frontend e integraciones externas."
+        "Diseno y mantenimiento de APIs para conectar plataformas internas con servicios de terceros.",
+        "Implementacion de integraciones en BigCommerce ajustadas a reglas de negocio especificas.",
+        "Modelado y administracion de datos en MySQL y MongoDB con foco en rendimiento y consistencia.",
+        "Participacion integral en ciclos de desarrollo full stack, desde discovery tecnico hasta despliegue."
       ],
-      "achievements": [],
-      "related-projects": [
-        "Integraciones e-commerce con BigCommerce"
+      "achievements": [
+        "Entregue integraciones e-commerce que redujeron tareas manuales en procesos operativos clave.",
+        "Mejore la interoperabilidad entre aplicaciones mediante contratos API mas claros y mantenibles."
       ]
     },
     "hoteles-buenaventura": {
@@ -37,16 +40,16 @@
       "period": "Abril 2023 - Julio 2023",
       "location": "Puerto Vallarta, Jalisco, Mexico",
       "modality": "Presencial",
-      "description": "Desarrollo de calendario interactivo para gestion de fechas, reservas y disponibilidad, con construccion de REST APIs y frontend en React.js.",
+      "description": "Desarrolle una solucion de reservas con calendario interactivo para mejorar la gestion de disponibilidad y la experiencia de compra del usuario final.",
       "responsibilities": [
-        "Desarrollo de calendario interactivo para gestion de fechas, reservas y disponibilidad.",
-        "Construccion de REST APIs con Laravel y MySQL para administrar informacion operativa.",
-        "Desarrollo de frontend con React.js para visualizacion y seleccion interactiva de fechas.",
-        "Integracion entre frontend y backend para mejorar la experiencia del usuario final."
+        "Construccion de un calendario interactivo enfocado en seleccion de fechas y disponibilidad en tiempo real.",
+        "Desarrollo de REST APIs con Laravel y MySQL para centralizar la logica de reservas.",
+        "Implementacion de interfaz en React.js para facilitar flujo de reserva y conversion.",
+        "Integracion de frontend y backend garantizando trazabilidad de datos y comportamiento consistente."
       ],
-      "achievements": [],
-      "related-projects": [
-        "Calendario de reservas para Hoteles Buenaventura"
+      "achievements": [
+        "Implemente una experiencia de reserva mas clara que disminuyo fricciones en la seleccion de fechas.",
+        "Consolide la logica operativa en APIs reutilizables para futuras iteraciones del sistema."
       ]
     },
     "the-rocket-code": {
@@ -54,30 +57,34 @@
       "period": "Marzo 2022 - Mayo 2023",
       "location": "Mexico",
       "modality": "Remoto · Tiempo completo",
-      "description": "Desarrollo de funcionalidades web, migracion de sistemas frontend y construccion de APIs para comunicacion eficiente entre cliente y servidor.",
+      "description": "Trabaje en productos web para distintos clientes, fortaleciendo arquitectura frontend y backend para mejorar mantenibilidad y velocidad de evolucion.",
       "responsibilities": [
-        "Desarrollo de funcionalidades para aplicaciones web utilizando React.js.",
-        "Migracion de cotizador de precios desde Next.js hacia React.js, mejorando estructura y mantenibilidad.",
-        "Desarrollo de APIs con Node.js, Express y MongoDB para comunicacion eficiente entre frontend y backend.",
-        "Participacion en creacion de sitios y aplicaciones web para distintos clientes."
+        "Desarrollo de funcionalidades de producto con React.js en aplicaciones orientadas a negocio.",
+        "Migracion de un cotizador desde Next.js a React.js para simplificar soporte y evolucion del codigo.",
+        "Diseno y construccion de APIs con Node.js, Express y MongoDB para casos de uso operativos.",
+        "Acompanamiento tecnico a equipos multidisciplinarios para entregar valor en ciclos cortos."
       ],
-      "achievements": [],
-      "related-projects": [
-        "Cotizador web (migracion Next.js -> React.js)"
-      ]
+      "achievements": [
+        "Reduje complejidad tecnica en un modulo clave tras la migracion de stack frontend.",
+        "Aporte mejoras estructurales que facilitaron despliegues y mantenimiento continuo."
+      ],
+      "relatedProjects": []
     },
     "creativa-softline": {
       "role": "Disenador Web",
       "period": "Experiencia inicial",
       "location": "Tuxtla Gutierrez, Chiapas, Mexico",
       "modality": "Presencial",
-      "description": "Diseno y desarrollo de sitios web funcionales y responsivos. Primera experiencia profesional en desarrollo e implementacion web.",
+      "description": "Inicie mi trayectoria profesional construyendo sitios web corporativos con foco en usabilidad, maquetacion responsive y consistencia visual.",
       "responsibilities": [
-        "Diseno y desarrollo de sitios web funcionales, responsivos y visualmente atractivos.",
-        "Implementacion de interfaces con Bootstrap, Skeleton y Boilerplate.",
-        "Participacion en procesos de diseno, maquetacion e implementacion web."
+        "Diseno y desarrollo de interfaces web responsive para clientes de distintos sectores.",
+        "Implementacion de layouts con Bootstrap y frameworks CSS orientados a productividad.",
+        "Participacion en flujo completo de trabajo: propuesta visual, maquetacion y puesta en produccion."
       ],
-      "achievements": []
+      "achievements": [
+        "Fortaleci bases solidas en frontend, semantica HTML y buenas practicas de maquetacion.",
+        "Entregue sitios funcionales en tiempos ajustados manteniendo calidad visual y tecnica."
+      ]
     }
   }
 }

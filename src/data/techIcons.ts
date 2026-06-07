@@ -35,6 +35,10 @@ export const techIconMap: Record<string, TechIconEntry> = {
   FastAPI: { icon: 'simple-icons:fastapi', color: '#009688' },
   Vercel: { icon: 'simple-icons:vercel', color: '#E2E8F0' },
   WhatsApp: { icon: 'simple-icons:whatsapp', color: '#25D366' },
+  HTML: { icon: 'simple-icons:html5', color: '#E34F26' },
+  CSS: { icon: 'simple-icons:css3', color: '#1572B6' },
+  Bootstrap: { icon: 'simple-icons:bootstrap', color: '#7952B3' },
+  BigCommerce: { icon: 'simple-icons:bigcommerce', color: '#333333' },
 };
 
 export function getTechIconEntry(name: string): TechIconEntry | undefined {

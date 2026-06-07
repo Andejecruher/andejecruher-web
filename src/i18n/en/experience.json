@@ -12,5 +12,10 @@
   "responsibilities": "Responsibilities",
   "achievements": "Achievements",
   "technologies": "Technologies",
+  "period-label": "Period",
+  "location-label": "Location",
+  "modality-label": "Modality",
+  "related-projects": "Related projects",
+  "view-project": "View project",
   "confidential-item-note": "Project developed as part of professional experience. Some technical details, internal names or sensitive information were omitted for confidentiality."
 }

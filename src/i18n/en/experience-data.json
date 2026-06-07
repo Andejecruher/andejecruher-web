@@ -5,31 +5,34 @@
       "period": "December 2024 - Present",
       "location": "Mexico",
       "modality": "Remote · Full time",
-      "description": "Development of scalable product-oriented web solutions, focused on dynamic interfaces, backend APIs and solid engineering practices.",
+      "description": "I contribute to a SaaS platform in the insurance domain, delivering product features with strong focus on performance, scalability and user experience.",
       "responsibilities": [
-        "Built scalable web solutions with Next.js, React.js, Node.js and Firebase.",
-        "Implemented dynamic, responsive and intuitive product-focused interfaces.",
-        "Developed and integrated backend APIs and services for product capabilities.",
-        "Implemented authentication, data management and service integrations with Firebase.",
-        "Applied frontend and backend engineering best practices in a modern stack environment."
+        "Designed and implemented frontend and backend modules for quoting and internal operations.",
+        "Integrated APIs and services to support business-critical real-time workflows.",
+        "Improved architecture incrementally with emphasis on code quality, observability and long-term maintainability.",
+        "Collaborated with product and business stakeholders to turn operational requirements into technical deliverables."
       ],
-      "achievements": []
+      "achievements": [
+        "Contributed to key platform and quote-engine iterations, improving stability and delivery cadence.",
+        "Standardized implementation patterns that reduced rework and improved team collaboration."
+      ],
+      "relatedProjects": ["insurance-boosters-platform", "multicotizador-seguros"]
     },
     "diferente-web": {
       "role": "Full Stack Developer",
       "period": "September 2023 - June 2024",
       "location": "Mexico",
       "modality": "Remote · Full time",
-      "description": "API development and maintenance, external service integrations, e-commerce solutions and database management across full stack projects.",
+      "description": "I led technical implementation of e-commerce solutions and custom integrations to improve commercial operations and system interoperability.",
       "responsibilities": [
-        "Built and maintained APIs to integrate external services and improve system communication.",
-        "Integrated and customized e-commerce solutions with BigCommerce.",
-        "Managed MySQL and MongoDB data models with focus on scalability, security and performance.",
-        "Contributed to full stack projects across backend, frontend and third-party integrations."
+        "Designed and maintained APIs connecting internal platforms with third-party services.",
+        "Implemented BigCommerce integrations tailored to specific business rules.",
+        "Managed MySQL and MongoDB data models with attention to consistency, security and performance.",
+        "Contributed across the full development lifecycle, from technical discovery to deployment."
       ],
-      "achievements": [],
-      "related-projects": [
-        "BigCommerce e-commerce integrations"
+      "achievements": [
+        "Delivered e-commerce integrations that reduced manual effort in critical operations.",
+        "Improved interoperability between applications by defining clearer and more maintainable API contracts."
       ]
     },
     "hoteles-buenaventura": {
@@ -37,16 +40,16 @@
       "period": "April 2023 - July 2023",
       "location": "Puerto Vallarta, Jalisco, Mexico",
       "modality": "On-site",
-      "description": "Built an interactive calendar for date, booking and availability management, including REST API construction and a React.js frontend.",
+      "description": "Built a booking solution with an interactive calendar to improve availability management and booking experience for end users.",
       "responsibilities": [
-        "Built an interactive calendar for date, booking and availability management.",
-        "Developed REST APIs with Laravel and MySQL for operational data management.",
-        "Implemented React.js frontend features for interactive date visualization and selection.",
-        "Integrated frontend and backend to improve end-user experience."
+        "Implemented an interactive calendar focused on date selection and real-time availability.",
+        "Built REST APIs with Laravel and MySQL to centralize reservation logic.",
+        "Developed React.js interfaces to streamline the booking flow.",
+        "Integrated frontend and backend to ensure consistent behavior and traceable operational data."
       ],
-      "achievements": [],
-      "related-projects": [
-        "Booking calendar for Hoteles Buenaventura"
+      "achievements": [
+        "Delivered a clearer booking flow that reduced friction during date selection.",
+        "Consolidated operational rules into reusable APIs for future iterations."
       ]
     },
     "the-rocket-code": {
@@ -54,30 +57,34 @@
       "period": "March 2022 - May 2023",
       "location": "Mexico",
       "modality": "Remote · Full time",
-      "description": "Developed web features, migrated frontend systems and built APIs for efficient client-server communication.",
+      "description": "Worked on client-facing web products, strengthening frontend and backend architecture to improve maintainability and delivery speed.",
       "responsibilities": [
-        "Developed application features using React.js.",
-        "Migrated a pricing quote tool from Next.js to React.js, improving structure and maintainability.",
-        "Built APIs with Node.js, Express and MongoDB for efficient frontend-backend communication.",
-        "Contributed to website and web application development for multiple clients."
+        "Developed product features with React.js for business-oriented applications.",
+        "Migrated a quote tool from Next.js to React.js to simplify support and code evolution.",
+        "Designed and implemented APIs with Node.js, Express and MongoDB for operational use cases.",
+        "Partnered with multidisciplinary teams to deliver value in short release cycles."
       ],
-      "achievements": [],
-      "related-projects": [
-        "Web quote builder (Next.js to React.js migration)"
-      ]
+      "achievements": [
+        "Reduced technical complexity in a key module after frontend stack migration.",
+        "Introduced structural improvements that made deployment and ongoing maintenance more predictable."
+      ],
+      "relatedProjects": []
     },
     "creativa-softline": {
       "role": "Web Designer",
       "period": "Early professional experience",
       "location": "Tuxtla Gutierrez, Chiapas, Mexico",
       "modality": "On-site",
-      "description": "Designed and built functional responsive websites. First professional experience in web development and implementation.",
+      "description": "Started my professional path building corporate websites focused on usability, responsive layout and visual consistency.",
       "responsibilities": [
-        "Designed and developed functional, responsive and visually engaging websites.",
-        "Implemented interfaces with Bootstrap, Skeleton and Boilerplate.",
-        "Participated in design, layout and web implementation workflows."
+        "Designed and developed responsive web interfaces for clients across different sectors.",
+        "Implemented layouts using Bootstrap and CSS frameworks optimized for delivery speed.",
+        "Contributed across the full workflow: visual proposal, layout implementation and production release."
       ],
-      "achievements": []
+      "achievements": [
+        "Built strong frontend foundations in semantic HTML and maintainable layout practices.",
+        "Delivered functional websites under tight timelines while preserving visual and technical quality."
+      ]
     }
   }
 }
