@@ -443,3 +443,23 @@ function isActive(href: string): boolean {
     }
   });
 </script>
+
+<script>
+  // Exponer la altura del header como variable CSS para que las secciones puedan compensarla.
+  (function () {
+    function updateHeaderHeight() {
+      const headerEl = document.querySelector('header');
+      if (!headerEl || !headerEl.getBoundingClientRect) return;
+      const height = headerEl.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--site-header-height', `${height}px`);
+    }
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      updateHeaderHeight();
+    } else {
+      document.addEventListener('DOMContentLoaded', updateHeaderHeight);
+    }
+
+    window.addEventListener('resize', updateHeaderHeight);
+  })();
+</script>

@@ -38,9 +38,11 @@ const longestPhrase = phrases.reduce(
 >
   <span class="typewriter-track">
     <span class="typewriter-sizer" aria-hidden="true">{longestPhrase}</span>
-    <span class="typewriter-text" data-typewriter-text>{initialPhrase}</span>
+    <span class="typewriter-animation">
+      <span class="typewriter-text" data-typewriter-text>{initialPhrase}</span>
+      <span class:list={['typewriter-cursor', cursorClass]} aria-hidden="true">|</span>
+    </span>
   </span>
-  <span class:list={['typewriter-cursor', cursorClass]} aria-hidden="true">|</span>
 </span>
 
 <script>

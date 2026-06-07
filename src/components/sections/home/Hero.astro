@@ -14,13 +14,14 @@ const t = useTranslations(lang);
 const profile = getProfile(lang);
 const headline = getHeroHeadline(lang);
 const projectsHref = localizePath('/proyectos', lang);
-const contactHref = localizePath('/contacto', lang);
+const CvLink = 'https://drive.google.com/file/d/1Zsi1j6PDrRT6vpBOTJF7uHYY7LehM4Rr/view?usp=sharing';
 
 const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
 ---
 
 <section
-  class="relative min-h-screen flex items-center overflow-hidden px-4 py-16 section-bg-primary"
+  class="relative min-h-screen flex items-center overflow-hidden px-4 pb-16 section-bg-primary"
+  style="padding-top: calc(var(--site-header-height, 3.5rem) + 1rem);"
   aria-label={t('hero:section-aria-label')}
 >
   <!-- Circuit decoration -->
@@ -101,7 +102,7 @@ const techBadges = ['SaaS', 'Laravel', 'Python', 'Node.js', 'React'];
             <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
         </a>
-        <a href={contactHref} class="btn btn-ghost">
+        <a href={CvLink} target="_blank" class="btn btn-ghost">
           <svg
             width="14"
             height="14"
