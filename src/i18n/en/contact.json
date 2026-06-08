@@ -22,5 +22,15 @@
   "form-message-placeholder": "Tell me about your project, idea or inquiry...",
   "form-required-aria": "required",
   "form-submit": "Send message",
-  "form-disclaimer": "Your information is only used to reply to your message."
+  "form-submit-sending": "Sending message…",
+  "form-disclaimer": "Your information is only used to reply to your message.",
+  "form-status-sending": "Sending message…",
+  "form-status-success": "Message sent successfully.",
+  "form-status-error": "Message could not be sent. Please try again.",
+  "form-status-missing-config": "Email service is not configured. Please try again later.",
+  "form-error-name-required": "Please enter your name.",
+  "form-error-email-required": "Please enter your email.",
+  "form-error-email-invalid": "Please enter a valid email address.",
+  "form-error-subject-required": "Please enter a subject.",
+  "form-error-message-required": "Please enter your message."
 }

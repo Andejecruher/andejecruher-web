@@ -22,5 +22,15 @@
   "form-message-placeholder": "Cuéntame sobre tu proyecto, idea o consulta...",
   "form-required-aria": "requerido",
   "form-submit": "Enviar mensaje",
-  "form-disclaimer": "Tus datos se usarán únicamente para responder tu mensaje."
+  "form-submit-sending": "Enviando mensaje…",
+  "form-disclaimer": "Tus datos se usarán únicamente para responder tu mensaje.",
+  "form-status-sending": "Enviando mensaje…",
+  "form-status-success": "Mensaje enviado correctamente.",
+  "form-status-error": "No se pudo enviar el mensaje. Intenta nuevamente.",
+  "form-status-missing-config": "Falta configurar EmailJS. Intenta nuevamente más tarde.",
+  "form-error-name-required": "Ingresa tu nombre.",
+  "form-error-email-required": "Ingresa tu email.",
+  "form-error-email-invalid": "Ingresa un email válido.",
+  "form-error-subject-required": "Ingresa el asunto.",
+  "form-error-message-required": "Ingresa tu mensaje."
 }

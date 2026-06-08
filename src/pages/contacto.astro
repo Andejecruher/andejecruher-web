@@ -126,9 +126,19 @@ const seo = getPageSeo('contact', lang);
           <form
             id="contact-form"
             class="flex flex-col gap-5"
-            action="https://formspree.io/f/placeholder"
-            method="POST"
             novalidate
+            data-status-sending={t('contact:form-status-sending')}
+            data-status-success={t('contact:form-status-success')}
+            data-status-error={t('contact:form-status-error')}
+            data-status-missing-config={t('contact:form-status-missing-config')}
+            data-submit-idle={t('contact:form-submit')}
+            data-submit-loading={t('contact:form-submit-sending')}
+            data-error-name-required={t('contact:form-error-name-required')}
+            data-error-email-required={t('contact:form-error-email-required')}
+            data-error-email-invalid={t('contact:form-error-email-invalid')}
+            data-error-subject-required={t('contact:form-error-subject-required')}
+            data-error-message-required={t('contact:form-error-message-required')}
+            aria-describedby="contact-status"
           >
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-1.5">
@@ -142,8 +152,16 @@ const seo = getPageSeo('contact', lang);
                   type="text"
                   required
                   placeholder={t('contact:form-name-placeholder')}
+                  autocomplete="name"
+                  aria-describedby="name-error"
                   class="form-input"
                 />
+                <p
+                  id="name-error"
+                  data-error-for="name"
+                  class="text-xs text-rose-300"
+                  aria-live="polite"
+                  hidden></p>
               </div>
               <div class="flex flex-col gap-1.5">
                 <label for="email" class="form-label">
@@ -156,20 +174,40 @@ const seo = getPageSeo('contact', lang);
                   type="email"
                   required
                   placeholder={t('contact:form-email-placeholder')}
+                  autocomplete="email"
+                  aria-describedby="email-error"
                   class="form-input"
                 />
+                <p
+                  id="email-error"
+                  data-error-for="email"
+                  class="text-xs text-rose-300"
+                  aria-live="polite"
+                  hidden></p>
               </div>
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="subject" class="form-label">{t('contact:form-subject-label')}</label>
+              <label for="subject" class="form-label">
+                {t('contact:form-subject-label')}
+                <span class="text-accent" aria-label={t('contact:form-required-aria')}>*</span>
+              </label>
               <input
                 id="subject"
                 name="subject"
                 type="text"
+                required
                 placeholder={t('contact:form-subject-placeholder')}
+                autocomplete="off"
+                aria-describedby="subject-error"
                 class="form-input"
               />
+              <p
+                id="subject-error"
+                data-error-for="subject"
+                class="text-xs text-rose-300"
+                aria-live="polite"
+                hidden></p>
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -183,12 +221,26 @@ const seo = getPageSeo('contact', lang);
                 required
                 rows="5"
                 placeholder={t('contact:form-message-placeholder')}
+                aria-describedby="message-error"
                 class="form-input resize-none"></textarea>
+              <p
+                id="message-error"
+                data-error-for="message"
+                class="text-xs text-rose-300"
+                aria-live="polite"
+                hidden></p>
             </div>
 
-            <button type="submit" class="btn btn-primary w-full">
+            <button id="contact-submit" type="submit" class="btn btn-primary w-full">
               {t('contact:form-submit')}
             </button>
+
+            <p
+              id="contact-status"
+              class="text-sm text-center text-body-secondary min-h-5"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"></p>
 
             <p class="text-xs text-center text-body-muted">{t('contact:form-disclaimer')}</p>
           </form>
@@ -196,4 +248,183 @@ const seo = getPageSeo('contact', lang);
       </div>
     </div>
   </section>
+
+  <script type="module">
+    import emailjs from '@emailjs/browser';
+
+    type FormState = 'idle' | 'loading' | 'success' | 'error';
+    type FieldName = 'name' | 'email' | 'subject' | 'message';
+
+    const formElement = document.getElementById('contact-form');
+    const submitElement = document.getElementById('contact-submit');
+    const statusElement = document.getElementById('contact-status');
+
+    if (
+      formElement instanceof HTMLFormElement &&
+      submitElement instanceof HTMLButtonElement &&
+      statusElement instanceof HTMLElement
+    ) {
+      const config = {
+        serviceId: (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ?? '').trim(),
+        templateId: (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ?? '').trim(),
+        publicKey: (import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ?? '').trim(),
+      };
+
+      const messages = {
+        submitIdle: formElement.dataset.submitIdle?.trim() ?? 'Send message',
+        submitLoading: formElement.dataset.submitLoading?.trim() ?? 'Sending message…',
+        sending: formElement.dataset.statusSending?.trim() ?? 'Sending message…',
+        success: formElement.dataset.statusSuccess?.trim() ?? 'Message sent successfully.',
+        error: formElement.dataset.statusError?.trim() ?? 'Message could not be sent. Please try again.',
+        missingConfig:
+          formElement.dataset.statusMissingConfig?.trim() ??
+          'Email service is not configured. Please try again later.',
+        nameRequired: formElement.dataset.errorNameRequired?.trim() ?? 'Please enter your name.',
+        emailRequired: formElement.dataset.errorEmailRequired?.trim() ?? 'Please enter your email.',
+        emailInvalid:
+          formElement.dataset.errorEmailInvalid?.trim() ?? 'Please enter a valid email address.',
+        subjectRequired: formElement.dataset.errorSubjectRequired?.trim() ?? 'Please enter a subject.',
+        messageRequired: formElement.dataset.errorMessageRequired?.trim() ?? 'Please enter your message.',
+      };
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
+      let state: FormState = 'idle';
+
+      const getInputByName = (name: string): HTMLInputElement | undefined => {
+        const field = formElement.elements.namedItem(name);
+        return field instanceof HTMLInputElement ? field : undefined;
+      };
+
+      const getTextAreaByName = (name: string): HTMLTextAreaElement | undefined => {
+        const field = formElement.elements.namedItem(name);
+        return field instanceof HTMLTextAreaElement ? field : undefined;
+      };
+
+      const fields: Record<FieldName, HTMLInputElement | HTMLTextAreaElement | undefined> = {
+        name: getInputByName('name'),
+        email: getInputByName('email'),
+        subject: getInputByName('subject'),
+        message: getTextAreaByName('message'),
+      };
+
+      const setState = (nextState: FormState, statusMessage: string): void => {
+        state = nextState;
+        statusElement.textContent = statusMessage;
+        submitElement.disabled = nextState === 'loading';
+        submitElement.textContent = nextState === 'loading' ? messages.submitLoading : messages.submitIdle;
+        formElement.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
+      };
+
+      const getFieldErrorElement = (fieldName: FieldName): HTMLElement | undefined => {
+        const errorCandidate = formElement.querySelector(`[data-error-for="${fieldName}"]`);
+        return errorCandidate instanceof HTMLElement ? errorCandidate : undefined;
+      };
+
+      const setFieldError = (fieldName: FieldName, message: string | undefined): void => {
+        const field = fields[fieldName];
+        if (field !== undefined) {
+          field.setAttribute('aria-invalid', message !== undefined ? 'true' : 'false');
+        }
+
+        const errorElement = getFieldErrorElement(fieldName);
+        if (errorElement !== undefined) {
+          errorElement.textContent = message ?? '';
+          errorElement.hidden = message === undefined;
+        }
+      };
+
+      const clearFieldErrors = (): void => {
+        setFieldError('name', undefined);
+        setFieldError('email', undefined);
+        setFieldError('subject', undefined);
+        setFieldError('message', undefined);
+      };
+
+      const validateForm = (): boolean => {
+        clearFieldErrors();
+
+        const nameValue = fields.name?.value.trim() ?? '';
+        const emailValue = fields.email?.value.trim() ?? '';
+        const subjectValue = fields.subject?.value.trim() ?? '';
+        const messageValue = fields.message?.value.trim() ?? '';
+
+        let firstInvalidField: HTMLInputElement | HTMLTextAreaElement | undefined;
+
+        if (nameValue.length === 0) {
+          setFieldError('name', messages.nameRequired);
+          firstInvalidField = fields.name;
+        }
+
+        if (emailValue.length === 0) {
+          setFieldError('email', messages.emailRequired);
+          firstInvalidField = firstInvalidField ?? fields.email;
+        } else if (!emailRegex.test(emailValue)) {
+          setFieldError('email', messages.emailInvalid);
+          firstInvalidField = firstInvalidField ?? fields.email;
+        }
+
+        if (fields.subject !== undefined && subjectValue.length === 0) {
+          setFieldError('subject', messages.subjectRequired);
+          firstInvalidField = firstInvalidField ?? fields.subject;
+        }
+
+        if (messageValue.length === 0) {
+          setFieldError('message', messages.messageRequired);
+          firstInvalidField = firstInvalidField ?? fields.message;
+        }
+
+        if (firstInvalidField !== undefined) {
+          firstInvalidField.focus();
+          setState('error', messages.error);
+          return false;
+        }
+
+        return true;
+      };
+
+      formElement.addEventListener('input', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement) && !(target instanceof HTMLTextAreaElement)) {
+          return;
+        }
+
+        if (target.name === 'name' || target.name === 'email' || target.name === 'subject' || target.name === 'message') {
+          setFieldError(target.name, undefined);
+        }
+
+        if (state === 'success' || state === 'error') {
+          setState('idle', '');
+        }
+      });
+
+      formElement.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (state === 'loading') {
+          return;
+        }
+
+        if (!validateForm()) {
+          return;
+        }
+
+        if (config.serviceId.length === 0 || config.templateId.length === 0 || config.publicKey.length === 0) {
+          setState('error', messages.missingConfig);
+          return;
+        }
+
+        try {
+          setState('loading', messages.sending);
+          await emailjs.sendForm(config.serviceId, config.templateId, formElement, {
+            publicKey: config.publicKey,
+          });
+          formElement.reset();
+          clearFieldErrors();
+          setState('success', messages.success);
+        } catch {
+          setState('error', messages.error);
+        }
+      });
+    }
+  </script>
 </MainLayout>
