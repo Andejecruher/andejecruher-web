@@ -1,4 +1,5 @@
 ---
+import TechChip from '@/components/ui/TechChip.astro';
 import { getExperiences } from '../../../data/experience';
 import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
@@ -38,7 +39,7 @@ const experienceHref = localizePath('/experiencia', lang);
             <p class="text-sm leading-relaxed text-body-secondary">{exp.description}</p>
             <div class="flex flex-wrap gap-1.5">
               {exp.technologies.slice(0, 5).map((tech) => (
-                <span class="chip-tech">{tech}</span>
+                <TechChip label={tech} />
               ))}
             </div>
           </article>
