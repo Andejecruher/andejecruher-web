@@ -259,7 +259,7 @@ const seo = getPageSeo('contact', lang);
     </div>
   </section>
 
-  <script type="module">
+  <script>
     import emailjs from '@emailjs/browser';
 
     const formElement = document.getElementById('contact-form');
@@ -274,6 +274,9 @@ const seo = getPageSeo('contact', lang);
       const config = {
         serviceId: (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ?? '').trim(),
         templateId: (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ?? '').trim(),
+        templateConfirmationId: (
+          import.meta.env.PUBLIC_EMAILJS_TEMPLATE_CONFIRMATION_ID ?? ''
+        ).trim(),
         publicKey: (import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY ?? '').trim(),
       };
 
@@ -300,12 +303,12 @@ const seo = getPageSeo('contact', lang);
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
       let state = 'idle';
 
-      const getInputByName = (name) => {
+      const getInputByName = (name: string) => {
         const field = formElement.elements.namedItem(name);
         return field instanceof HTMLInputElement ? field : undefined;
       };
 
-      const getTextAreaByName = (name) => {
+      const getTextAreaByName = (name: string) => {
         const field = formElement.elements.namedItem(name);
         return field instanceof HTMLTextAreaElement ? field : undefined;
       };
@@ -317,7 +320,9 @@ const seo = getPageSeo('contact', lang);
         message: getTextAreaByName('message'),
       };
 
-      const setState = (nextState, statusMessage) => {
+      type FieldName = keyof typeof fields;
+
+      const setState = (nextState: string, statusMessage: string | null) => {
         state = nextState;
         statusElement.textContent = statusMessage;
         submitElement.disabled = nextState === 'loading';
@@ -326,12 +331,12 @@ const seo = getPageSeo('contact', lang);
         formElement.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
       };
 
-      const getFieldErrorElement = (fieldName) => {
+      const getFieldErrorElement = (fieldName: FieldName) => {
         const errorCandidate = formElement.querySelector(`[data-error-for="${fieldName}"]`);
         return errorCandidate instanceof HTMLElement ? errorCandidate : undefined;
       };
 
-      const setFieldError = (fieldName, message) => {
+      const setFieldError = (fieldName: FieldName, message: string | undefined) => {
         const field = fields[fieldName];
         if (field !== undefined) {
           field.setAttribute('aria-invalid', message !== undefined ? 'true' : 'false');
@@ -438,6 +443,9 @@ const seo = getPageSeo('contact', lang);
           await emailjs.sendForm(config.serviceId, config.templateId, formElement, {
             publicKey: config.publicKey,
           });
+          await emailjs.sendForm(config.serviceId, config.templateConfirmationId, formElement, {
+            publicKey: config.publicKey,
+          }); // Some email services require the form to be sent twice to work properly
           formElement.reset();
           clearFieldErrors();
           setState('success', messages.success);
