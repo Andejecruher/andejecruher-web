@@ -3,87 +3,87 @@
     "clupp": {
       "role": "Desarrollador Full Stack",
       "period": "Diciembre 2024 - Actualidad",
-      "location": "Mexico",
+      "location": "México",
       "modality": "Remoto · Tiempo completo",
       "description": "Participo en el desarrollo de una plataforma SaaS para el sector asegurador, impulsando funcionalidades de negocio con foco en rendimiento, escalabilidad y experiencia de usuario.",
       "responsibilities": [
-        "Diseno e implementacion de modulos frontend y backend para procesos de cotizacion y operacion interna.",
-        "Integracion de servicios y APIs para habilitar flujos criticos del producto en tiempo real.",
-        "Mantenimiento evolutivo de la arquitectura con enfoque en calidad de codigo, observabilidad y mantenibilidad.",
-        "Colaboracion con equipos de producto y negocio para convertir necesidades operativas en entregables tecnicos."
+        "Diseño e implementación de módulos frontend y backend para procesos de cotización y operación interna.",
+        "Integración de servicios y APIs para habilitar flujos críticos del producto en tiempo real.",
+        "Mantenimiento evolutivo de la arquitectura con enfoque en calidad de código, observabilidad y mantenibilidad.",
+        "Colaboración con equipos de producto y negocio para convertir necesidades operativas en entregables técnicos."
       ],
       "achievements": [
-        "Contribui a la evolucion de la plataforma principal y del multicotizador, mejorando estabilidad y tiempos de entrega.",
-        "Estandarice practicas de implementacion que redujeron retrabajos y facilitaron la colaboracion entre equipos."
+        "Contribuí a la evolución de la plataforma principal y del multicotizador, mejorando estabilidad y tiempos de entrega.",
+        "Estandaricé prácticas de implementación que redujeron retrabajos y facilitaron la colaboración entre equipos."
       ],
       "relatedProjects": ["insurance-boosters-platform", "multicotizador-seguros"]
     },
     "diferente-web": {
       "role": "Desarrollador Full Stack",
       "period": "Septiembre 2023 - Junio 2024",
-      "location": "Mexico",
+      "location": "México",
       "modality": "Remoto · Tiempo completo",
-      "description": "Lidere el desarrollo tecnico de soluciones e-commerce e integraciones personalizadas para optimizar operaciones comerciales y conectividad entre sistemas.",
+      "description": "Lideré el desarrollo técnico de soluciones e-commerce e integraciones personalizadas para optimizar operaciones comerciales y conectividad entre sistemas.",
       "responsibilities": [
-        "Diseno y mantenimiento de APIs para conectar plataformas internas con servicios de terceros.",
-        "Implementacion de integraciones en BigCommerce ajustadas a reglas de negocio especificas.",
-        "Modelado y administracion de datos en MySQL y MongoDB con foco en rendimiento y consistencia.",
-        "Participacion integral en ciclos de desarrollo full stack, desde discovery tecnico hasta despliegue."
+        "Diseño y mantenimiento de APIs para conectar plataformas internas con servicios de terceros.",
+        "Implementación de integraciones en BigCommerce ajustadas a reglas de negocio específicas.",
+        "Modelado y administración de datos en MySQL y MongoDB con foco en rendimiento y consistencia.",
+        "Participación integral en ciclos de desarrollo full stack, desde discovery técnico hasta despliegue."
       ],
       "achievements": [
-        "Entregue integraciones e-commerce que redujeron tareas manuales en procesos operativos clave.",
-        "Mejore la interoperabilidad entre aplicaciones mediante contratos API mas claros y mantenibles."
+        "Entregué integraciones e-commerce que redujeron tareas manuales en procesos operativos clave.",
+        "Mejoré la interoperabilidad entre aplicaciones mediante contratos API más claros y mantenibles."
       ]
     },
     "hoteles-buenaventura": {
       "role": "Desarrollador Full Stack",
       "period": "Abril 2023 - Julio 2023",
-      "location": "Puerto Vallarta, Jalisco, Mexico",
+      "location": "Puerto Vallarta, Jalisco, México",
       "modality": "Presencial",
-      "description": "Desarrolle una solucion de reservas con calendario interactivo para mejorar la gestion de disponibilidad y la experiencia de compra del usuario final.",
+      "description": "Desarrollé una solución de reservas con calendario interactivo para mejorar la gestión de disponibilidad y la experiencia de compra del usuario final.",
       "responsibilities": [
-        "Construccion de un calendario interactivo enfocado en seleccion de fechas y disponibilidad en tiempo real.",
-        "Desarrollo de REST APIs con Laravel y MySQL para centralizar la logica de reservas.",
-        "Implementacion de interfaz en React.js para facilitar flujo de reserva y conversion.",
-        "Integracion de frontend y backend garantizando trazabilidad de datos y comportamiento consistente."
+        "Construcción de un calendario interactivo enfocado en selección de fechas y disponibilidad en tiempo real.",
+        "Desarrollo de REST APIs con Laravel y MySQL para centralizar la lógica de reservas.",
+        "Implementación de interfaz en React.js para facilitar el flujo de reserva y conversión.",
+        "Integración de frontend y backend, garantizando trazabilidad de datos y comportamiento consistente."
       ],
       "achievements": [
-        "Implemente una experiencia de reserva mas clara que disminuyo fricciones en la seleccion de fechas.",
-        "Consolide la logica operativa en APIs reutilizables para futuras iteraciones del sistema."
+        "Implementé una experiencia de reserva más clara que disminuyó fricciones en la selección de fechas.",
+        "Consolidé la lógica operativa en APIs reutilizables para futuras iteraciones del sistema."
       ]
     },
     "the-rocket-code": {
       "role": "Desarrollador Full Stack",
       "period": "Marzo 2022 - Mayo 2023",
-      "location": "Mexico",
+      "location": "México",
       "modality": "Remoto · Tiempo completo",
-      "description": "Trabaje en productos web para distintos clientes, fortaleciendo arquitectura frontend y backend para mejorar mantenibilidad y velocidad de evolucion.",
+      "description": "Trabajé en productos web para distintos clientes, fortaleciendo arquitectura frontend y backend para mejorar mantenibilidad y velocidad de evolución.",
       "responsibilities": [
         "Desarrollo de funcionalidades de producto con React.js en aplicaciones orientadas a negocio.",
-        "Migracion de un cotizador desde Next.js a React.js para simplificar soporte y evolucion del codigo.",
-        "Diseno y construccion de APIs con Node.js, Express y MongoDB para casos de uso operativos.",
-        "Acompanamiento tecnico a equipos multidisciplinarios para entregar valor en ciclos cortos."
+        "Migración de un cotizador desde Next.js a React.js para simplificar soporte y evolución del código.",
+        "Diseño y construcción de APIs con Node.js, Express y MongoDB para casos de uso operativos.",
+        "Acompañamiento técnico a equipos multidisciplinarios para entregar valor en ciclos cortos."
       ],
       "achievements": [
-        "Reduje complejidad tecnica en un modulo clave tras la migracion de stack frontend.",
-        "Aporte mejoras estructurales que facilitaron despliegues y mantenimiento continuo."
+        "Reduje complejidad técnica en un módulo clave tras la migración de stack frontend.",
+        "Aporté mejoras estructurales que facilitaron despliegues y mantenimiento continuo."
       ],
       "relatedProjects": []
     },
     "creativa-softline": {
-      "role": "Disenador Web",
+      "role": "Diseñador Web",
       "period": "Experiencia inicial",
-      "location": "Tuxtla Gutierrez, Chiapas, Mexico",
+      "location": "Tuxtla Gutiérrez, Chiapas, México",
       "modality": "Presencial",
-      "description": "Inicie mi trayectoria profesional construyendo sitios web corporativos con foco en usabilidad, maquetacion responsive y consistencia visual.",
+      "description": "Inicié mi trayectoria profesional construyendo sitios web corporativos con foco en usabilidad, maquetación responsive y consistencia visual.",
       "responsibilities": [
-        "Diseno y desarrollo de interfaces web responsive para clientes de distintos sectores.",
-        "Implementacion de layouts con Bootstrap y frameworks CSS orientados a productividad.",
-        "Participacion en flujo completo de trabajo: propuesta visual, maquetacion y puesta en produccion."
+        "Diseño y desarrollo de interfaces web responsive para clientes de distintos sectores.",
+        "Implementación de layouts con Bootstrap y frameworks CSS orientados a productividad.",
+        "Participación en flujo completo de trabajo: propuesta visual, maquetación y puesta en producción."
       ],
       "achievements": [
-        "Fortaleci bases solidas en frontend, semantica HTML y buenas practicas de maquetacion.",
-        "Entregue sitios funcionales en tiempos ajustados manteniendo calidad visual y tecnica."
+        "Fortalecí bases sólidas en frontend, semántica HTML y buenas prácticas de maquetación.",
+        "Entregué sitios funcionales en tiempos ajustados, manteniendo calidad visual y técnica."
       ]
     }
   }

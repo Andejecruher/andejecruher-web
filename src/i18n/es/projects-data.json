@@ -1,43 +1,43 @@
 {
   "items": {
     "insurance-boosters-platform": {
-      "description": "Plataforma completa de gestion de seguros con arquitectura monorepo escalable. Sistema integral que incluye aplicacion web frontend, REST API con Express y servicios backend para cotizacion y automatizacion de workflows.",
-      "problem": "Las aseguradoras necesitan una plataforma moderna y escalable para gestionar cotizaciones, workflows automaticos y comunicaciones via Twilio, integrando APIs externas con un backend robusto capaz de procesar solicitudes en tiempo real.",
+      "description": "Plataforma completa de gestión de seguros con arquitectura monorepo escalable. Sistema integral que incluye aplicación web frontend, REST API con Express y servicios backend para cotización y automatización de workflows.",
+      "problem": "Las aseguradoras necesitan una plataforma moderna y escalable para gestionar cotizaciones, workflows automáticos y comunicaciones vía Twilio, integrando APIs externas con un backend robusto capaz de procesar solicitudes en tiempo real.",
       "role": "Desarrollador Full Stack"
     },
     "multicotizador-seguros": {
-      "description": "Frontend especializado para comparacion multicotizacion de polizas de seguros. Interfaz responsiva construida con Next.js 15 y Tailwind CSS, optimizada para comparacion en tiempo real y generacion de cotizaciones en PDF.",
-      "problem": "Los usuarios finales necesitan herramientas rapidas e intuitivas para comparar multiples cotizaciones de seguros de diferentes aseguradoras y generar reportes en PDF sin complejidad tecnica.",
+      "description": "Frontend especializado para comparación multicotización de pólizas de seguros. Interfaz responsiva construida con Next.js 15 y Tailwind CSS, optimizada para comparación en tiempo real y generación de cotizaciones en PDF.",
+      "problem": "Los usuarios finales necesitan herramientas rápidas e intuitivas para comparar múltiples cotizaciones de seguros de diferentes aseguradoras y generar reportes en PDF sin complejidad técnica.",
       "role": "Desarrollador Frontend"
     },
     "voz-ciudadana": {
-      "description": "Plataforma SaaS multi-tenant para gestion de reportes ciudadanos con integracion de canales de mensajeria y AI agents para clasificacion y respuesta automatizada.",
+      "description": "Plataforma SaaS multi-tenant para gestión de reportes ciudadanos con integración de canales de mensajería y AI Agents para clasificación y respuesta automatizada.",
       "problem": "Los municipios carecen de canales digitales unificados para recibir y gestionar reportes ciudadanos de forma eficiente.",
-      "role": "Desarrollador Full Stack y Arquitecto de sistema"
+      "role": "Desarrollador Full Stack y arquitecto de sistema"
     },
     "baklava-club-de-mar": {
-      "description": "Landing page elegante y responsive para club de mar con diseno premium, galeria de imagenes, seccion de servicios y formulario de contacto.",
+      "description": "Landing page elegante y responsive para club de mar con diseño premium, galería de imágenes, sección de servicios y formulario de contacto.",
       "problem": "El club necesitaba una presencia digital profesional que reflejara su propuesta de valor premium y atrajera nuevos socios.",
-      "role": "Desarrollador Frontend y Disenador"
+      "role": "Desarrollador Frontend y diseñador"
     },
     "code-creatives": {
-      "description": "Plataforma web para agencia creativa con gestion de proyectos, portal de clientes, seguimiento de entregables y comunicacion integrada.",
-      "problem": "La agencia gestionaba proyectos de forma manual generando fricciones con clientes y perdida de visibilidad en el estado de los trabajos.",
+      "description": "Plataforma web para agencia creativa con gestión de proyectos, portal de clientes, seguimiento de entregables y comunicación integrada.",
+      "problem": "La agencia gestionaba proyectos de forma manual, generando fricciones con clientes y pérdida de visibilidad en el estado de los trabajos.",
       "role": "Desarrollador Full Stack"
     },
     "hunadchat": {
-      "description": "Sistema de mensajeria multicanal con AI agents conversacionales, integracion de WhatsApp Business, flujos automatizados y panel de administracion.",
-      "problem": "Las empresas necesitaban centralizar la atencion al cliente de multiples canales con respuestas inteligentes y automatizadas.",
+      "description": "Sistema de mensajería multicanal con agentes de IA conversacionales, integración con WhatsApp, Instagram, Facebook y Telegram, flujos automatizados y panel de administración.",
+      "problem": "Las empresas necesitaban centralizar la atención al cliente de múltiples canales con respuestas inteligentes y automatizadas.",
       "role": "Desarrollador Backend e Integrador"
     },
     "andejecruher-web": {
-      "description": "Portafolio profesional desarrollado con Astro, TypeScript y Tailwind CSS para presentar experiencia en desarrollo full stack, SaaS, automatizacion e inteligencia artificial.",
-      "problem": "Resuelve la necesidad de contar con una presencia profesional clara, rapida y optimizada para mostrar experiencia tecnica, propuesta de valor y proyectos relevantes a reclutadores y potenciales clientes.",
-      "role": "Desarrollador Frontend y Disenador"
+      "description": "Portafolio profesional desarrollado con Astro, TypeScript y Tailwind CSS para presentar experiencia en desarrollo full stack, SaaS, automatización e inteligencia artificial.",
+      "problem": "Resuelve la necesidad de contar con una presencia profesional clara, rápida y optimizada para mostrar experiencia técnica, propuesta de valor y proyectos relevantes para reclutadores y potenciales clientes.",
+      "role": "Desarrollador Frontend y diseñador"
     },
     "url-shortener-api": {
-      "description": "REST API para acortamiento de URLs con generacion de codigos unicos, redireccion, edicion, eliminacion y metricas de uso, diseniada con una estructura modular de backend.",
-      "problem": "Resuelve el caso de uso de transformar enlaces largos en URLs cortas y manejables, incorporando estadisticas basicas y operaciones CRUD para servicios ligeros, MVPs o integraciones internas.",
+      "description": "REST API para acortamiento de URLs con generación de códigos únicos, redirección, edición, eliminación y métricas de uso, diseñada con una estructura modular de backend.",
+      "problem": "Resuelve el caso de uso de transformar enlaces largos en URLs cortas y manejables, incorporando estadísticas básicas y operaciones CRUD para servicios ligeros, MVPs o integraciones internas.",
       "role": "Desarrollador Backend"
     }
   }

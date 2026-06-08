@@ -29,12 +29,13 @@ const normalizeTag = (value: string): string => {
 };
 
 const filterOptions = [
-  { label: 'SaaS', value: normalizeTag('SaaS') },
-  { label: 'Laravel', value: normalizeTag('Laravel') },
-  { label: 'Node.js', value: normalizeTag('Node.js') },
-  { label: 'React', value: normalizeTag('React') },
-  { label: 'Astro', value: normalizeTag('Astro') },
-  { label: 'IA', value: normalizeTag('IA') },
+  { label: t('projects:filter-tag-saas'), value: normalizeTag('SaaS') },
+  { label: t('projects:filter-tag-laravel'), value: normalizeTag('Laravel') },
+  { label: t('projects:filter-tag-nodejs'), value: normalizeTag('Node.js') },
+  { label: t('projects:filter-tag-python'), value: normalizeTag('Python') },
+  { label: t('projects:filter-tag-react'), value: normalizeTag('React') },
+  { label: t('projects:filter-tag-astro'), value: normalizeTag('Astro') },
+  { label: t('projects:filter-tag-ai'), value: normalizeTag(t('projects:filter-tag-ai')) },
 ] as const;
 ---
 

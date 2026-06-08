@@ -1,17 +1,17 @@
 {
   "page-title": "Contacto",
-  "page-description": "Contacta a Andejecruher — Full Stack Developer disponible para proyectos, colaboraciones y consultas técnicas.",
+  "page-description": "Contacta a Andejecruher — Full Stack Developer (backend-first) disponible para proyectos SaaS, APIs REST, automatización e integraciones empresariales.",
   "header-badge": "Contacto",
   "header-title": "Hablemos de tu próximo proyecto",
-  "header-subtitle": "Estoy disponible para proyectos freelance, colaboraciones y consultas técnicas. No dudes en escribir.",
+  "header-subtitle": "Disponible para proyectos freelance y colaboraciones técnicas con foco en backend, frontend de producto, SaaS, APIs, IA y automatización.",
   "methods-heading": "Métodos de contacto",
-  "methods-subtext": "Puedes contactarme por cualquiera de estos canales. Respondo en menos de 24 horas.",
+  "methods-subtext": "Puedes contactarme por cualquiera de estos canales para consultas técnicas o colaboraciones. Respondo en menos de 24 horas.",
   "method-email-description": "Para consultas de proyectos o colaboraciones.",
   "method-whatsapp-description": "Para conversaciones rápidas y consultas directas.",
   "method-github-description": "Revisa mi código y proyectos open source.",
   "method-linkedin-description": "Conecta conmigo profesionalmente.",
   "form-heading": "Envíame un mensaje",
-  "form-subtext": "Describe tu proyecto o consulta y te respondo en menos de 24 horas.",
+  "form-subtext": "Comparte tu contexto, objetivo y stack actual. Te respondo en menos de 24 horas.",
   "form-name-label": "Nombre",
   "form-name-placeholder": "Tu nombre",
   "form-email-label": "Email",
@@ -22,5 +22,5 @@
   "form-message-placeholder": "Cuéntame sobre tu proyecto, idea o consulta...",
   "form-required-aria": "requerido",
   "form-submit": "Enviar mensaje",
-  "form-disclaimer": "El formulario se conectará próximamente con Formspree o un endpoint propio."
+  "form-disclaimer": "Tus datos se usarán únicamente para responder tu mensaje."
 }

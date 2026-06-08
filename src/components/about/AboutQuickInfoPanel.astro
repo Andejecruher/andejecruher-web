@@ -17,13 +17,14 @@ interface SocialLinkItem {
 interface Props {
   heading: string;
   infoItems: readonly InfoItem[];
+  brandingLabel: string;
   brandingTitle: string;
   brandingSubtitle: string;
   socialHeading: string;
   socialLinks: readonly SocialLinkItem[];
 }
 
-const { heading, infoItems, brandingTitle, brandingSubtitle, socialHeading, socialLinks } = Astro.props;
+const { heading, infoItems, brandingLabel, brandingTitle, brandingSubtitle, socialHeading, socialLinks } = Astro.props;
 ---
 
 <aside class="card p-6 md:p-7 xl:p-8 flex flex-col gap-7" aria-label={heading}>
@@ -48,7 +49,7 @@ const { heading, infoItems, brandingTitle, brandingSubtitle, socialHeading, soci
   </div>
 
   <div class="panel-accent p-4 md:p-5 flex flex-col gap-2.5">
-    <span class="text-[0.66rem] uppercase tracking-[0.12em] font-semibold text-accent">Brand</span>
+    <span class="text-[0.66rem] uppercase tracking-[0.12em] font-semibold text-accent">{brandingLabel}</span>
     <p class="text-base font-semibold leading-tight text-heading">{brandingTitle}</p>
     <p class="text-sm leading-relaxed text-body-secondary">{brandingSubtitle}</p>
   </div>

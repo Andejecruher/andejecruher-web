@@ -1,9 +1,9 @@
 {
   "index-meta-title": "Blog",
-  "index-meta-description": "Andejecruher's technical blog - articles about Full Stack Development, Laravel, Node.js, Python, AI Agents, SaaS, and DevOps.",
+  "index-meta-description": "Technical blog by Andejecruher covering Backend Engineering, Frontend Development, SaaS Architecture, REST APIs, AI Agents, Automation and ongoing DevOps growth.",
   "hero-badge": "Technical blog",
   "hero-title": "Notes and articles",
-  "hero-description": "Learnings, solutions, and technical reflections on full stack development, AI, SaaS, and automation.",
+  "hero-description": "Learnings and technical decisions on backend systems, product frontend delivery, SaaS architecture, applied AI and automation.",
   "hero-post-count-one": "published article",
   "hero-post-count-other": "published articles",
   "filters-label": "Filter by category",
@@ -26,7 +26,7 @@
   "post-tags-label": "Tags",
   "post-back-to-blog": "Back to blog",
   "post-cta-title": "Was this article helpful?",
-  "post-cta-body": "If you have questions, want to collaborate on a project, or just connect - I am available.",
+  "post-cta-body": "If you want to discuss backend systems, APIs, SaaS architecture, automation or a technical collaboration, I am available.",
   "post-cta-primary": "Message me",
   "post-cta-secondary": "View all articles"
 }

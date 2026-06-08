@@ -1,14 +1,14 @@
 {
-  "tagline": "Full Stack Developer. Building SaaS, AI Agents and automations that drive business.",
+  "tagline": "Full Stack Developer (backend-first). Building REST APIs, SaaS platforms, AI Agents and automations that drive measurable business outcomes.",
   "nav-title": "Navigation",
   "contact-title": "Contact",
-  "remote-available": "Remote · Available Worldwide",
+  "remote-available": "Remote-first · Available worldwide",
   "copyright": "All rights reserved.",
   "built-with": "Built with",
   "email-label": "Email",
   "whatsapp-label": "WhatsApp",
   "social-title": "Social and profiles",
-  "cta-title": "Have a project in mind?",
-  "cta-description": "Let’s talk about turning an idea into a modern, scalable and well-crafted web solution.",
+  "cta-title": "Do you have a technical challenge in mind?",
+  "cta-description": "Let's talk about turning a business need into a robust solution across backend, frontend, SaaS, APIs, AI and automation.",
   "signature": "Crafted with lots of coffee and product focus."
 }
