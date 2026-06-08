@@ -1,0 +1,20 @@
+---
+interface Props {
+  heading: string;
+  paragraphs: readonly string[];
+}
+
+const { heading, paragraphs } = Astro.props;
+---
+
+<article class="card p-6 md:p-8 xl:p-9 flex flex-col gap-5">
+  <h3 class="text-2xl md:text-[1.7rem] font-semibold leading-tight text-heading">{heading}</h3>
+
+  <div class="flex flex-col gap-4">
+    {
+      paragraphs.map((paragraph) => (
+        <p class="text-sm md:text-base leading-relaxed text-body-secondary">{paragraph}</p>
+      ))
+    }
+  </div>
+</article>

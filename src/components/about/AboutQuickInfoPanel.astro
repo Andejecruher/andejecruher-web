@@ -1,0 +1,78 @@
+---
+import AboutIcon from './AboutIcon.astro';
+
+interface InfoItem {
+  label: string;
+  value: string;
+  icon: string;
+}
+
+interface SocialLinkItem {
+  label: string;
+  href: string;
+  icon: string;
+  external: boolean;
+}
+
+interface Props {
+  heading: string;
+  infoItems: readonly InfoItem[];
+  brandingTitle: string;
+  brandingSubtitle: string;
+  socialHeading: string;
+  socialLinks: readonly SocialLinkItem[];
+}
+
+const { heading, infoItems, brandingTitle, brandingSubtitle, socialHeading, socialLinks } = Astro.props;
+---
+
+<aside class="card p-6 md:p-7 xl:p-8 flex flex-col gap-7" aria-label={heading}>
+  <div class="flex flex-col gap-4">
+    <h3 class="text-lg font-semibold text-heading">{heading}</h3>
+
+    <dl class="grid grid-cols-1 gap-3">
+      {
+        infoItems.map((item) => (
+          <div class="card-inner p-3.5 md:p-4 flex items-start gap-3.5">
+            <span class="icon-box icon-box-sm mt-0.5" aria-hidden="true">
+              <AboutIcon name={item.icon} />
+            </span>
+            <div class="min-w-0">
+              <dt class="text-[0.66rem] tracking-[0.12em] uppercase font-semibold text-body-muted">{item.label}</dt>
+              <dd class="mt-1 text-sm leading-snug text-body-secondary">{item.value}</dd>
+            </div>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="panel-accent p-4 md:p-5 flex flex-col gap-2.5">
+    <span class="text-[0.66rem] uppercase tracking-[0.12em] font-semibold text-accent">Brand</span>
+    <p class="text-base font-semibold leading-tight text-heading">{brandingTitle}</p>
+    <p class="text-sm leading-relaxed text-body-secondary">{brandingSubtitle}</p>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <h4 class="text-sm uppercase tracking-[0.1em] font-semibold text-body-muted">{socialHeading}</h4>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5">
+      {
+        socialLinks.map((link) => (
+          <a
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+            class="chip chip-interactive min-h-11 px-3.5 py-2.5 justify-between link-muted"
+            aria-label={link.label}
+          >
+            <span class="inline-flex items-center gap-2.5">
+              <AboutIcon name={link.icon} />
+              <span class="text-xs md:text-[0.78rem]">{link.label}</span>
+            </span>
+            <span class="text-accent" aria-hidden="true">→</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</aside>

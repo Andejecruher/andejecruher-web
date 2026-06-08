@@ -1,0 +1,38 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import AboutIcon from './AboutIcon.astro';
+
+interface JourneyStep {
+  label: string;
+  icon: string;
+}
+
+interface Props {
+  heading: string;
+  subtitle: string;
+  steps: readonly JourneyStep[];
+}
+
+const { heading, subtitle, steps } = Astro.props;
+---
+
+<section class="flex flex-col gap-6">
+  <SectionHeader title={heading} subtitle={subtitle} align="left" />
+
+  <ol class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-6 gap-4" role="list">
+    {
+      steps.map((step, index) => (
+        <li class="relative card p-4 md:p-5 flex flex-col gap-3 min-h-[8.5rem]">
+          <span class="icon-box icon-box-sm" aria-hidden="true">
+            <AboutIcon name={step.icon} />
+          </span>
+          <p class="text-sm leading-relaxed text-heading font-medium">{step.label}</p>
+
+          {index < steps.length - 1 && (
+            <span class="hidden 2xl:block absolute top-1/2 -right-2 w-4 h-px timeline-line-accent" aria-hidden="true"></span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</section>

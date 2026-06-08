@@ -1,0 +1,34 @@
+---
+import AboutIcon from './AboutIcon.astro';
+
+interface FocusItem {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  heading: string;
+  items: readonly FocusItem[];
+}
+
+const { heading, items } = Astro.props;
+---
+
+<section class="flex flex-col gap-6" aria-label={heading}>
+  <h3 class="text-2xl md:text-[1.7rem] font-semibold leading-tight text-heading">{heading}</h3>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      items.map((item, index) => (
+        <article class="card card-interactive p-5 flex flex-col gap-3 animate-fade-in-up" style={`animation-delay: ${index * 80}ms`}>
+          <span class="icon-box icon-box-lg" aria-hidden="true">
+            <AboutIcon name={item.icon} class="w-[1.1rem] h-[1.1rem]" />
+          </span>
+          <h4 class="text-sm md:text-base font-semibold text-heading">{item.title}</h4>
+          <p class="text-xs md:text-sm leading-relaxed text-body-secondary">{item.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

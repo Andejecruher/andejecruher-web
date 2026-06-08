@@ -1,0 +1,25 @@
+---
+import AboutIcon from './AboutIcon.astro';
+
+interface Props {
+  heading: string;
+  description: string;
+  closingLine: string;
+}
+
+const { heading, description, closingLine } = Astro.props;
+---
+
+<section class="panel-accent p-6 md:p-8 xl:p-10 flex flex-col gap-5" aria-label={heading}>
+  <div class="inline-flex items-center gap-2.5 w-fit badge badge-accent">
+    <AboutIcon name="target" class="w-3.5 h-3.5" />
+    {heading}
+  </div>
+
+  <p class="text-base md:text-lg leading-relaxed text-body-secondary max-w-4xl">
+    {description}
+  </p>
+  <p class="text-sm md:text-base leading-relaxed text-heading font-medium max-w-3xl">
+    {closingLine}
+  </p>
+</section>

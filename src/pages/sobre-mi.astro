@@ -1,8 +1,14 @@
 ---
 import isotipoDark from '../assets/isotipo-dark.png';
 import isotipoLight from '../assets/isotipo.png';
+import AboutCareerJourney from '../components/about/AboutCareerJourney.astro';
+import AboutExecutiveSummary from '../components/about/AboutExecutiveSummary.astro';
+import AboutFocusAreas from '../components/about/AboutFocusAreas.astro';
+import AboutHero from '../components/about/AboutHero.astro';
+import AboutProfessionalGoal from '../components/about/AboutProfessionalGoal.astro';
+import AboutProfessionalImpact from '../components/about/AboutProfessionalImpact.astro';
+import AboutQuickInfoPanel from '../components/about/AboutQuickInfoPanel.astro';
 import PageHeader from '../components/ui/PageHeader.astro';
-import SectionHeader from '../components/ui/SectionHeader.astro';
 import { focusAreas } from '../data/focusAreas';
 import { getProfile } from '../data/profile';
 import { socialLinks } from '../data/socialLinks';
@@ -13,8 +19,82 @@ import { getPageSeo } from '../seo/pages';
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const profile = getProfile(lang);
-const aboutParagraphs = profile.aboutParagraphs;
 const seo = getPageSeo('about', lang);
+
+const heroSpecializations = [
+  t('about:hero-chip-backend'),
+  t('about:hero-chip-frontend'),
+  t('about:hero-chip-saas'),
+  t('about:hero-chip-ai'),
+  t('about:hero-chip-automation'),
+  t('about:hero-chip-integrations'),
+];
+
+const executiveSummaryParagraphs = [
+  t('about:executive-summary-p1'),
+  t('about:executive-summary-p2'),
+  t('about:executive-summary-p3'),
+];
+
+const quickInfoItems = [
+  { label: t('about:quick-info-location'), value: profile.location, icon: 'map-pin' },
+  { label: t('about:quick-info-modality'), value: t('about:quick-info-modality-value'), icon: 'monitor' },
+  {
+    label: t('about:quick-info-role'),
+    value: `${profile.role} · ${t('about:quick-info-role-value')}`,
+    icon: 'briefcase',
+  },
+  {
+    label: t('about:quick-info-specialization'),
+    value: t('about:quick-info-specialization-value'),
+    icon: 'sparkles',
+  },
+  {
+    label: t('about:quick-info-availability'),
+    value: profile.availableForProjects
+      ? t('about:available-for-projects')
+      : t('about:quick-info-availability-limited'),
+    icon: 'calendar-check',
+  },
+];
+
+const mappedFocusAreas = focusAreas.map((area) => ({
+  icon: area.icon,
+  title: t(`about:focus-${area.key}-title`),
+  description: t(`about:focus-${area.key}-desc`),
+}));
+
+const impactItems = [
+  {
+    icon: 'layers',
+    title: t('about:impact-platform-title'),
+    description: t('about:impact-platform-desc'),
+  },
+  {
+    icon: 'link-2',
+    title: t('about:impact-integrations-title'),
+    description: t('about:impact-integrations-desc'),
+  },
+  {
+    icon: 'workflow',
+    title: t('about:impact-execution-title'),
+    description: t('about:impact-execution-desc'),
+  },
+  {
+    icon: 'trending-up',
+    title: t('about:impact-growth-title'),
+    description: t('about:impact-growth-desc'),
+  },
+];
+
+const journeySteps = [
+  { icon: 'code-2', label: t('about:journey-step-frontend') },
+  { icon: 'server', label: t('about:journey-step-backend') },
+  { icon: 'building-2', label: t('about:journey-step-saas') },
+  { icon: 'workflow', label: t('about:journey-step-automation') },
+  { icon: 'bot', label: t('about:journey-step-ai') },
+  { icon: 'cloud', label: t('about:journey-step-devops') },
+];
 ---
 
 <MainLayout {...seo}>
@@ -25,164 +105,58 @@ const seo = getPageSeo('about', lang);
   />
 
   <section class="section-spacing section-bg-primary">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-        <div class="flex flex-col items-center lg:items-start gap-6">
-          <div class="relative w-48 h-48 rounded-2xl flex items-center justify-center panel-accent">
-            <div
-              class="absolute inset-0 rounded-2xl opacity-[0.1] glow-radial-subtle"
-              aria-hidden="true"
-            >
-            </div>
-            <img
-              src={isotipoDark.src}
-              alt="Andejecruher AC isotipo"
-              width={isotipoDark.width}
-              height={isotipoDark.height}
-              data-theme-logo
-              data-logo-light-src={isotipoLight.src}
-              data-logo-dark-src={isotipoDark.src}
-              data-logo-light-width={String(isotipoLight.width)}
-              data-logo-dark-width={String(isotipoDark.width)}
-              data-logo-light-height={String(isotipoLight.height)}
-              data-logo-dark-height={String(isotipoDark.height)}
-              class="w-32 h-32 object-contain relative z-10"
-            />
-          </div>
+    <div class="max-w-6xl mx-auto flex flex-col gap-10 md:gap-12 xl:gap-16">
+      <AboutHero
+        name={profile.name}
+        role={profile.role}
+        title={t('about:hero-title')}
+        subtitle={t('about:hero-subtitle')}
+        specializations={heroSpecializations}
+        logoDarkSrc={isotipoDark.src}
+        logoLightSrc={isotipoLight.src}
+        logoDarkWidth={isotipoDark.width}
+        logoDarkHeight={isotipoDark.height}
+        logoLightWidth={isotipoLight.width}
+        logoLightHeight={isotipoLight.height}
+      />
 
-          <div>
-            <h2 class="text-xl font-semibold text-heading">{profile.name}</h2>
-            <p class="text-sm mt-1 text-accent">{profile.role}</p>
-            <p class="text-xs mt-2 text-body-muted">{profile.location}</p>
-          </div>
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.85fr)] gap-6 xl:gap-7 items-start">
+        <div class="flex flex-col gap-8 md:gap-10">
+          <AboutExecutiveSummary
+            heading={t('about:executive-summary-heading')}
+            paragraphs={executiveSummaryParagraphs}
+          />
 
-          <div class="flex flex-wrap gap-2">
-            {
-              socialLinks.map((link) => (
-                <a
-                  href={link.href}
-                  class="chip chip-interactive link-muted"
-                  target={link.external ? '_blank' : undefined}
-                  rel={link.external ? 'noopener noreferrer' : undefined}
-                  aria-label={link.label}
-                >
-                  {link.label}
-                </a>
-              ))
-            }
-          </div>
-
-          {
-            profile.availableForProjects && (
-              <span class="badge badge-accent">
-                <span
-                  class="w-1.5 h-1.5 rounded-full bg-current animate-pulse inline-block"
-                  aria-hidden="true"
-                />
-                {t('about:available-for-projects')}
-              </span>
-            )
-          }
+          <AboutFocusAreas heading={t('about:focus-areas-heading')} items={mappedFocusAreas} />
         </div>
 
-        <div class="lg:col-span-2 flex flex-col gap-5">
-          {
-            aboutParagraphs.map((para) => (
-              <p class="text-base leading-relaxed text-body-secondary">{para}</p>
-            ))
-          }
-        </div>
+        <AboutQuickInfoPanel
+          heading={t('about:quick-info-heading')}
+          infoItems={quickInfoItems}
+          brandingTitle={profile.fullName}
+          brandingSubtitle={profile.tagline}
+          socialHeading={t('about:quick-info-social-heading')}
+          socialLinks={socialLinks}
+        />
       </div>
 
-      <div>
-        <SectionHeader title={t('about:focus-areas-heading')} align="center" />
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {
-            focusAreas.map((area, i) => (
-              <div
-                class={`card card-interactive p-5 flex flex-col gap-3 animate-fade-in-up`}
-                style={`animation-delay: ${i * 100}ms`}
-              >
-                <div class="icon-box icon-box-lg" aria-hidden="true">
-                  {area.icon === 'server' && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect width="20" height="8" x="2" y="2" rx="2" ry="2" />
-                      <rect width="20" height="8" x="2" y="14" rx="2" ry="2" />
-                      <line x1="6" x2="6.01" y1="6" y2="6" />
-                      <line x1="6" x2="6.01" y1="18" y2="18" />
-                    </svg>
-                  )}
-                  {area.icon === 'cloud' && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z" />
-                    </svg>
-                  )}
-                  {area.icon === 'cpu' && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect width="16" height="16" x="4" y="4" rx="2" />
-                      <rect width="6" height="6" x="9" y="9" rx="1" />
-                      <path d="M15 2v2M9 2v2M2 9h2M2 15h2M15 20v2M9 20v2M20 9h2M20 15h2" />
-                    </svg>
-                  )}
-                  {area.icon === 'message' && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                    </svg>
-                  )}
-                  {area.icon === 'settings' && (
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
-                </div>
+      <AboutProfessionalImpact
+        heading={t('about:impact-heading')}
+        subtitle={t('about:impact-subtitle')}
+        items={impactItems}
+      />
 
-                <h3 class="text-sm font-semibold text-heading">
-                  {t(`about:focus-${area.key}-title`)}
-                </h3>
-                <p class="text-xs leading-relaxed text-body-secondary">
-                  {t(`about:focus-${area.key}-desc`)}
-                </p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
+      <AboutCareerJourney
+        heading={t('about:journey-heading')}
+        subtitle={t('about:journey-subtitle')}
+        steps={journeySteps}
+      />
+
+      <AboutProfessionalGoal
+        heading={t('about:goal-heading')}
+        description={t('about:goal-description')}
+        closingLine={t('about:goal-closing-line')}
+      />
     </div>
   </section>
 </MainLayout>
