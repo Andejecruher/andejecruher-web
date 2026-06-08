@@ -161,7 +161,9 @@ const seo = getPageSeo('contact', lang);
                   data-error-for="name"
                   class="text-xs text-rose-300"
                   aria-live="polite"
-                  hidden></p>
+                  hidden
+                >
+                </p>
               </div>
               <div class="flex flex-col gap-1.5">
                 <label for="email" class="form-label">
@@ -183,7 +185,9 @@ const seo = getPageSeo('contact', lang);
                   data-error-for="email"
                   class="text-xs text-rose-300"
                   aria-live="polite"
-                  hidden></p>
+                  hidden
+                >
+                </p>
               </div>
             </div>
 
@@ -207,7 +211,9 @@ const seo = getPageSeo('contact', lang);
                 data-error-for="subject"
                 class="text-xs text-rose-300"
                 aria-live="polite"
-                hidden></p>
+                hidden
+              >
+              </p>
             </div>
 
             <div class="flex flex-col gap-1.5">
@@ -228,7 +234,9 @@ const seo = getPageSeo('contact', lang);
                 data-error-for="message"
                 class="text-xs text-rose-300"
                 aria-live="polite"
-                hidden></p>
+                hidden
+              >
+              </p>
             </div>
 
             <button id="contact-submit" type="submit" class="btn btn-primary w-full">
@@ -240,7 +248,9 @@ const seo = getPageSeo('contact', lang);
               class="text-sm text-center text-body-secondary min-h-5"
               role="status"
               aria-live="polite"
-              aria-atomic="true"></p>
+              aria-atomic="true"
+            >
+            </p>
 
             <p class="text-xs text-center text-body-muted">{t('contact:form-disclaimer')}</p>
           </form>
@@ -251,9 +261,6 @@ const seo = getPageSeo('contact', lang);
 
   <script type="module">
     import emailjs from '@emailjs/browser';
-
-    type FormState = 'idle' | 'loading' | 'success' | 'error';
-    type FieldName = 'name' | 'email' | 'subject' | 'message';
 
     const formElement = document.getElementById('contact-form');
     const submitElement = document.getElementById('contact-submit');
@@ -275,7 +282,8 @@ const seo = getPageSeo('contact', lang);
         submitLoading: formElement.dataset.submitLoading?.trim() ?? 'Sending message…',
         sending: formElement.dataset.statusSending?.trim() ?? 'Sending message…',
         success: formElement.dataset.statusSuccess?.trim() ?? 'Message sent successfully.',
-        error: formElement.dataset.statusError?.trim() ?? 'Message could not be sent. Please try again.',
+        error:
+          formElement.dataset.statusError?.trim() ?? 'Message could not be sent. Please try again.',
         missingConfig:
           formElement.dataset.statusMissingConfig?.trim() ??
           'Email service is not configured. Please try again later.',
@@ -283,44 +291,47 @@ const seo = getPageSeo('contact', lang);
         emailRequired: formElement.dataset.errorEmailRequired?.trim() ?? 'Please enter your email.',
         emailInvalid:
           formElement.dataset.errorEmailInvalid?.trim() ?? 'Please enter a valid email address.',
-        subjectRequired: formElement.dataset.errorSubjectRequired?.trim() ?? 'Please enter a subject.',
-        messageRequired: formElement.dataset.errorMessageRequired?.trim() ?? 'Please enter your message.',
+        subjectRequired:
+          formElement.dataset.errorSubjectRequired?.trim() ?? 'Please enter a subject.',
+        messageRequired:
+          formElement.dataset.errorMessageRequired?.trim() ?? 'Please enter your message.',
       };
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
-      let state: FormState = 'idle';
+      let state = 'idle';
 
-      const getInputByName = (name: string): HTMLInputElement | undefined => {
+      const getInputByName = (name) => {
         const field = formElement.elements.namedItem(name);
         return field instanceof HTMLInputElement ? field : undefined;
       };
 
-      const getTextAreaByName = (name: string): HTMLTextAreaElement | undefined => {
+      const getTextAreaByName = (name) => {
         const field = formElement.elements.namedItem(name);
         return field instanceof HTMLTextAreaElement ? field : undefined;
       };
 
-      const fields: Record<FieldName, HTMLInputElement | HTMLTextAreaElement | undefined> = {
+      const fields = {
         name: getInputByName('name'),
         email: getInputByName('email'),
         subject: getInputByName('subject'),
         message: getTextAreaByName('message'),
       };
 
-      const setState = (nextState: FormState, statusMessage: string): void => {
+      const setState = (nextState, statusMessage) => {
         state = nextState;
         statusElement.textContent = statusMessage;
         submitElement.disabled = nextState === 'loading';
-        submitElement.textContent = nextState === 'loading' ? messages.submitLoading : messages.submitIdle;
+        submitElement.textContent =
+          nextState === 'loading' ? messages.submitLoading : messages.submitIdle;
         formElement.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
       };
 
-      const getFieldErrorElement = (fieldName: FieldName): HTMLElement | undefined => {
+      const getFieldErrorElement = (fieldName) => {
         const errorCandidate = formElement.querySelector(`[data-error-for="${fieldName}"]`);
         return errorCandidate instanceof HTMLElement ? errorCandidate : undefined;
       };
 
-      const setFieldError = (fieldName: FieldName, message: string | undefined): void => {
+      const setFieldError = (fieldName, message) => {
         const field = fields[fieldName];
         if (field !== undefined) {
           field.setAttribute('aria-invalid', message !== undefined ? 'true' : 'false');
@@ -333,14 +344,14 @@ const seo = getPageSeo('contact', lang);
         }
       };
 
-      const clearFieldErrors = (): void => {
+      const clearFieldErrors = () => {
         setFieldError('name', undefined);
         setFieldError('email', undefined);
         setFieldError('subject', undefined);
         setFieldError('message', undefined);
       };
 
-      const validateForm = (): boolean => {
+      const validateForm = () => {
         clearFieldErrors();
 
         const nameValue = fields.name?.value.trim() ?? '';
@@ -348,7 +359,7 @@ const seo = getPageSeo('contact', lang);
         const subjectValue = fields.subject?.value.trim() ?? '';
         const messageValue = fields.message?.value.trim() ?? '';
 
-        let firstInvalidField: HTMLInputElement | HTMLTextAreaElement | undefined;
+        let firstInvalidField;
 
         if (nameValue.length === 0) {
           setFieldError('name', messages.nameRequired);
@@ -388,7 +399,12 @@ const seo = getPageSeo('contact', lang);
           return;
         }
 
-        if (target.name === 'name' || target.name === 'email' || target.name === 'subject' || target.name === 'message') {
+        if (
+          target.name === 'name' ||
+          target.name === 'email' ||
+          target.name === 'subject' ||
+          target.name === 'message'
+        ) {
           setFieldError(target.name, undefined);
         }
 
@@ -408,7 +424,11 @@ const seo = getPageSeo('contact', lang);
           return;
         }
 
-        if (config.serviceId.length === 0 || config.templateId.length === 0 || config.publicKey.length === 0) {
+        if (
+          config.serviceId.length === 0 ||
+          config.templateId.length === 0 ||
+          config.publicKey.length === 0
+        ) {
           setState('error', messages.missingConfig);
           return;
         }
@@ -421,7 +441,7 @@ const seo = getPageSeo('contact', lang);
           formElement.reset();
           clearFieldErrors();
           setState('success', messages.success);
-        } catch {
+        } catch (err) {
           setState('error', messages.error);
         }
       });
