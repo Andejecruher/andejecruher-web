@@ -443,9 +443,6 @@ const seo = getPageSeo('contact', lang);
           await emailjs.sendForm(config.serviceId, config.templateId, formElement, {
             publicKey: config.publicKey,
           });
-          await emailjs.sendForm(config.serviceId, config.templateConfirmationId, formElement, {
-            publicKey: config.publicKey,
-          }); // Some email services require the form to be sent twice to work properly
           formElement.reset();
           clearFieldErrors();
           setState('success', messages.success);
