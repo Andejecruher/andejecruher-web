@@ -7,4 +7,17 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://andejecruher-web.vercel.app',
   integrations: [tailwind(), sitemap(), mdx(), icon()],
+
+  // Evita reinicios dobles por el watcher y permite puerto alternativo si ya está en uso
+  server: {
+    strictPort: false,
+  },
+
+  vite: {
+    server: {
+      watch: {
+        ignored: ['**/.astro/**', '**/dist/**', '**/node_modules/**'],
+      },
+    },
+  },
 });
