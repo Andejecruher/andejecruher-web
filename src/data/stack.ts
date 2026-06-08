@@ -43,7 +43,7 @@ export const capabilityMap: readonly Capability[] = [
   },
   {
     key: 'frontend-engineering',
-    technologies: ['React', 'Next.js', 'Astro', 'TypeScript', 'Tailwind CSS'],
+    technologies: ['React', 'Next.js', 'Vue', 'Astro', 'TypeScript', 'Tailwind CSS'],
   },
   {
     key: 'saas-architecture',

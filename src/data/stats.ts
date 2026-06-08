@@ -7,6 +7,6 @@ export interface Stat {
 
 export const stats: Stat[] = [
   { value: '23+', key: 'projects',    icon: 'rocket' },
-  { value: '5+',  key: 'experience',  icon: 'code' },
+  { value: '4+',  key: 'experience',  icon: 'code' },
   { value: '3+',  key: 'delivered',   icon: 'zap' },
 ];
