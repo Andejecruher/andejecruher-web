@@ -1,5 +1,6 @@
 ---
-import { getProjects, statusColors } from '../../../data/projects';
+import ProjectCard from '@/components/projects/ProjectCard.astro';
+import { getProjects } from '../../../data/projects';
 import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
 import SectionHeader from '../../ui/SectionHeader.astro';
@@ -23,28 +24,15 @@ const featured = getProjects(lang)
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       {
         featured.map((project, i) => (
-          <article
-            class={`card card-elevated card-interactive p-6 md:p-7 flex flex-col gap-4 cursor-default animate-fade-in-up delay-${(i + 1) * 100}`}
-          >
-            <div class="flex items-center justify-between gap-3">
-              <span class="text-xs font-mono text-body-muted">
-                {t(`projects:category-${project.categoryKey}`)}
-              </span>
-              <span class={`badge badge-neutral self-start border ${statusColors[project.status]}`}>
-                {t(`projects:status-${project.status}`)}
-              </span>
-            </div>
-
-            <h3 class="text-lg font-semibold text-heading">{project.name}</h3>
-
-            <p class="text-sm leading-relaxed flex-1 text-body-secondary">{project.description}</p>
-
-            <div class="flex flex-wrap gap-1.5">
-              {project.technologies.slice(0, 4).map((tech) => (
-                <span class="chip">{tech}</span>
-              ))}
-            </div>
-          </article>
+          <div class={`h-full animate-fade-in-up delay-${(i + 1) * 100}`}>
+            <ProjectCard
+              project={project}
+              variant="featured"
+              showImage={true}
+              showProblem={false}
+              showActions={false}
+            />
+          </div>
         ))
       }
     </div>

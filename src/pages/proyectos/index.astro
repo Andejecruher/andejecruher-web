@@ -1,7 +1,8 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 import PageHeader from '../../components/ui/PageHeader.astro';
-import { getProjects, statusColors } from '../../data/projects';
+import ProjectCard from '../../components/projects/ProjectCard.astro';
+import { getProjects } from '../../data/projects';
 import { getLang, useTranslations } from '../../i18n/utils';
 import { getPageSeo } from '../../seo/pages';
 
@@ -9,6 +10,32 @@ const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const projects = getProjects(lang);
 const seo = getPageSeo('projects', lang);
+
+const TAG_ALIASES: Record<string, string> = {
+  ia: 'ai',
+};
+
+const normalizeTag = (value: string): string => {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return TAG_ALIASES[normalized] ?? normalized;
+};
+
+const filterOptions = [
+  { label: 'SaaS', value: normalizeTag('SaaS') },
+  { label: 'Laravel', value: normalizeTag('Laravel') },
+  { label: 'Node.js', value: normalizeTag('Node.js') },
+  { label: 'React', value: normalizeTag('React') },
+  { label: 'Astro', value: normalizeTag('Astro') },
+  { label: 'IA', value: normalizeTag('IA') },
+] as const;
 ---
 
 <MainLayout {...seo}>
@@ -21,7 +48,7 @@ const seo = getPageSeo('projects', lang);
   <section class="section-spacing section-bg-primary">
     <div class="max-w-6xl mx-auto">
       <div
-        class="mb-10 flex flex-wrap gap-2"
+        class="mb-10 flex flex-wrap gap-2.5"
         role="group"
         aria-label={t('projects:filter-group-aria')}
       >
@@ -29,9 +56,9 @@ const seo = getPageSeo('projects', lang);
           {t('projects:filter-all')}
         </button>
         {
-          ['SaaS', 'Laravel', 'Node.js', 'Python', 'React', 'Astro', 'IA'].map((tag) => (
-            <button class="filter-btn chip-filter" data-filter={tag}>
-              {tag}
+          filterOptions.map(({ label, value }) => (
+            <button class="filter-btn chip-filter" data-filter={value}>
+              {label}
             </button>
           ))
         }
@@ -40,86 +67,13 @@ const seo = getPageSeo('projects', lang);
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projects-grid">
         {
           projects.map((project) => (
-            <article
-              class="project-card card card-interactive p-6 flex flex-col gap-4"
-              data-tags={project.tags.join(',')}
-            >
-              <div class="flex items-center justify-between gap-3">
-                <span class="text-xs font-mono text-body-muted">
-                  {t(`projects:category-${project.categoryKey}`)}
-                </span>
-                <span class={`badge badge-neutral border ${statusColors[project.status]}`}>
-                  {t(`projects:status-${project.status}`)}
-                </span>
-              </div>
-
-              <h2 class="text-xl font-semibold text-heading">
-                <a href={`/proyectos/${project.slug}`} class="link-heading transition-colors">
-                  {project.name}
-                </a>
-              </h2>
-
-              <p class="text-sm leading-relaxed flex-1 text-body-secondary">
-                {project.description}
-              </p>
-
-              <div class="card-inner p-3">
-                <p class="text-label mb-1">{t('projects:problem-label')}</p>
-                <p class="text-xs leading-relaxed text-body-secondary">{project.problem}</p>
-              </div>
-
-              <p class="text-xs font-mono text-body-muted">
-                {t('projects:role-label')}: <span class="text-body-secondary">{project.role}</span>
-              </p>
-
-              <div class="flex flex-wrap gap-1.5">
-                {project.technologies.map((tech) => (
-                  <span class="chip-tech">{tech}</span>
-                ))}
-              </div>
-
-              <div class="flex gap-3 pt-2 border-t divider">
-                <a
-                  href={`/proyectos/${project.slug}`}
-                  class="inline-flex items-center gap-1.5 text-xs font-medium link-accent"
-                >
-                  {t('projects:view-project')}
-                </a>
-                {project.links.demo ? (
-                  <a
-                    href={project.links.demo}
-                    class="inline-flex items-center gap-1.5 text-xs font-medium link-accent"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t('projects:demo-label')}
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      aria-hidden="true"
-                    >
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
-                    </svg>
-                  </a>
-                ) : (
-                  <span class="text-xs text-body-muted">{t('projects:no-demo')}</span>
-                )}
-                {project.links.repo && (
-                  <a
-                    href={project.links.repo}
-                    class="inline-flex items-center gap-1.5 text-xs font-medium link-muted"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t('projects:repo-label')}
-                  </a>
-                )}
-              </div>
-            </article>
+            <ProjectCard
+              project={project}
+              variant="default"
+              showImage={true}
+              showProblem={true}
+              showActions={true}
+            />
           ))
         }
       </div>
@@ -128,12 +82,29 @@ const seo = getPageSeo('projects', lang);
 </MainLayout>
 
 <script>
+  const TAG_ALIASES: Record<string, string> = {
+    ia: 'ai',
+  };
+
+  const normalizeTag = (value: string): string => {
+    const normalized = value
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[\s_]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    return TAG_ALIASES[normalized] ?? normalized;
+  };
+
   const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards = document.querySelectorAll<HTMLElement>('.project-card');
 
   filterBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter ?? 'all';
+      const selectedFilter = normalizeTag(btn.dataset.filter ?? 'all');
 
       filterBtns.forEach((b) => {
         b.classList.remove('chip-filter-active');
@@ -143,8 +114,11 @@ const seo = getPageSeo('projects', lang);
       btn.classList.remove('chip-filter');
 
       cards.forEach((card) => {
-        const tags = card.dataset.tags ?? '';
-        const show = filter === 'all' || tags.split(',').some((t) => t.trim() === filter);
+        const cardTags = (card.dataset.tags ?? '')
+          .split(',')
+          .map((tag) => normalizeTag(tag))
+          .filter((tag) => tag.length > 0);
+        const show = selectedFilter === 'all' || cardTags.includes(selectedFilter);
         card.style.display = show ? 'flex' : 'none';
       });
     });

@@ -1,0 +1,166 @@
+---
+import TechChip from '@/components/ui/TechChip.astro';
+import ProjectMedia from '@/components/projects/ProjectMedia.astro';
+import type { Project } from '@/data/projects';
+import { statusColors } from '@/data/projects';
+import { localizePath } from '@/i18n/routing';
+import { getLang, useTranslations } from '@/i18n/utils';
+
+export type ProjectCardVariant = 'default' | 'featured' | 'compact';
+
+interface Props {
+  project: Project;
+  variant?: ProjectCardVariant;
+  showImage?: boolean;
+  showProblem?: boolean;
+  showActions?: boolean;
+}
+
+const { project, variant = 'default', showImage, showProblem, showActions } = Astro.props as Props;
+
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+
+const projectHref = localizePath(`/proyectos/${project.slug}`, lang);
+
+const shouldShowImage = showImage ?? true;
+const shouldShowProblem = showProblem ?? variant === 'default';
+const shouldShowActions = showActions ?? variant !== 'featured';
+
+const TAG_ALIASES: Record<string, string> = {
+  ia: 'ai',
+};
+
+const normalizeTag = (value: string): string => {
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return TAG_ALIASES[normalized] ?? normalized;
+};
+
+const canonicalTags = Array.from(new Set(project.tags.map(normalizeTag).filter(Boolean)));
+
+const cardPadding = variant === 'default' ? 'p-6 md:p-7' : 'p-5 md:p-6';
+const cardGap = variant === 'default' ? 'gap-4' : 'gap-3.5';
+const maxTechnologies = variant === 'compact' ? 3 : variant === 'featured' ? 4 : project.technologies.length;
+const titleSize = variant === 'default' ? 'text-xl sm:text-2xl' : variant === 'compact' ? 'text-base sm:text-lg' : 'text-lg';
+const TitleTag = variant === 'default' ? 'h2' : 'h3';
+const description =
+  variant === 'default' || project.description.length <= 160
+    ? project.description
+    : `${project.description.slice(0, 157).trimEnd()}...`;
+---
+
+<article
+  class={`project-card card card-elevated card-interactive h-full ${cardPadding} ${cardGap} flex flex-col cursor-default`}
+  data-tags={canonicalTags.join(',')}
+>
+  <div class="flex items-center justify-between gap-2.5">
+    <span class="text-xs font-mono uppercase tracking-[0.08em] text-body-muted">{t(`projects:category-${project.categoryKey}`)}</span>
+    <span class={`badge badge-neutral border ${statusColors[project.status]}`}>
+      {t(`projects:status-${project.status}`)}
+    </span>
+  </div>
+
+  <TitleTag class={`${titleSize} font-semibold leading-tight tracking-tight text-heading`}>
+    <a href={projectHref} class="link-heading transition-colors">
+      {project.name}
+    </a>
+  </TitleTag>
+
+  {
+    shouldShowImage && (
+      <ProjectMedia
+        name={project.name}
+        image={project.image}
+        alt={`${project.name} project preview`}
+        loading="lazy"
+        className="rounded-2xl"
+        initialsSizeClass="text-3xl"
+      />
+    )
+  }
+
+  <p class="text-sm leading-relaxed flex-1 text-body-secondary">{description}</p>
+
+  {
+    shouldShowProblem && project.problem && (
+      <div class="card-inner p-3.5">
+        <p class="text-label mb-1.5">{t('projects:problem-label')}</p>
+        <p class="text-xs leading-relaxed text-body-secondary">{project.problem}</p>
+      </div>
+    )
+  }
+
+  {
+    variant === 'default' && (
+      <p class="text-xs font-mono text-body-muted">
+        {t('projects:role-label')}: <span class="text-body-secondary">{project.role}</span>
+      </p>
+    )
+  }
+
+  <div class="flex flex-wrap gap-2">
+    {project.technologies.slice(0, maxTechnologies).map((tech) => <TechChip label={tech} />)}
+  </div>
+
+  {
+    shouldShowActions && (
+      <div class="flex flex-wrap gap-3 pt-3 border-t divider">
+        <a href={projectHref} class="inline-flex items-center gap-1.5 text-xs font-semibold link-accent">
+          {t('projects:view-project')}
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        {project.links.demo && (
+          <a
+            href={project.links.demo}
+            class="inline-flex items-center gap-1.5 text-xs font-medium link-accent"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('projects:demo-label')}
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+            </svg>
+          </a>
+        )}
+
+        {project.links.repo && (
+          <a
+            href={project.links.repo}
+            class="inline-flex items-center gap-1.5 text-xs font-medium link-muted"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t('projects:repo-label')}
+          </a>
+        )}
+      </div>
+    )
+  }
+</article>

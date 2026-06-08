@@ -80,9 +80,9 @@ const projectsBase: ProjectBase[] = [
     status: 'privado',
     featured: true,
     links: {
-      repo: 'https://github.com/AutoClupp/insurance-boosters-app',
       demo: 'https://portal.insuranceboosters.com/ib/pas/login',
     },
+    image: '/images/projects/insurance-boosters-platform.webp',
   },
   {
     name: 'Insurance Boosters Multicotizador',
@@ -93,9 +93,9 @@ const projectsBase: ProjectBase[] = [
     status: 'privado',
     featured: true,
     links: {
-      repo: 'https://github.com/AutoClupp/insurance-boosters-multicotizador',
       demo: 'https://dev.multicotizador.insuranceboosters.com/pruebas-ib/andejecruher-grupo',
     },
+    image: '/images/projects/multicotizador-seguros.webp',
   },
   {
     name: 'Voz Ciudadana',
@@ -109,6 +109,7 @@ const projectsBase: ProjectBase[] = [
       repo: 'https://github.com/Andejecruher/voz-ciudadana',
       demo: 'https://voz-ciudadana-rust.vercel.app',
     },
+    image: '/images/projects/voz-ciudadana.webp',
   },
   {
     name: 'Baklava Club de Mar',
@@ -122,6 +123,7 @@ const projectsBase: ProjectBase[] = [
       repo: 'https://github.com/Andejecruher/baklava',
       demo: 'https://baklava-seven.vercel.app',
     },
+    image: '/images/projects/baklava-club-de-mar.webp',
   },
   {
     name: 'Code Creatives',
@@ -134,18 +136,7 @@ const projectsBase: ProjectBase[] = [
     links: {
       repo: 'https://github.com/Andejecruher/code-creatives',
     },
-  },
-  {
-    name: 'HunadChat',
-    slug: 'hunadchat',
-    categoryKey: 'messaging-ai-conversational',
-    tags: ['Node.js', 'Laravel', 'WhatsApp', 'AI Agents', 'Automation'],
-    technologies: ['Node.js', 'Laravel', 'WhatsApp API', 'FastAPI', 'Python', 'MongoDB', 'Docker'],
-    status: 'en-desarrollo',
-    featured: true,
-    links: {
-      repo: 'https://github.com/Andejecruher/hunad-chat',
-    },
+    image: '/images/projects/code-creatives.webp',
   },
   {
     name: 'Andejecruher Web',
@@ -157,6 +148,19 @@ const projectsBase: ProjectBase[] = [
     featured: true,
     links: {
       repo: 'https://github.com/Andejecruher/andejecruher-web',
+    },
+    image: '/images/projects/andejecruher-web.webp',
+  },
+  {
+    name: 'HunadChat',
+    slug: 'hunadchat',
+    categoryKey: 'messaging-ai-conversational',
+    tags: ['Node.js', 'Laravel', 'WhatsApp', 'AI Agents', 'Automation'],
+    technologies: ['Node.js', 'Laravel', 'WhatsApp API', 'FastAPI', 'Python', 'MongoDB', 'Docker'],
+    status: 'en-desarrollo',
+    featured: true,
+    links: {
+      repo: 'https://github.com/Andejecruher/hunad-chat',
     },
   },
   {

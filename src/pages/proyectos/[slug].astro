@@ -1,5 +1,6 @@
 ---
 import { getProjectBySlug, getProjects, statusColors } from '../../data/projects';
+import ProjectMedia from '../../components/projects/ProjectMedia.astro';
 import { localizePath } from '../../i18n/routing';
 import { getLang, useTranslations } from '../../i18n/utils';
 import MainLayout from '../../layouts/MainLayout.astro';
@@ -34,10 +35,13 @@ const seo = seoFromProject({
 ---
 
 <MainLayout {...seo}>
-  <section class="relative pt-10 pb-8 px-4 overflow-hidden section-bg-secondary">
+  <section
+    class="relative overflow-hidden section-bg-secondary px-4 pb-10 sm:pb-12"
+    style="padding-top: calc(var(--site-header-height, 5rem) + clamp(1rem, 2.5vw, 1.75rem));"
+  >
     <div class="max-w-4xl mx-auto relative z-10">
       <nav
-        class="flex items-center gap-2 text-xs font-mono mb-8 text-body-muted"
+        class="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs font-mono text-body-muted sm:mb-8"
         aria-label={t('projects:breadcrumb-aria-label')}
       >
         <a href={homeHref} class="link-muted">{t('nav:item-home')}</a>
@@ -64,68 +68,63 @@ const seo = seoFromProject({
         >
           <path d="M9 18l6-6-6-6"></path>
         </svg>
-        <span class="text-body-secondary truncate max-w-48">{project.name}</span>
+        <span class="max-w-[12rem] truncate text-body-secondary sm:max-w-xs md:max-w-sm">{project.name}</span>
       </nav>
 
-      <div class="flex flex-wrap items-center gap-3 mb-4">
+      <div class="mb-5 flex flex-wrap items-center gap-2.5">
         <span class="chip chip-accent">{categoryLabel}</span>
         <span class={`badge badge-neutral border ${statusColors[project.status]}`}>
           {t(`projects:status-${project.status}`)}
         </span>
       </div>
 
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-heading mb-4">
+      <h1 class="mb-4 break-words text-3xl font-semibold leading-tight tracking-tight text-heading sm:mb-5 sm:text-4xl lg:text-5xl">
         {project.name}
       </h1>
 
-      <p class="text-base md:text-lg leading-relaxed text-body-secondary mb-6">
+      <p class="mb-7 max-w-3xl break-words text-base leading-7 text-body-secondary sm:leading-8 md:mb-8 md:text-lg">
         {project.description}
       </p>
 
-      <div class="flex flex-wrap gap-2 mb-8">
-        {project.tags.map((tag) => <span class="chip-tech">#{tag}</span>)}
+      <div class="mb-9 flex flex-wrap gap-2 sm:mb-10">
+        {project.tags.map((tag) => <span class="chip-tech break-words">#{tag}</span>)}
       </div>
 
-      {
-        project.image && (
-          <img
-            src={project.image}
-            alt={project.name}
-            width="896"
-            height="504"
-            class="w-full rounded-2xl object-cover mb-8 border divider"
-            loading="eager"
-          />
-        )
-      }
+      <ProjectMedia
+        name={project.name}
+        image={project.image}
+        alt={`${project.name} project preview`}
+        loading="eager"
+        className="mb-6 sm:mb-8"
+      />
     </div>
   </section>
 
-  <section class="py-12 px-4 section-bg-primary">
-    <div class="max-w-4xl mx-auto flex flex-col gap-8">
-      <div class="card p-6">
+  <section class="px-4 py-10 section-bg-primary sm:py-12">
+    <div class="mx-auto flex max-w-4xl flex-col gap-8 sm:gap-10">
+      <div class="card p-5 sm:p-7">
         <h2 class="text-label mb-3">{t('projects:problem-label')}</h2>
-        <p class="text-sm leading-relaxed text-body-secondary">{project.problem}</p>
+        <p class="break-words text-sm leading-relaxed text-body-secondary sm:text-base">{project.problem}</p>
       </div>
 
       <div>
         <h2 class="text-label mb-3">{t('projects:role-label')}</h2>
-        <p class="text-sm text-body-secondary">{project.role}</p>
+        <p class="break-words text-sm leading-relaxed text-body-secondary sm:text-base">{project.role}</p>
       </div>
 
       <div>
         <h2 class="text-label mb-3">{t('projects:technologies-label')}</h2>
-        <div class="flex flex-wrap gap-2">
-          {project.technologies.map((tech) => <span class="chip-tech">{tech}</span>)}
+        <div class="flex flex-wrap gap-x-2 gap-y-2.5">
+          {project.technologies.map((tech) => <span class="chip-tech break-words">{tech}</span>)}
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-4 pt-4 border-t divider">
+      <div class="mt-1 flex flex-wrap items-stretch gap-2.5 border-t pt-5 divider sm:mt-2 sm:items-center sm:gap-3">
         {
           project.links.demo ? (
             <a
               href={project.links.demo}
-              class="btn btn-primary inline-flex items-center gap-2"
+              class="btn btn-primary inline-flex w-full items-center justify-center gap-2 sm:min-w-[10.5rem] sm:w-auto"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -143,14 +142,14 @@ const seo = seoFromProject({
               </svg>
             </a>
           ) : (
-            <span class="text-sm text-body-muted">{t('projects:no-demo')}</span>
+            <span class="w-full text-sm text-body-muted sm:w-auto">{t('projects:no-demo')}</span>
           )
         }
         {
           project.links.repo && (
             <a
               href={project.links.repo}
-              class="btn btn-secondary inline-flex items-center gap-2"
+              class="btn btn-secondary inline-flex w-full items-center justify-center gap-2 sm:min-w-[10.5rem] sm:w-auto"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -158,7 +157,7 @@ const seo = seoFromProject({
             </a>
           )
         }
-        <a href={projectsHref} class="btn btn-secondary inline-flex items-center gap-2">
+        <a href={projectsHref} class="btn btn-ghost inline-flex w-full items-center justify-center gap-2 sm:ml-auto sm:min-w-[10.5rem] sm:w-auto">
           {t('projects:back-to-projects')}
         </a>
       </div>

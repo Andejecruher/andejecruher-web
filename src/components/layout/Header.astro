@@ -39,7 +39,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4">
+<header data-site-header class="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4">
   <nav
     class="nav-shell nav-shell-main max-w-7xl mx-auto flex items-center justify-between gap-3 px-3 py-2.5 sm:px-5 lg:px-6"
     aria-label={t('nav:aria-label')}
@@ -445,21 +445,32 @@ function isActive(href: string): boolean {
 </script>
 
 <script>
-  // Exponer la altura del header como variable CSS para que las secciones puedan compensarla.
   (function () {
+    const headerEl = document.querySelector<HTMLElement>('[data-site-header]');
+    if (!headerEl) return;
+
     function updateHeaderHeight() {
-      const headerEl = document.querySelector('header');
-      if (!headerEl || !headerEl.getBoundingClientRect) return;
-      const height = headerEl.getBoundingClientRect().height;
-      document.documentElement.style.setProperty('--site-header-height', `${height}px`);
+      const height = headerEl?.getBoundingClientRect().height;
+      if (height !== undefined) {
+        document.documentElement.style.setProperty(
+          '--site-header-height',
+          `${Math.ceil(height)}px`,
+        );
+      }
     }
 
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       updateHeaderHeight();
     } else {
-      document.addEventListener('DOMContentLoaded', updateHeaderHeight);
+      document.addEventListener('DOMContentLoaded', updateHeaderHeight, { once: true });
     }
 
+    window.addEventListener('load', updateHeaderHeight, { once: true });
     window.addEventListener('resize', updateHeaderHeight);
+
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(updateHeaderHeight);
+      observer.observe(headerEl);
+    }
   })();
 </script>
