@@ -1,0 +1,26 @@
+---
+import TechChip from '../ui/TechChip.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  technologies: readonly string[];
+  delayMs?: number;
+}
+
+const { title, description, technologies, delayMs = 0 } = Astro.props;
+---
+
+<article
+  class="card card-interactive p-6 md:p-7 xl:p-8 flex flex-col gap-6 animate-fade-in-up"
+  style={`animation-delay: ${delayMs}ms`}
+>
+  <header class="flex flex-col gap-2.5">
+    <h3 class="text-xl font-semibold leading-tight text-heading text-balance">{title}</h3>
+    <p class="text-sm md:text-[0.94rem] leading-relaxed text-body-secondary">{description}</p>
+  </header>
+
+  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3" role="list" aria-label={title}>
+    {technologies.map((technology) => <TechChip label={technology} />)}
+  </ul>
+</article>

@@ -1,12 +1,13 @@
 ---
-import { stackCategories } from '../../../data/stack';
+import TechChip from '@/components/ui/TechChip.astro';
+import { capabilityMap } from '../../../data/stack';
 import { localizePath } from '../../../i18n/routing';
 import { getLang, useTranslations } from '../../../i18n/utils';
 import SectionHeader from '../../ui/SectionHeader.astro';
 
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
-const mainCategories = stackCategories.slice(0, 3);
+const mainCapabilities = capabilityMap.slice(0, 3);
 const stackHref = localizePath('/stack', lang);
 ---
 
@@ -20,18 +21,16 @@ const stackHref = localizePath('/stack', lang);
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
       {
-        mainCategories.map((cat, i) => (
+        mainCapabilities.map((capability, i) => (
           <article
             class={`card card-interactive p-6 md:p-7 flex flex-col gap-4 animate-fade-in-up delay-${(i + 1) * 100}`}
           >
             <h3 class="text-base font-semibold text-heading">
-              {t(`stack:category-${cat.key}-name`)}
+              {t(`stack:capability-${capability.key}-title`)}
             </h3>
             <div class="flex flex-wrap gap-2">
-              {cat.techs.map((tech) => (
-                <span class={tech.level === 'expert' ? 'chip chip-accent' : 'chip'}>
-                  {tech.name}
-                </span>
+              {capability.technologies.map((technology) => (
+                <TechChip label={technology} />
               ))}
             </div>
           </article>

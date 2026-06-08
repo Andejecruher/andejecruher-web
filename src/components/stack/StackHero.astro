@@ -1,0 +1,35 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  specializations: readonly string[];
+}
+
+const { eyebrow, title, subtitle, specializations } = Astro.props;
+---
+
+<section class="relative card card-elevated overflow-hidden p-7 md:p-9 xl:p-11 mb-12 md:mb-16 animate-fade-in-up">
+  <div class="absolute -top-32 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,_rgba(16,199,223,0.22)_0%,_rgba(16,199,223,0)_72%)]" aria-hidden="true"></div>
+  <div class="absolute -bottom-28 left-1/2 h-56 w-72 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(20,241,201,0.16)_0%,_rgba(20,241,201,0)_72%)]" aria-hidden="true"></div>
+
+  <div class="relative z-10 flex flex-col gap-7">
+    <header class="max-w-3xl flex flex-col gap-4">
+      <span class="badge badge-accent w-fit">{eyebrow}</span>
+      <h2 class="text-3xl sm:text-4xl xl:text-5xl font-semibold leading-[1.08] tracking-tight text-heading text-balance">
+        {title}
+      </h2>
+      <p class="max-w-2xl text-base md:text-lg leading-relaxed text-body-secondary">{subtitle}</p>
+    </header>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3.5" role="list">
+      {
+        specializations.map((specialization, index) => (
+          <li class="chip chip-accent min-h-11 px-3.5 py-2.5 md:px-4 md:py-3 justify-center text-center text-xs md:text-sm font-medium leading-snug animate-fade-in-up" style={`animation-delay: ${120 + index * 90}ms`}>
+            {specialization}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

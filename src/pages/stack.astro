@@ -1,6 +1,9 @@
 ---
+import CapabilityCard from '@/components/stack/CapabilityCard.astro';
+import DevOpsRoadmap from '@/components/stack/DevOpsRoadmap.astro';
+import StackHero from '@/components/stack/StackHero.astro';
 import PageHeader from '../components/ui/PageHeader.astro';
-import { levelColors, stackCategories } from '../data/stack';
+import { capabilityMap, devOpsRoadmap, stackSpecializations } from '../data/stack';
 import { getLang, useTranslations } from '../i18n/utils';
 import MainLayout from '../layouts/MainLayout.astro';
 import { getPageSeo } from '../seo/pages';
@@ -8,6 +11,23 @@ import { getPageSeo } from '../seo/pages';
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const seo = getPageSeo('stack', lang);
+
+const heroSpecializations = stackSpecializations.map((specialization) =>
+  t(`stack:specialization-${specialization.key}`),
+);
+
+const capabilities = capabilityMap.map((capability) => ({
+  title: t(`stack:capability-${capability.key}-title`),
+  description: t(`stack:capability-${capability.key}-description`),
+  technologies: capability.technologies,
+}));
+
+const roadmapMilestones = devOpsRoadmap.map((milestone) => ({
+  title: t(`stack:roadmap-${milestone.key}-title`),
+  description: t(`stack:roadmap-${milestone.key}-description`),
+  status: milestone.status,
+  statusLabel: t(`stack:status-${milestone.status}`),
+}));
 ---
 
 <MainLayout {...seo}>
@@ -18,62 +38,43 @@ const seo = getPageSeo('stack', lang);
   />
 
   <section class="section-spacing section-bg-primary">
-    <div class="max-w-6xl mx-auto">
-      <div
-        class="flex flex-wrap gap-3 mb-12 justify-center"
-        role="group"
-        aria-label={t('stack:legend-aria-label')}
-      >
-        {
-          Object.keys(levelColors).map((level) => (
-            <span
-              class={`badge badge-neutral border ${levelColors[level as keyof typeof levelColors]}`}
-            >
-              {t(`stack:level-${level}`)}
-            </span>
-          ))
-        }
-      </div>
+    <div class="max-w-6xl 2xl:max-w-[88rem] mx-auto">
+      <StackHero
+        eyebrow={t('stack:hero-eyebrow')}
+        title={t('stack:hero-title')}
+        subtitle={t('stack:hero-subtitle')}
+        specializations={heroSpecializations}
+      />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {
-          stackCategories.map((cat, i) => (
-            <div
-              class="card p-6 flex flex-col gap-5 animate-fade-in-up"
-              style={`animation-delay: ${i * 100}ms`}
-            >
-              <div>
-                <h2 class="text-lg font-semibold mb-1 text-heading">
-                  {t(`stack:category-${cat.key}-name`)}
-                </h2>
-                <p class="text-xs text-body-muted">{t(`stack:category-${cat.key}-desc`)}</p>
-              </div>
+      <section aria-labelledby="capability-map-title" class="mb-12 md:mb-16">
+        <header class="mb-9 md:mb-11 max-w-3xl">
+          <h2 id="capability-map-title" class="section-heading text-heading mb-3">
+            {t('stack:capabilities-title')}
+          </h2>
+          <p class="max-w-2xl text-sm md:text-base leading-relaxed md:leading-8 text-body-secondary">
+            {t('stack:capabilities-subtitle')}
+          </p>
+        </header>
 
-              <div class="flex flex-col gap-3">
-                {cat.techs.map((tech) => (
-                  <div class="flex items-center justify-between gap-4">
-                    <span class="text-sm font-mono text-body-secondary">{tech.name}</span>
-                    <span class={`chip flex-shrink-0 border ${levelColors[tech.level]}`}>
-                      {t(`stack:level-${tech.level}`)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))
-        }
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-5 md:gap-6 xl:gap-7">
+          {
+            capabilities.map((capability, index) => (
+              <CapabilityCard
+                title={capability.title}
+                description={capability.description}
+                technologies={capability.technologies}
+                delayMs={index * 90}
+              />
+            ))
+          }
+        </div>
+      </section>
 
-      <div class="mt-12 panel-accent p-5 text-center">
-        <p class="text-sm leading-relaxed text-body-secondary">
-          {t('stack:footer-note-prefix')}{' '}
-          <span class="text-accent">{t('stack:footer-note-highlight-1')}</span>,{' '}
-          <span class="text-accent">{t('stack:footer-note-highlight-2')}</span>{' '}
-          {t('stack:footer-note-connector')}{' '}
-          <span class="text-accent">{t('stack:footer-note-highlight-3')}</span>
-          {t('stack:footer-note-suffix')}
-        </p>
-      </div>
+      <DevOpsRoadmap
+        title={t('stack:devops-title')}
+        subtitle={t('stack:devops-subtitle')}
+        milestones={roadmapMilestones}
+      />
     </div>
   </section>
 </MainLayout>

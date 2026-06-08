@@ -1,0 +1,65 @@
+---
+import type { RoadmapStatus } from '@/data/stack';
+
+interface Milestone {
+  title: string;
+  description: string;
+  status: RoadmapStatus;
+  statusLabel: string;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  milestones: readonly Milestone[];
+}
+
+const { title, subtitle, milestones } = Astro.props;
+
+const statusStyles: Record<RoadmapStatus, { badge: string; dot: string }> = {
+  completed: {
+    badge: 'badge-success',
+    dot: 'bg-[var(--color-success)]',
+  },
+  'in-progress': {
+    badge: 'badge-accent',
+    dot: 'bg-[var(--color-primary)]',
+  },
+  planned: {
+    badge: 'badge-neutral',
+    dot: 'bg-[var(--color-text-muted)]',
+  },
+};
+---
+
+<section class="card p-6 md:p-8 xl:p-10 animate-fade-in-up" aria-labelledby="devops-roadmap-title">
+  <header class="mb-8 md:mb-10 max-w-3xl">
+    <h2 id="devops-roadmap-title" class="section-heading text-heading mb-3">{title}</h2>
+    <p class="max-w-2xl text-sm md:text-base leading-relaxed md:leading-8 text-body-secondary">{subtitle}</p>
+  </header>
+
+  <div class="relative">
+    <span class="absolute left-[0.68rem] top-2 bottom-2 w-px timeline-line-accent" aria-hidden="true"></span>
+    <ol class="relative flex flex-col gap-5 md:gap-6" role="list">
+    {
+      milestones.map((milestone, index) => (
+        <li class="relative pl-9 md:pl-10 animate-fade-in-up" style={`animation-delay: ${index * 80}ms`}>
+          <span class={`absolute left-0 top-2 h-3.5 w-3.5 rounded-full border border-divider ring-2 ring-[var(--color-bg-card)] ${statusStyles[milestone.status].dot}`} aria-hidden="true"></span>
+          <article class="card-inner p-4 md:p-5 flex flex-col gap-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div class="flex items-start gap-2.5">
+                <span class="pt-1 text-[0.62rem] font-mono uppercase tracking-[0.1em] text-body-muted">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 class="text-base md:text-lg font-semibold leading-snug text-heading">{milestone.title}</h3>
+              </div>
+              <span class={`badge ${statusStyles[milestone.status].badge}`}>{milestone.statusLabel}</span>
+            </div>
+            <p class="max-w-[68ch] text-sm leading-relaxed text-body-secondary">{milestone.description}</p>
+          </article>
+        </li>
+      ))
+    }
+    </ol>
+  </div>
+</section>

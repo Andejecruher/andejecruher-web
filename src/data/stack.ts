@@ -1,108 +1,82 @@
-export type TechLevel = 'expert' | 'regular' | 'learning' | 'exploring';
+export type SpecializationKey =
+  | 'backend-engineering'
+  | 'saas-architecture'
+  | 'ai-agents'
+  | 'smart-integrations'
+  | 'automation-workflows';
 
-export interface Tech {
-  name: string;
-  level: TechLevel;
-  icon?: string;
+export type CapabilityKey =
+  | 'backend-engineering'
+  | 'frontend-engineering'
+  | 'saas-architecture'
+  | 'ai-integrations'
+  | 'data-layer';
+
+export type RoadmapStatus = 'completed' | 'in-progress' | 'planned';
+
+export interface Specialization {
+  key: SpecializationKey;
 }
 
-export interface StackCategory {
-  /** i18n key segment — resolves to stack:category-{key}-name / stack:category-{key}-desc */
+export interface Capability {
+  key: CapabilityKey;
+  technologies: readonly string[];
+}
+
+export interface RoadmapMilestone {
   key: string;
-  techs: Tech[];
+  status: RoadmapStatus;
 }
 
-export const stackCategories: StackCategory[] = [
-  {
-    key: 'frontend',
-    techs: [
-      { name: 'React', level: 'expert' },
-      { name: 'Next.js', level: 'expert' },
-      { name: 'Astro', level: 'expert' },
-      { name: 'JavaScript', level: 'expert' },
-      { name: 'TypeScript', level: 'regular' },
-      { name: 'HTML5', level: 'expert' },
-      { name: 'CSS3', level: 'expert' },
-      { name: 'Tailwind CSS', level: 'expert' },
-      { name: 'Bootstrap', level: 'regular' },
-      { name: 'Vue.js', level: 'regular' },
-    ],
-  },
-  {
-    key: 'backend',
-    techs: [
-      { name: 'Laravel', level: 'expert' },
-      { name: 'Node.js', level: 'expert' },
-      { name: 'Express', level: 'expert' },
-      { name: 'FastAPI', level: 'regular' },
-      { name: 'PHP', level: 'regular' },
-      { name: 'Python', level: 'regular' },
-      { name: 'GraphQL', level: 'regular' },
-    ],
-  },
-  {
-    key: 'databases',
-    techs: [
-      { name: 'MySQL', level: 'expert' },
-      { name: 'MongoDB', level: 'regular' },
-      { name: 'Firebase', level: 'regular' },
-      { name: 'Redis', level: 'learning' },
-    ],
-  },
-  {
-    key: 'architecture',
-    techs: [
-      { name: 'SaaS Multi-tenant', level: 'regular' },
-      { name: 'REST APIs', level: 'expert' },
-      { name: 'Microservices', level: 'regular' },
-      { name: 'Backend service design', level: 'regular' },
-    ],
-  },
-  {
-    key: 'ai',
-    techs: [
-      { name: 'AI Agents', level: 'regular' },
-      { name: 'LLM Integration', level: 'learning' },
-      { name: 'Conversational flows', level: 'regular' },
-      { name: 'Process automation', level: 'regular' },
-    ],
-  },
-  {
-    key: 'integrations',
-    techs: [
-      { name: 'WhatsApp Business API', level: 'expert' },
-      { name: 'Instagram API', level: 'regular' },
-      { name: 'Facebook API', level: 'regular' },
-      { name: 'Telegram API', level: 'regular' },
-      { name: 'BigCommerce', level: 'regular' },
-    ],
-  },
-  {
-    key: 'tools',
-    techs: [
-      { name: 'Git', level: 'expert' },
-      { name: 'GitHub', level: 'expert' },
-      { name: 'Docker', level: 'learning' },
-      { name: 'Vercel', level: 'expert' },
-      { name: 'Postman', level: 'regular' },
-      { name: 'VS Code', level: 'expert' },
-    ],
-  },
-  {
-    key: 'devops',
-    techs: [
-      { name: 'CI/CD', level: 'learning' },
-      { name: 'Cloud Infrastructure', level: 'exploring' },
-      { name: 'Deployment automation', level: 'learning' },
-      { name: 'Infrastructure as code', level: 'exploring' },
-      { name: 'Monitoring', level: 'exploring' },
-    ],
-  },
-];
+export const stackSpecializations: readonly Specialization[] = [
+  { key: 'backend-engineering' },
+  { key: 'saas-architecture' },
+  { key: 'ai-agents' },
+  { key: 'smart-integrations' },
+  { key: 'automation-workflows' },
+] as const;
 
-export const levelColors: Record<TechLevel, string> = {
-  expert: 'level-principal',
-  regular: 'level-frequent',
-  learning: 'level-learning',
-  exploring: 'level-exploring',
-};
+export const capabilityMap: readonly Capability[] = [
+  {
+    key: 'backend-engineering',
+    technologies: ['Node.js', 'Express', 'Laravel', 'FastAPI', 'PHP', 'GraphQL'],
+  },
+  {
+    key: 'frontend-engineering',
+    technologies: ['React', 'Next.js', 'Astro', 'TypeScript', 'Tailwind CSS'],
+  },
+  {
+    key: 'saas-architecture',
+    technologies: [
+      'Multi Tenant',
+      'REST APIs',
+      'Microservices',
+      'Event Driven Systems',
+      'Backend Service Design',
+    ],
+  },
+  {
+    key: 'ai-integrations',
+    technologies: [
+      'AI Agents',
+      'LLM Integration',
+      'WhatsApp API',
+      'Telegram API',
+      'Facebook API',
+      'Instagram API',
+      'Process Automation',
+    ],
+  },
+  {
+    key: 'data-layer',
+    technologies: ['MySQL', 'MongoDB', 'Firebase', 'Redis'],
+  },
+] as const;
+
+export const devOpsRoadmap: readonly RoadmapMilestone[] = [
+  { key: 'deployment-automation', status: 'completed' },
+  { key: 'container-orchestration', status: 'in-progress' },
+  { key: 'ci-cd-pipelines', status: 'in-progress' },
+  { key: 'infrastructure-as-code', status: 'planned' },
+  { key: 'observability', status: 'planned' },
+] as const;
