@@ -126,7 +126,9 @@ const seo = getPageSeo('contact', lang);
           <form
             id="contact-form"
             class="flex flex-col gap-5"
-            novalidate
+            action={`mailto:${profile.email}`}
+            method="post"
+            enctype="text/plain"
             data-status-sending={t('contact:form-status-sending')}
             data-status-sending-detail={t('contact:form-status-sending-detail')}
             data-status-success={t('contact:form-status-success')}
@@ -435,23 +437,31 @@ const seo = getPageSeo('contact', lang);
   <script>
     import emailjs from '@emailjs/browser';
 
-    const formElement = document.getElementById('contact-form');
-    const submitElement = document.getElementById('contact-submit');
-    const statusElement = document.getElementById('contact-status');
-    const submitLabelElement = document.getElementById('contact-submit-label');
-    const submitSpinnerElement = document.getElementById('contact-submit-spinner');
-    const statusTitleElement = document.getElementById('contact-status-title');
-    const statusDetailElement = document.getElementById('contact-status-detail');
+    const initContactForm = () => {
+      const formElement = document.getElementById('contact-form');
+      const submitElement = document.getElementById('contact-submit');
+      const statusElement = document.getElementById('contact-status');
+      const submitLabelElement = document.getElementById('contact-submit-label');
+      const submitSpinnerElement = document.getElementById('contact-submit-spinner');
+      const statusTitleElement = document.getElementById('contact-status-title');
+      const statusDetailElement = document.getElementById('contact-status-detail');
 
-    if (
-      formElement instanceof HTMLFormElement &&
-      submitElement instanceof HTMLButtonElement &&
-      statusElement instanceof HTMLElement &&
-      submitLabelElement instanceof HTMLElement &&
-      submitSpinnerElement instanceof SVGElement &&
-      statusTitleElement instanceof HTMLElement &&
-      statusDetailElement instanceof HTMLElement
-    ) {
+      if (
+        formElement instanceof HTMLFormElement &&
+        submitElement instanceof HTMLButtonElement &&
+        statusElement instanceof HTMLElement &&
+        submitLabelElement instanceof HTMLElement &&
+        submitSpinnerElement instanceof SVGElement &&
+        statusTitleElement instanceof HTMLElement &&
+        statusDetailElement instanceof HTMLElement
+      ) {
+        if (formElement.dataset.initialized === 'true') {
+          return;
+        }
+
+        formElement.dataset.initialized = 'true';
+        formElement.noValidate = true;
+
       const config = {
         serviceId: (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ?? '').trim(),
         templateId: (import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID ?? '').trim(),
@@ -652,7 +662,7 @@ const seo = getPageSeo('contact', lang);
         }
       });
 
-      formElement.addEventListener('submit', async (event) => {
+        formElement.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         if (state === 'loading') {
@@ -688,7 +698,11 @@ const seo = getPageSeo('contact', lang);
         } catch {
           setState('error', messages.errorDetail);
         }
-      });
-    }
+        });
+      }
+    };
+
+    initContactForm();
+    document.addEventListener('astro:page-load', initContactForm);
   </script>
 </MainLayout>

@@ -100,28 +100,92 @@ const filterOptions = [
     return TAG_ALIASES[normalized] ?? normalized;
   };
 
-  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+  const APP_SCOPE = 'projects-tag-filter';
+  const CLEANUP_KEY = '__projectsTagFilterCleanup__';
 
-  filterBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const selectedFilter = normalizeTag(btn.dataset.filter ?? 'all');
+  function getTagFromURL(availableTags: Set<string>) {
+    try {
+      const nextTag = normalizeTag(new URL(window.location.href).searchParams.get('tag') ?? 'all');
+      return nextTag === 'all' || availableTags.has(nextTag) ? nextTag : 'all';
+    } catch (_) {
+      return 'all';
+    }
+  }
 
-      filterBtns.forEach((b) => {
-        b.classList.remove('chip-filter-active');
-        b.classList.add('chip-filter');
+  function initProjectsFilter() {
+    if (typeof window[CLEANUP_KEY] === 'function') {
+      window[CLEANUP_KEY]();
+    }
+
+    const grid = document.getElementById('projects-grid');
+    if (!(grid instanceof HTMLElement)) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    window[CLEANUP_KEY] = () => controller.abort();
+
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter-btn'));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.project-card'));
+
+    if (buttons.length === 0 || cards.length === 0) {
+      return;
+    }
+
+    const availableTags = new Set(buttons.map((button) => normalizeTag(button.dataset.filter ?? 'all')));
+
+    const render = (selectedTag: string) => {
+      const normalizedTag = selectedTag === 'all' ? 'all' : normalizeTag(selectedTag);
+      const activeTag = normalizedTag === 'all' || availableTags.has(normalizedTag) ? normalizedTag : 'all';
+
+      buttons.forEach((button) => {
+        const buttonTag = normalizeTag(button.dataset.filter ?? 'all');
+        const active = buttonTag === activeTag;
+        button.classList.toggle('chip-filter-active', active);
+        button.classList.toggle('chip-filter', !active);
       });
-      btn.classList.add('chip-filter-active');
-      btn.classList.remove('chip-filter');
 
       cards.forEach((card) => {
         const cardTags = (card.dataset.tags ?? '')
           .split(',')
           .map((tag) => normalizeTag(tag))
           .filter((tag) => tag.length > 0);
-        const show = selectedFilter === 'all' || cardTags.includes(selectedFilter);
+        const show = activeTag === 'all' || cardTags.includes(activeTag);
         card.style.display = show ? 'flex' : 'none';
       });
+
+      return activeTag;
+    };
+
+    const applyFromURL = () => {
+      render(getTagFromURL(availableTags));
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener(
+        'click',
+        () => {
+          const activeTag = render(button.dataset.filter ?? 'all');
+
+          try {
+            const url = new URL(window.location.href);
+            if (activeTag === 'all') {
+              url.searchParams.delete('tag');
+            } else {
+              url.searchParams.set('tag', activeTag);
+            }
+            history.pushState({ scope: APP_SCOPE, tag: activeTag }, '', url);
+          } catch (_) {}
+        },
+        { signal },
+      );
     });
-  });
+
+    window.addEventListener('popstate', applyFromURL, { signal });
+    applyFromURL();
+  }
+
+  initProjectsFilter();
+  document.addEventListener('astro:page-load', initProjectsFilter);
 </script>

@@ -34,11 +34,6 @@ const activeCategory = searchParams.get('category') ?? 'all';
 const filteredPosts =
   activeCategory === 'all' ? posts : posts.filter((p) => p.data.category === activeCategory);
 
-// Serialise all posts to JSON for the client-side filter script
-const postsJson = posts.map((p) => ({
-  slug: toSlug(p.id),
-  category: p.data.category,
-}));
 ---
 
 <MainLayout {...seo}>
@@ -102,73 +97,97 @@ const postsJson = posts.map((p) => ({
   Falls back gracefully: if JS is disabled, ALL posts remain visible.
   URL param (?category=) is also honoured on load.
 -->
-<script define:vars={{ allCategories, postsJson }}>
+<script define:vars={{ allCategories }}>
   (function () {
+    const APP_SCOPE = 'blog-category-filter';
+    const CLEANUP_KEY = '__blogCategoryFilterCleanup__';
+
+    function normalizeCategory(value) {
+      const normalized = (value || 'all').trim();
+      if (normalized === 'all') return 'all';
+      return allCategories.includes(normalized) ? normalized : 'all';
+    }
+
     function getCategoryFromURL() {
       try {
-        return new URL(window.location.href).searchParams.get('category') || 'all';
+        return normalizeCategory(new URL(window.location.href).searchParams.get('category') || 'all');
       } catch (_) {
         return 'all';
       }
     }
 
-    let active = getCategoryFromURL();
-
-    function filterPosts(category) {
-      const wrappers = document.querySelectorAll('.post-card-wrapper');
-      let visibleCount = 0;
-
-      wrappers.forEach((wrapper) => {
-        const cat = wrapper.getAttribute('data-post-category');
-        const show = category === 'all' || cat === category;
-        wrapper.style.display = show ? '' : 'none';
-        if (show) visibleCount++;
-      });
-
-      const emptyState = document.getElementById('empty-state');
-      if (emptyState) {
-        emptyState.classList.toggle('hidden', visibleCount > 0);
+    function initBlogFilter() {
+      if (typeof window[CLEANUP_KEY] === 'function') {
+        window[CLEANUP_KEY]();
       }
-    }
 
-    function updateButtons(category) {
-      document.querySelectorAll('.category-btn').forEach((btn) => {
-        const isActive = btn.getAttribute('data-category') === category;
-        if (isActive) {
-          btn.classList.remove('chip-filter');
-          btn.classList.add('chip-filter-active');
-        } else {
-          btn.classList.remove('chip-filter-active');
-          btn.classList.add('chip-filter');
+      const filterRoot = document.getElementById('category-filter');
+      if (!filterRoot) {
+        return;
+      }
+
+      const controller = new AbortController();
+      const { signal } = controller;
+      window[CLEANUP_KEY] = () => controller.abort();
+
+      const wrappers = Array.from(document.querySelectorAll('.post-card-wrapper'));
+      const buttons = Array.from(document.querySelectorAll('.category-btn'));
+      const emptyState = document.getElementById('empty-state');
+
+      const render = (category) => {
+        const normalizedCategory = normalizeCategory(category);
+        let visibleCount = 0;
+
+        wrappers.forEach((wrapper) => {
+          const cardCategory = wrapper.getAttribute('data-post-category');
+          const show = normalizedCategory === 'all' || cardCategory === normalizedCategory;
+          wrapper.style.display = show ? '' : 'none';
+          if (show) visibleCount += 1;
+        });
+
+        if (emptyState) {
+          emptyState.classList.toggle('hidden', visibleCount > 0);
         }
+
+        buttons.forEach((button) => {
+          const isActive = normalizeCategory(button.getAttribute('data-category') || 'all') === normalizedCategory;
+          button.classList.toggle('chip-filter-active', isActive);
+          button.classList.toggle('chip-filter', !isActive);
+        });
+
+        try {
+          const url = new URL(window.location.href);
+          if (normalizedCategory === 'all') {
+            url.searchParams.delete('category');
+          } else {
+            url.searchParams.set('category', normalizedCategory);
+          }
+          history.replaceState({ scope: APP_SCOPE, category: normalizedCategory }, '', url);
+        } catch (_) {}
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener(
+          'click',
+          () => {
+            render(button.getAttribute('data-category') || 'all');
+          },
+          { signal },
+        );
       });
+
+      window.addEventListener(
+        'popstate',
+        () => {
+          render(getCategoryFromURL());
+        },
+        { signal },
+      );
+
+      render(getCategoryFromURL());
     }
 
-    function updateURL(category) {
-      try {
-        const url = new URL(window.location.href);
-        if (category === 'all') {
-          url.searchParams.delete('category');
-        } else {
-          url.searchParams.set('category', category);
-        }
-        history.replaceState({}, '', url.toString());
-      } catch (_) {}
-    }
-
-    function setCategory(category) {
-      active = category;
-      filterPosts(category);
-      updateButtons(category);
-      updateURL(category);
-    }
-
-    document.querySelectorAll('.category-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        setCategory(btn.getAttribute('data-category') || 'all');
-      });
-    });
-
-    setCategory(active);
+    initBlogFilter();
+    document.addEventListener('astro:page-load', initBlogFilter);
   })();
 </script>

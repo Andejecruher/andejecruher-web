@@ -45,8 +45,8 @@ const mediaClass = [
           width="1280"
           height="720"
           loading={loading}
+          data-project-media-image
           class="h-full w-full object-cover"
-          onerror="this.classList.add('hidden');const fallback=this.parentElement?.querySelector('[data-media-fallback]');if(fallback){fallback.classList.remove('hidden');}"
         />
       )
     }
@@ -77,3 +77,38 @@ const mediaClass = [
     class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.18)_100%)]"
   ></div>
 </div>
+
+<script>
+  interface MediaWindow extends Window {
+    __projectMediaImageFallbackInit__?: boolean;
+  }
+
+  function revealMediaFallback(image: HTMLImageElement) {
+    image.classList.add('hidden');
+    const fallback = image.parentElement?.querySelector<HTMLElement>('[data-media-fallback]');
+    fallback?.classList.remove('hidden');
+  }
+
+  function bindProjectMediaFallback() {
+    document.querySelectorAll<HTMLImageElement>('[data-project-media-image]').forEach((image) => {
+      if (image.dataset.mediaFallbackBound === 'true') return;
+
+      image.dataset.mediaFallbackBound = 'true';
+
+      image.addEventListener('error', () => revealMediaFallback(image), { once: true });
+
+      if (image.complete && image.naturalWidth === 0) {
+        revealMediaFallback(image);
+      }
+    });
+  }
+
+  const mediaWindow = window as MediaWindow;
+
+  if (!mediaWindow.__projectMediaImageFallbackInit__) {
+    mediaWindow.__projectMediaImageFallbackInit__ = true;
+    document.addEventListener('astro:page-load', bindProjectMediaFallback);
+  }
+
+  bindProjectMediaFallback();
+</script>

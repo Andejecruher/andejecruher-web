@@ -10,6 +10,6 @@ export const navItems: NavItem[] = [
   { key: 'projects', href: '/proyectos' },
   { key: 'stack', href: '/stack' },
   { key: 'about', href: '/sobre-mi' },
-  // { key: 'blog',        href: '/blog' },
+  { key: 'blog', href: '/blog' },
   { key: 'contact', href: '/contacto' },
 ];
