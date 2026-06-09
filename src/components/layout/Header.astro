@@ -331,11 +331,13 @@ function isActive(href: string): boolean {
       if (!open) return;
 
       open = false;
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', toggle.dataset.labelOpen ?? 'Open menu');
-      menu.setAttribute('aria-hidden', 'true');
-      menu.style.maxHeight = '0';
-      menu.style.opacity = '0';
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.setAttribute('aria-label', toggle.dataset.labelOpen ?? 'Open menu');
+      menu?.setAttribute('aria-hidden', 'true');
+      if (menu) {
+        menu.style.maxHeight = '0';
+        menu.style.opacity = '0';
+      }
       if (bar1) bar1.style.transform = '';
       if (bar2) bar2.style.opacity = '1';
       if (bar3) {
@@ -348,11 +350,13 @@ function isActive(href: string): boolean {
       if (open) return;
 
       open = true;
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.setAttribute('aria-label', toggle.dataset.labelClose ?? 'Close menu');
-      menu.setAttribute('aria-hidden', 'false');
-      menu.style.maxHeight = `${menu.scrollHeight}px`;
-      menu.style.opacity = '1';
+      toggle?.setAttribute('aria-expanded', 'true');
+      toggle?.setAttribute('aria-label', toggle.dataset.labelClose ?? 'Close menu');
+      menu?.setAttribute('aria-hidden', 'false');
+      if (menu) {
+        menu.style.maxHeight = `${menu.scrollHeight}px`;
+        menu.style.opacity = '1';
+      }
       if (bar1) bar1.style.transform = 'translateY(6px) rotate(45deg)';
       if (bar2) bar2.style.opacity = '0';
       if (bar3) {
@@ -380,7 +384,11 @@ function isActive(href: string): boolean {
     document.addEventListener(
       'click',
       (event) => {
-        if (open && !toggle.contains(event.target as Node) && !menu.contains(event.target as Node)) {
+        if (
+          open &&
+          !toggle.contains(event.target as Node) &&
+          !menu.contains(event.target as Node)
+        ) {
           closeMenu();
         }
       },
@@ -423,7 +431,8 @@ function isActive(href: string): boolean {
       root.classList.toggle('theme-dark', theme === 'dark');
 
       document.querySelectorAll<HTMLImageElement>('[data-theme-logo]').forEach((logo) => {
-        const nextLogoSrc = theme === 'light' ? logo.dataset.logoLightSrc : logo.dataset.logoDarkSrc;
+        const nextLogoSrc =
+          theme === 'light' ? logo.dataset.logoLightSrc : logo.dataset.logoDarkSrc;
         const nextLogoWidth =
           theme === 'light' ? logo.dataset.logoLightWidth : logo.dataset.logoDarkWidth;
         const nextLogoHeight =
@@ -473,7 +482,8 @@ function isActive(href: string): boolean {
       themeToggle.addEventListener(
         'click',
         () => {
-          const currentTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+          const currentTheme =
+            document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
           const nextTheme: 'light' | 'dark' = currentTheme === 'dark' ? 'light' : 'dark';
           window.localStorage.setItem(storageKey, nextTheme);
           applyTheme(nextTheme);
