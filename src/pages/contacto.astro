@@ -128,8 +128,14 @@ const seo = getPageSeo('contact', lang);
             class="flex flex-col gap-5"
             novalidate
             data-status-sending={t('contact:form-status-sending')}
+            data-status-sending-detail={t('contact:form-status-sending-detail')}
             data-status-success={t('contact:form-status-success')}
+            data-status-success-detail={t('contact:form-status-success-detail')}
+            data-status-success-time={t('contact:form-status-success-time')}
             data-status-error={t('contact:form-status-error')}
+            data-status-error-detail={t('contact:form-status-error-detail')}
+            data-status-validation={t('contact:form-status-validation')}
+            data-status-validation-detail={t('contact:form-status-validation-detail')}
             data-status-missing-config={t('contact:form-status-missing-config')}
             data-submit-idle={t('contact:form-submit')}
             data-submit-loading={t('contact:form-submit-sending')}
@@ -239,18 +245,97 @@ const seo = getPageSeo('contact', lang);
               </p>
             </div>
 
-            <button id="contact-submit" type="submit" class="btn btn-primary w-full">
-              {t('contact:form-submit')}
+            <button id="contact-submit" type="submit" class="btn btn-primary w-full min-h-11">
+              <svg
+                id="contact-submit-spinner"
+                class="contact-spinner contact-svg-hidden"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  stroke="currentColor"
+                  stroke-opacity="0.3"
+                  stroke-width="3"></circle>
+                <path
+                  d="M21 12a9 9 0 0 0-9-9"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"></path>
+              </svg>
+              <span id="contact-submit-label">{t('contact:form-submit')}</span>
             </button>
 
-            <p
+            <div
               id="contact-status"
-              class="text-sm text-center text-body-secondary min-h-5"
+              class="contact-status"
               role="status"
               aria-live="polite"
               aria-atomic="true"
+              hidden
             >
-            </p>
+              <div class="contact-status-icon" aria-hidden="true">
+                <svg
+                  data-status-icon="loading"
+                  class="contact-spinner contact-svg-hidden"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    stroke="currentColor"
+                    stroke-opacity="0.25"
+                    stroke-width="3"></circle>
+                  <path
+                    d="M21 12a9 9 0 0 0-9-9"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"></path>
+                </svg>
+                <svg
+                  data-status-icon="success"
+                  class="contact-svg-hidden"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="m5 12 4 4L19 6"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+                <svg
+                  data-status-icon="error"
+                  class="contact-svg-hidden"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M12 8v5m0 3.5v.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"></path>
+                </svg>
+              </div>
+              <div>
+                <p id="contact-status-title" class="contact-status-title"></p>
+                <p id="contact-status-detail" class="contact-status-detail"></p>
+              </div>
+            </div>
 
             <p class="text-xs text-center text-body-muted">{t('contact:form-disclaimer')}</p>
           </form>
@@ -259,17 +344,113 @@ const seo = getPageSeo('contact', lang);
     </div>
   </section>
 
+  <style>
+    .contact-status {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: 0.85rem;
+      background: var(--color-surface-glass);
+      color: var(--color-text-secondary);
+      animation: status-enter 180ms ease-out;
+    }
+
+    .contact-status[hidden] {
+      display: none;
+    }
+
+    .contact-status[data-state='loading'] {
+      border-color: var(--color-info-border);
+      background: var(--color-info-soft);
+      color: var(--color-info);
+    }
+
+    .contact-status[data-state='success'] {
+      border-color: var(--color-success-border);
+      background: var(--color-success-soft);
+      color: var(--color-success);
+    }
+
+    .contact-status[data-state='error'] {
+      border-color: color-mix(in srgb, #fb7185 35%, transparent);
+      background: color-mix(in srgb, #fb7185 9%, transparent);
+      color: #fb7185;
+    }
+
+    .contact-status-icon {
+      display: grid;
+      flex: 0 0 auto;
+      width: 2rem;
+      height: 2rem;
+      place-items: center;
+      border-radius: 999px;
+      background: color-mix(in srgb, currentColor 12%, transparent);
+    }
+
+    .contact-status-title {
+      color: currentColor;
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .contact-status-detail {
+      margin-top: 0.15rem;
+      color: var(--color-text-secondary);
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .contact-spinner {
+      animation: contact-spin 800ms linear infinite;
+    }
+
+    .contact-svg-hidden {
+      display: none;
+    }
+
+    @keyframes contact-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes status-enter {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .contact-spinner,
+      .contact-status {
+        animation: none;
+      }
+    }
+  </style>
+
   <script>
     import emailjs from '@emailjs/browser';
 
     const formElement = document.getElementById('contact-form');
     const submitElement = document.getElementById('contact-submit');
     const statusElement = document.getElementById('contact-status');
+    const submitLabelElement = document.getElementById('contact-submit-label');
+    const submitSpinnerElement = document.getElementById('contact-submit-spinner');
+    const statusTitleElement = document.getElementById('contact-status-title');
+    const statusDetailElement = document.getElementById('contact-status-detail');
 
     if (
       formElement instanceof HTMLFormElement &&
       submitElement instanceof HTMLButtonElement &&
-      statusElement instanceof HTMLElement
+      statusElement instanceof HTMLElement &&
+      submitLabelElement instanceof HTMLElement &&
+      submitSpinnerElement instanceof SVGElement &&
+      statusTitleElement instanceof HTMLElement &&
+      statusDetailElement instanceof HTMLElement
     ) {
       const config = {
         serviceId: (import.meta.env.PUBLIC_EMAILJS_SERVICE_ID ?? '').trim(),
@@ -284,9 +465,22 @@ const seo = getPageSeo('contact', lang);
         submitIdle: formElement.dataset.submitIdle?.trim() ?? 'Send message',
         submitLoading: formElement.dataset.submitLoading?.trim() ?? 'Sending message…',
         sending: formElement.dataset.statusSending?.trim() ?? 'Sending message…',
+        sendingDetail:
+          formElement.dataset.statusSendingDetail?.trim() ?? 'Please keep this page open.',
         success: formElement.dataset.statusSuccess?.trim() ?? 'Message sent successfully.',
+        successDetail:
+          formElement.dataset.statusSuccessDetail?.trim() ?? 'I will reply within 24 hours.',
+        successTime: formElement.dataset.statusSuccessTime?.trim() ?? 'Sent at',
         error:
           formElement.dataset.statusError?.trim() ?? 'Message could not be sent. Please try again.',
+        errorDetail:
+          formElement.dataset.statusErrorDetail?.trim() ??
+          'Your message is still here. Check your connection and try again.',
+        validation:
+          formElement.dataset.statusValidation?.trim() ?? 'Review the highlighted fields.',
+        validationDetail:
+          formElement.dataset.statusValidationDetail?.trim() ??
+          'A few details are missing before the message can be sent.',
         missingConfig:
           formElement.dataset.statusMissingConfig?.trim() ??
           'Email service is not configured. Please try again later.',
@@ -301,7 +495,10 @@ const seo = getPageSeo('contact', lang);
       };
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
-      let state = 'idle';
+      const successResetDelayMs = 8_000;
+      type FormState = 'idle' | 'loading' | 'success' | 'error';
+      let state: FormState = 'idle';
+      let successResetTimeout: number | undefined;
 
       const getInputByName = (name: string) => {
         const field = formElement.elements.namedItem(name);
@@ -322,13 +519,50 @@ const seo = getPageSeo('contact', lang);
 
       type FieldName = keyof typeof fields;
 
-      const setState = (nextState: string, statusMessage: string | null) => {
+      const clearSuccessReset = () => {
+        if (successResetTimeout !== undefined) {
+          window.clearTimeout(successResetTimeout);
+          successResetTimeout = undefined;
+        }
+      };
+
+      const setState = (nextState: FormState, detail = '', title?: string) => {
+        clearSuccessReset();
         state = nextState;
-        statusElement.textContent = statusMessage;
         submitElement.disabled = nextState === 'loading';
-        submitElement.textContent =
+        submitLabelElement.textContent =
           nextState === 'loading' ? messages.submitLoading : messages.submitIdle;
+        submitSpinnerElement.classList.toggle('contact-svg-hidden', nextState !== 'loading');
         formElement.setAttribute('aria-busy', nextState === 'loading' ? 'true' : 'false');
+
+        if (nextState === 'idle') {
+          statusElement.hidden = true;
+          statusElement.removeAttribute('data-state');
+          statusTitleElement.textContent = '';
+          statusDetailElement.textContent = '';
+          return;
+        }
+
+        const statusTitles = {
+          loading: messages.sending,
+          success: messages.success,
+          error: messages.error,
+        } satisfies Record<Exclude<FormState, 'idle'>, string>;
+
+        statusElement.hidden = false;
+        statusElement.dataset.state = nextState;
+        statusTitleElement.textContent = title ?? statusTitles[nextState];
+        statusDetailElement.textContent = detail;
+
+        statusElement.querySelectorAll<SVGElement>('[data-status-icon]').forEach((icon) => {
+          icon.classList.toggle('contact-svg-hidden', icon.dataset.statusIcon !== nextState);
+        });
+      };
+
+      const scheduleSuccessReset = () => {
+        successResetTimeout = window.setTimeout(() => {
+          setState('idle');
+        }, successResetDelayMs);
       };
 
       const getFieldErrorElement = (fieldName: FieldName) => {
@@ -364,7 +598,7 @@ const seo = getPageSeo('contact', lang);
         const subjectValue = fields.subject?.value.trim() ?? '';
         const messageValue = fields.message?.value.trim() ?? '';
 
-        let firstInvalidField;
+        let firstInvalidField: HTMLInputElement | HTMLTextAreaElement | undefined;
 
         if (nameValue.length === 0) {
           setFieldError('name', messages.nameRequired);
@@ -391,7 +625,7 @@ const seo = getPageSeo('contact', lang);
 
         if (firstInvalidField !== undefined) {
           firstInvalidField.focus();
-          setState('error', messages.error);
+          setState('error', messages.validationDetail, messages.validation);
           return false;
         }
 
@@ -414,7 +648,7 @@ const seo = getPageSeo('contact', lang);
         }
 
         if (state === 'success' || state === 'error') {
-          setState('idle', '');
+          setState('idle');
         }
       });
 
@@ -439,15 +673,20 @@ const seo = getPageSeo('contact', lang);
         }
 
         try {
-          setState('loading', messages.sending);
+          setState('loading', messages.sendingDetail);
           await emailjs.sendForm(config.serviceId, config.templateId, formElement, {
             publicKey: config.publicKey,
           });
           formElement.reset();
           clearFieldErrors();
-          setState('success', messages.success);
-        } catch (err) {
-          setState('error', messages.error);
+          const sentTime = new Intl.DateTimeFormat(document.documentElement.lang, {
+            hour: 'numeric',
+            minute: '2-digit',
+          }).format(new Date());
+          setState('success', `${messages.successDetail} · ${messages.successTime} ${sentTime}`);
+          scheduleSuccessReset();
+        } catch {
+          setState('error', messages.errorDetail);
         }
       });
     }
