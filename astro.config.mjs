@@ -5,7 +5,7 @@ import icon from 'astro-icon';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://andejecruher-web.vercel.app',
+  site: 'https://andejecruher.com',
   integrations: [tailwind(), sitemap(), mdx(), icon()],
 
   // Evita reinicios dobles por el watcher y permite puerto alternativo si ya está en uso

@@ -30,7 +30,7 @@ const profileBase: ProfileBase = {
   fullName: 'Antonio de Jesus Cruz Hernandez',
   email: 'andejecruher@gmail.com',
   phone: '+52 322 318 8252',
-  website: 'https://andejecruher-web.vercel.app',
+  website: 'https://andejecruher.com',
   cvUrl: 'https://drive.google.com/file/d/1Zsi1j6PDrRT6vpBOTJF7uHYY7LehM4Rr/view?usp=sharing',
   availableForProjects: true,
 };

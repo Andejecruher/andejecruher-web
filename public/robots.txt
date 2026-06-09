@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://andejecruher-web.vercel.app/sitemap-index.xml
+Sitemap: https://andejecruher.com/sitemap-index.xml
