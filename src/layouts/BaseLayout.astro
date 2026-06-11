@@ -13,6 +13,9 @@ interface Props {
 }
 
 const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
+// Normalizar y validar el valor de lang para que coincida con el tipo esperado
+const langProp: 'es' | 'en' | undefined =
+  lang === 'es' || lang === 'en' ? (lang as 'es' | 'en') : undefined;
 const seo = (Astro.props.seo ?? Astro.props) as SeoProps;
 ---
 
@@ -41,12 +44,13 @@ const seo = (Astro.props.seo ?? Astro.props) as SeoProps;
       })();
     </script>
     <ViewTransitions />
-    <SEO {...seo} lang={lang} />
-    <link rel="alternate" type="application/rss+xml" title="Andejecruher Blog" href="/rss.xml" />
+    <SEO {...seo} lang={langProp} />
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">{lang === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}</a>
+    <a class="skip-link" href="#main-content"
+      >{lang === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}</a
+    >
     <Header />
     <main id="main-content">
       <slot />
@@ -55,7 +59,13 @@ const seo = (Astro.props.seo ?? Astro.props) as SeoProps;
     <script>
       document.addEventListener('astro:page-load', () => {
         document.querySelectorAll<HTMLImageElement>('.blog-card-media img').forEach((image) => {
-          image.addEventListener('error', () => { image.style.display = 'none'; }, { once: true });
+          image.addEventListener(
+            'error',
+            () => {
+              image.style.display = 'none';
+            },
+            { once: true },
+          );
         });
       });
     </script>
