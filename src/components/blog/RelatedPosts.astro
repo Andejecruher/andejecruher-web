@@ -10,7 +10,8 @@ interface RelatedPost {
     pubDate: Date;
     category: string;
     tags: string[];
-    image?: string;
+    image: string;
+    imageAlt: string;
     readingTime?: number;
   };
 }
@@ -38,6 +39,7 @@ const t = useTranslations(lang);
             category={post.data.category}
             tags={post.data.tags}
             image={post.data.image}
+            imageAlt={post.data.imageAlt}
             readingTime={post.data.readingTime}
             index={i}
           />

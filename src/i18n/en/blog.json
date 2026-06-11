@@ -28,5 +28,18 @@
   "post-cta-title": "Was this article helpful?",
   "post-cta-body": "If you want to discuss backend systems, APIs, SaaS architecture, automation or a technical collaboration, I am available.",
   "post-cta-primary": "Message me",
-  "post-cta-secondary": "View all articles"
+  "post-cta-secondary": "View all articles",
+  "search-label": "Search the blog",
+  "search-placeholder": "Search by title, description, category or tag…",
+  "sort-label": "Sort articles",
+  "sort-newest": "Newest first",
+  "sort-oldest": "Oldest first",
+  "sort-shortest": "Shortest read",
+  "sort-longest": "Longest read",
+  "tags-filter-label": "Filter by tags",
+  "results-count": "{{count}} articles found",
+  "clear-filters": "Clear filters",
+  "post-navigation-label": "Article navigation",
+  "previous-post": "Previous article",
+  "next-post": "Next article"
 }

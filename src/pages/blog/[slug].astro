@@ -10,7 +10,7 @@ import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.DEV ? true : !data.draft;
+    return data.status === 'published';
   });
   return posts.map((post) => ({
     params: { slug: post.id.replace(/\.[^.]+$/, '') },
@@ -22,19 +22,22 @@ const { post } = Astro.props;
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 const slug = post.id.replace(/\.[^.]+$/, '');
-const { Content, headings, remarkPluginFrontmatter } = await render(post);
+const { Content, headings } = await render(post);
+const readingTime = post.data.readingTime;
 
-// Auto-compute reading time if not in frontmatter
-const readingTime = post.data.readingTime ?? remarkPluginFrontmatter?.readingTime ?? 5;
-
-// Related posts: same category, exclude current
+// Related posts prioritize shared category and tags
 const allPosts = await getCollection('blog', ({ data }) =>
-  import.meta.env.DEV ? true : !data.draft,
+  data.status === 'published',
 );
 const related = allPosts
-  .filter((p) => p.id.replace(/\.[^.]+$/, '') !== slug && p.data.category === post.data.category)
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .filter((p) => p.id.replace(/\.[^.]+$/, '') !== slug && (p.data.category === post.data.category || p.data.tags.some((tag) => post.data.tags.includes(tag))))
+  .sort((a, b) => Number(b.data.category === post.data.category) - Number(a.data.category === post.data.category) || b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
+
+const chronological = [...allPosts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const currentIndex = chronological.findIndex((item) => item.id === post.id);
+const previousPost = chronological[currentIndex + 1];
+const nextPost = chronological[currentIndex - 1];
 
 const homeHref = localizePath('/', lang);
 const blogHref = localizePath('/blog', lang);
@@ -48,6 +51,7 @@ const contactHref = localizePath('/contacto', lang);
   updatedDate={post.data.updatedDate}
   author={post.data.author}
   image={post.data.image}
+  imageAlt={post.data.imageAlt}
   tags={post.data.tags}
   category={post.data.category}
 >
@@ -116,10 +120,10 @@ const contactHref = localizePath('/contacto', lang);
       <div class="px-4 max-w-3xl mx-auto mt-8">
         <img
           src={post.data.image}
-          alt={post.data.title}
+          alt={post.data.imageAlt}
           width="896"
           height="504"
-          class="w-full rounded-2xl object-cover border divider"
+          class="article-featured-image w-full rounded-2xl object-cover border divider"
           loading="eager"
         />
       </div>
@@ -129,7 +133,8 @@ const contactHref = localizePath('/contacto', lang);
   <!-- Content + ToC layout -->
   <div class="py-12 px-4">
     <div class="max-w-6xl mx-auto">
-      <div class="lg:grid lg:grid-cols-[1fr_260px] lg:gap-12 items-start">
+      <details class="lg:hidden glass-card rounded-xl p-4 mb-8"><summary class="font-semibold text-heading cursor-pointer">{t('blog:toc-title')}</summary><div class="mt-4"><TableOfContents headings={headings} /></div></details>
+      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-12 items-start">
         <!-- Article body -->
         <article class="prose-blog max-w-3xl w-full">
           <Content />
@@ -151,6 +156,11 @@ const contactHref = localizePath('/contacto', lang);
         <p class="text-label mb-3">{t('blog:post-tags-label')}</p>
         <BlogTags tags={post.data.tags} />
       </div>
+
+      <nav class="post-navigation grid sm:grid-cols-2 gap-4 mb-10" aria-label={t('blog:post-navigation-label')}>
+        {previousPost && <a class="glass-card rounded-xl p-4 link-heading" href={localizePath(`/blog/${previousPost.id.replace(/\.[^.]+$/, '')}`, lang)}><span class="text-label block mb-2">← {t('blog:previous-post')}</span><strong>{previousPost.data.title}</strong></a>}
+        {nextPost && <a class="glass-card rounded-xl p-4 link-heading sm:text-right sm:col-start-2" href={localizePath(`/blog/${nextPost.id.replace(/\.[^.]+$/, '')}`, lang)}><span class="text-label block mb-2">{t('blog:next-post')} →</span><strong>{nextPost.data.title}</strong></a>}
+      </nav>
 
       <a
         href={blogHref}
@@ -187,6 +197,7 @@ const contactHref = localizePath('/contacto', lang);
                 category: p.data.category,
                 tags: p.data.tags,
                 image: p.data.image,
+                imageAlt: p.data.imageAlt,
                 readingTime: p.data.readingTime,
               },
             }))}
@@ -226,3 +237,14 @@ const contactHref = localizePath('/contacto', lang);
     </div>
   </section>
 </BlogPostLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('.prose-blog pre').forEach((pre) => {
+      if (pre.querySelector('.copy-code-button')) return;
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'copy-code-button'; button.textContent = document.documentElement.lang === 'en' ? 'Copy' : 'Copiar';
+      button.addEventListener('click', async () => { await navigator.clipboard.writeText(pre.querySelector('code')?.textContent ?? ''); button.textContent = document.documentElement.lang === 'en' ? 'Copied' : 'Copiado'; setTimeout(() => button.textContent = document.documentElement.lang === 'en' ? 'Copy' : 'Copiar', 1600); });
+      pre.append(button);
+    });
+  });
+</script>
