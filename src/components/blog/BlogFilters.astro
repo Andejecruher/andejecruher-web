@@ -1,0 +1,37 @@
+---
+import { getLang, useTranslations } from '../../i18n/utils';
+
+interface Props { categories: string[]; tags: string[]; postCount: number; }
+const { categories, tags, postCount } = Astro.props;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+<section class="blog-discovery glass-card rounded-2xl p-4 sm:p-6 mb-10" aria-labelledby="discovery-title">
+  <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-5 mb-6">
+    <div class="flex-1 max-w-2xl">
+      <label id="discovery-title" for="blog-search" class="text-label mb-2 block">{t('blog:search-label')}</label>
+      <div class="blog-search-wrap">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="blog-search" type="search" autocomplete="off" placeholder={t('blog:search-placeholder')} />
+      </div>
+    </div>
+    <div class="min-w-52">
+      <label for="blog-sort" class="text-label mb-2 block">{t('blog:sort-label')}</label>
+      <select id="blog-sort" class="blog-select">
+        <option value="newest">{t('blog:sort-newest')}</option><option value="oldest">{t('blog:sort-oldest')}</option>
+        <option value="shortest">{t('blog:sort-shortest')}</option><option value="longest">{t('blog:sort-longest')}</option>
+      </select>
+    </div>
+  </div>
+  <fieldset class="mb-5"><legend class="text-label mb-3">{t('blog:filters-label')}</legend><div class="flex flex-wrap gap-2">
+    <button type="button" data-category="all" class="category-btn chip-filter-active" aria-pressed="true">{t('blog:filters-all')}</button>
+    {categories.map((category) => <button type="button" data-category={category} class="category-btn chip-filter" aria-pressed="false">{category}</button>)}
+  </div></fieldset>
+  <fieldset><legend class="text-label mb-3">{t('blog:tags-filter-label')}</legend><div class="flex flex-wrap gap-2">
+    {tags.map((tag) => <button type="button" data-tag={tag} class="tag-filter-btn chip-filter" aria-pressed="false">#{tag}</button>)}
+  </div></fieldset>
+  <div class="flex flex-wrap items-center justify-between gap-3 mt-6 pt-5 border-t divider">
+    <p id="results-count" class="text-sm font-mono text-body-secondary" aria-live="polite" data-template={t('blog:results-count')} data-total={postCount}></p>
+    <button id="clear-blog-filters" type="button" class="btn btn-secondary btn-sm hidden">{t('blog:clear-filters')}</button>
+  </div>
+</section>

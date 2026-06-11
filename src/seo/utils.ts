@@ -113,6 +113,7 @@ export function seoFromBlogPost(data: {
   updatedDate?: Date;
   author: string;
   image?: string;
+  imageAlt?: string;
   tags?: string[];
   category?: string;
   canonical?: string;
@@ -122,7 +123,7 @@ export function seoFromBlogPost(data: {
     title: data.title,
     description: data.description,
     image: data.image,
-    imageAlt: data.title,
+    imageAlt: data.imageAlt ?? data.title,
     canonical: data.canonical,
     type: 'article',
     publishedTime: data.pubDate.toISOString(),
