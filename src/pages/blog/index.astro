@@ -32,15 +32,16 @@ const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
 <script>
   const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const initBlogDiscovery = () => {
+    const controls = document.querySelector<HTMLElement>('[data-blog-controls]');
     const grid = document.querySelector<HTMLElement>('#posts-grid');
-    const search = document.querySelector<HTMLInputElement>('#blog-search');
-    const sort = document.querySelector<HTMLSelectElement>('#blog-sort');
-    if (!grid || !search || !sort) return;
+    const search = controls?.querySelector<HTMLInputElement>('#blog-search');
+    const sort = controls?.querySelector<HTMLSelectElement>('#blog-sort');
+    if (!controls || !grid || !search || !sort) return;
     const cards = [...grid.querySelectorAll<HTMLElement>('.post-card-wrapper')];
-    const categoryButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-category]')];
-    const tagButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-tag]')];
-    const count = document.querySelector<HTMLElement>('#results-count');
-    const clear = document.querySelector<HTMLButtonElement>('#clear-blog-filters');
+    const categoryButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-category]')];
+    const tagButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-tag]')];
+    const count = controls.querySelector<HTMLElement>('#results-count');
+    const clear = controls.querySelector<HTMLButtonElement>('#clear-blog-filters');
     const empty = document.querySelector<HTMLElement>('#empty-state');
     let category = new URL(location.href).searchParams.get('category') ?? 'all';
     if (!categoryButtons.some((button) => button.dataset.category === category)) category = 'all';
@@ -55,8 +56,18 @@ const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
       });
       const factor = sort.value === 'oldest' || sort.value === 'shortest' ? 1 : -1;
       visible.sort((a, b) => factor * (Number(a.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']) - Number(b.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']))).forEach((card) => grid.append(card));
-      categoryButtons.forEach((button) => { const active = button.dataset.category === category; button.setAttribute('aria-pressed', String(active)); button.className = `category-btn ${active ? 'chip-filter-active' : 'chip-filter'}`; });
-      tagButtons.forEach((button) => { const active = selectedTags.has(button.dataset.tag ?? ''); button.setAttribute('aria-pressed', String(active)); button.className = `tag-filter-btn ${active ? 'chip-filter-active' : 'chip-filter'}`; });
+      categoryButtons.forEach((button) => {
+        const isActive = button.dataset.category === category;
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('chip-filter-active', isActive);
+        button.classList.toggle('chip-filter', !isActive);
+      });
+      tagButtons.forEach((button) => {
+        const isActive = selectedTags.has(button.dataset.tag ?? '');
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('chip-filter-active', isActive);
+        button.classList.toggle('chip-filter', !isActive);
+      });
       const active = Boolean(query || category !== 'all' || selectedTags.size || sort.value !== 'newest');
       clear?.classList.toggle('hidden', !active); empty?.classList.toggle('hidden', visible.length > 0); grid.classList.toggle('hidden', visible.length === 0);
       if (count) count.textContent = (count.dataset.template ?? '{{count}}').replace('{{count}}', String(visible.length));
