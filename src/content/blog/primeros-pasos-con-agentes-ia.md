@@ -4,9 +4,11 @@ description: "Una guía práctica para construir tu primer agente de IA funciona
 pubDate: 2025-03-05
 category: "AI Agents"
 tags: ["python", "langchain", "openai", "ai-agents", "automation"]
-image: "/blog/agentes-ia.jpg"
+image: "/images/blog/agentes-ia.svg"
+imageAlt: "Red conceptual de un agente de IA conectado a herramientas, memoria y razonamiento"
 author: "Andejecruher"
-draft: false
+status: "published"
+featured: true
 readingTime: 10
 ---
 

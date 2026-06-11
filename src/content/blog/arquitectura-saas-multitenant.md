@@ -4,9 +4,11 @@ description: "Cómo diseñar e implementar una plataforma SaaS multi-tenant con 
 pubDate: 2025-02-10
 category: "SaaS Architecture"
 tags: ["laravel", "saas", "multi-tenant", "architecture", "database", "php"]
-image: "/blog/saas-multitenant.jpg"
+image: "/images/blog/saas-multitenant.svg"
+imageAlt: "Diagrama de una plataforma SaaS conectada a espacios aislados para múltiples tenants"
 author: "Andejecruher"
-draft: false
+status: "published"
+featured: false
 readingTime: 12
 ---
 

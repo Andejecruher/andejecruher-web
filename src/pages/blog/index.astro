@@ -3,191 +3,81 @@ import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import BlogHero from '../../components/blog/BlogHero.astro';
 import BlogCard from '../../components/blog/BlogCard.astro';
+import BlogFilters from '../../components/blog/BlogFilters.astro';
 import BlogLayout from '../../components/blog/BlogLayout.astro';
 import EmptyBlogState from '../../components/blog/EmptyBlogState.astro';
-import { getLang, useTranslations } from '../../i18n/utils';
+import { getLang } from '../../i18n/utils';
 import { getPageSeo } from '../../seo/pages';
 
-const isDev = import.meta.env.DEV;
 const lang = getLang(Astro.url.pathname);
-const t = useTranslations(lang);
 const seo = getPageSeo('blog', lang);
-
-const allPosts = await getCollection('blog', ({ data }) => {
-  return isDev ? true : !data.draft;
-});
-
-function toSlug(id: string): string {
-  return id.replace(/\.[^.]+$/, '');
-}
-
-// Sort by pubDate descending
-const posts = allPosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
-
-// Derive unique categories
-const allCategories = [...new Set(posts.map((p) => p.data.category))];
-
-// Fallback server-side filter (still works for non-JS environments / pre-renders)
-const { searchParams } = Astro.url;
-const activeCategory = searchParams.get('category') ?? 'all';
-
-const filteredPosts =
-  activeCategory === 'all' ? posts : posts.filter((p) => p.data.category === activeCategory);
-
+const posts = (await getCollection('blog', ({ data }) => data.status === 'published'))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const toSlug = (id: string) => id.replace(/\.[^.]+$/, '');
+const categories = [...new Set(posts.map(({ data }) => data.category))].sort();
+const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
 ---
-
 <MainLayout {...seo}>
   <BlogHero postCount={posts.length} />
-
-  <BlogLayout>
-    <!-- Category Filter -->
-    {
-      allCategories.length > 1 && (
-        <div class="mb-10" id="category-filter">
-          <p class="text-label mb-3">{t('blog:filters-label')}</p>
-          <div class="flex flex-wrap gap-2" role="list" aria-label={t('blog:filters-aria-label')}>
-            <button
-              data-category="all"
-              role="listitem"
-              class="category-btn chip-filter chip-filter-active"
-            >
-              {t('blog:filters-all')}
-            </button>
-            {allCategories.map((cat) => (
-              <button data-category={cat} role="listitem" class="category-btn chip-filter">
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      )
-    }
-
-    <!-- Posts grid — all posts rendered; JS hides/shows cards -->
-    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {
-        posts.map((post, i) => (
-          <div data-post-category={post.data.category} class="post-card-wrapper">
-            <BlogCard
-              slug={toSlug(post.id)}
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              category={post.data.category}
-              tags={post.data.tags}
-              image={post.data.image}
-              readingTime={post.data.readingTime}
-              index={i}
-            />
-          </div>
-        ))
-      }
+  <BlogLayout maxWidth="max-w-7xl">
+    <BlogFilters categories={categories} tags={tags} postCount={posts.length} />
+    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {posts.map((post, i) => <div class="post-card-wrapper" data-title={post.data.title} data-description={post.data.description} data-category={post.data.category} data-tags={JSON.stringify(post.data.tags)} data-date={post.data.pubDate.getTime()} data-reading-time={post.data.readingTime}>
+        <BlogCard slug={toSlug(post.id)} {...post.data} index={i} />
+      </div>)}
     </div>
-
-    <!-- Empty state — shown by JS when no cards match filter -->
-    <div id="empty-state" class="hidden">
-      <EmptyBlogState />
-    </div>
+    <div id="empty-state" class="hidden"><EmptyBlogState /></div>
   </BlogLayout>
 </MainLayout>
-
-<!--
-  Client-side category filter.
-  Works on static output without a server or React.
-  Falls back gracefully: if JS is disabled, ALL posts remain visible.
-  URL param (?category=) is also honoured on load.
--->
-<script define:vars={{ allCategories }}>
-  (function () {
-    const APP_SCOPE = 'blog-category-filter';
-    const CLEANUP_KEY = '__blogCategoryFilterCleanup__';
-
-    function normalizeCategory(value) {
-      const normalized = (value || 'all').trim();
-      if (normalized === 'all') return 'all';
-      return allCategories.includes(normalized) ? normalized : 'all';
-    }
-
-    function getCategoryFromURL() {
-      try {
-        return normalizeCategory(new URL(window.location.href).searchParams.get('category') || 'all');
-      } catch (_) {
-        return 'all';
-      }
-    }
-
-    function initBlogFilter() {
-      if (typeof window[CLEANUP_KEY] === 'function') {
-        window[CLEANUP_KEY]();
-      }
-
-      const filterRoot = document.getElementById('category-filter');
-      if (!filterRoot) {
-        return;
-      }
-
-      const controller = new AbortController();
-      const { signal } = controller;
-      window[CLEANUP_KEY] = () => controller.abort();
-
-      const wrappers = Array.from(document.querySelectorAll('.post-card-wrapper'));
-      const buttons = Array.from(document.querySelectorAll('.category-btn'));
-      const emptyState = document.getElementById('empty-state');
-
-      const render = (category) => {
-        const normalizedCategory = normalizeCategory(category);
-        let visibleCount = 0;
-
-        wrappers.forEach((wrapper) => {
-          const cardCategory = wrapper.getAttribute('data-post-category');
-          const show = normalizedCategory === 'all' || cardCategory === normalizedCategory;
-          wrapper.style.display = show ? '' : 'none';
-          if (show) visibleCount += 1;
-        });
-
-        if (emptyState) {
-          emptyState.classList.toggle('hidden', visibleCount > 0);
-        }
-
-        buttons.forEach((button) => {
-          const isActive = normalizeCategory(button.getAttribute('data-category') || 'all') === normalizedCategory;
-          button.classList.toggle('chip-filter-active', isActive);
-          button.classList.toggle('chip-filter', !isActive);
-        });
-
-        try {
-          const url = new URL(window.location.href);
-          if (normalizedCategory === 'all') {
-            url.searchParams.delete('category');
-          } else {
-            url.searchParams.set('category', normalizedCategory);
-          }
-          history.replaceState({ scope: APP_SCOPE, category: normalizedCategory }, '', url);
-        } catch (_) {}
-      };
-
-      buttons.forEach((button) => {
-        button.addEventListener(
-          'click',
-          () => {
-            render(button.getAttribute('data-category') || 'all');
-          },
-          { signal },
-        );
+<script>
+  const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  const initBlogDiscovery = () => {
+    const controls = document.querySelector<HTMLElement>('[data-blog-controls]');
+    const grid = document.querySelector<HTMLElement>('#posts-grid');
+    const search = controls?.querySelector<HTMLInputElement>('#blog-search');
+    const sort = controls?.querySelector<HTMLSelectElement>('#blog-sort');
+    if (!controls || !grid || !search || !sort) return;
+    const cards = [...grid.querySelectorAll<HTMLElement>('.post-card-wrapper')];
+    const categoryButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-category]')];
+    const tagButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-tag]')];
+    const count = controls.querySelector<HTMLElement>('#results-count');
+    const clear = controls.querySelector<HTMLButtonElement>('#clear-blog-filters');
+    const empty = document.querySelector<HTMLElement>('#empty-state');
+    let category = new URL(location.href).searchParams.get('category') ?? 'all';
+    if (!categoryButtons.some((button) => button.dataset.category === category)) category = 'all';
+    const selectedTags = new Set<string>();
+    const apply = () => {
+      const query = normalize(search.value);
+      const visible = cards.filter((card) => {
+        const tags: string[] = JSON.parse(card.dataset.tags ?? '[]');
+        const searchable = normalize(`${card.dataset.title} ${card.dataset.description} ${card.dataset.category} ${tags.join(' ')}`);
+        const matches = (!query || searchable.includes(query)) && (category === 'all' || card.dataset.category === category) && [...selectedTags].every((tag) => tags.includes(tag));
+        card.hidden = !matches; return matches;
       });
-
-      window.addEventListener(
-        'popstate',
-        () => {
-          render(getCategoryFromURL());
-        },
-        { signal },
-      );
-
-      render(getCategoryFromURL());
-    }
-
-    initBlogFilter();
-    document.addEventListener('astro:page-load', initBlogFilter);
-  })();
+      const factor = sort.value === 'oldest' || sort.value === 'shortest' ? 1 : -1;
+      visible.sort((a, b) => factor * (Number(a.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']) - Number(b.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']))).forEach((card) => grid.append(card));
+      categoryButtons.forEach((button) => {
+        const isActive = button.dataset.category === category;
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('chip-filter-active', isActive);
+        button.classList.toggle('chip-filter', !isActive);
+      });
+      tagButtons.forEach((button) => {
+        const isActive = selectedTags.has(button.dataset.tag ?? '');
+        button.setAttribute('aria-pressed', String(isActive));
+        button.classList.toggle('chip-filter-active', isActive);
+        button.classList.toggle('chip-filter', !isActive);
+      });
+      const active = Boolean(query || category !== 'all' || selectedTags.size || sort.value !== 'newest');
+      clear?.classList.toggle('hidden', !active); empty?.classList.toggle('hidden', visible.length > 0); grid.classList.toggle('hidden', visible.length === 0);
+      if (count) count.textContent = (count.dataset.template ?? '{{count}}').replace('{{count}}', String(visible.length));
+      const url = new URL(location.href); category === 'all' ? url.searchParams.delete('category') : url.searchParams.set('category', category); history.replaceState({}, '', url);
+    };
+    search.addEventListener('input', apply); sort.addEventListener('change', apply);
+    categoryButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.category ?? 'all'; apply(); }));
+    tagButtons.forEach((button) => button.addEventListener('click', () => { const tag = button.dataset.tag ?? ''; selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag); apply(); }));
+    clear?.addEventListener('click', () => { search.value = ''; sort.value = 'newest'; category = 'all'; selectedTags.clear(); apply(); search.focus(); });
+    apply();
+  };
+  document.addEventListener('astro:page-load', initBlogDiscovery);
 </script>

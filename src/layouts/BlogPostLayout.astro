@@ -9,7 +9,8 @@ interface Props {
   pubDate: Date;
   updatedDate?: Date;
   author: string;
-  image?: string;
+  image: string;
+  imageAlt: string;
   tags?: string[];
   category?: string;
   canonical?: string;
@@ -22,6 +23,7 @@ const {
   updatedDate,
   author,
   image,
+  imageAlt,
   tags = [],
   category,
   canonical,
@@ -36,6 +38,7 @@ const seoProps = seoFromBlogPost({
   updatedDate,
   author,
   image,
+  imageAlt,
   tags,
   category,
   canonical,

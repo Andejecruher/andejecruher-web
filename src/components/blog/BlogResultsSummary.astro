@@ -1,0 +1,22 @@
+---
+import { getLang, useTranslations } from '../../i18n/utils';
+
+interface Props { postCount: number; }
+const { postCount } = Astro.props;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<footer class="blog-results-summary">
+  <span class="blog-results-indicator" aria-hidden="true"></span>
+  <p
+    id="results-count"
+    class="text-sm font-mono text-body-secondary"
+    aria-live="polite"
+    aria-atomic="true"
+    data-template={t('blog:results-count')}
+    data-total={postCount}
+  >
+    {t('blog:results-count', { count: String(postCount) })}
+  </p>
+</footer>

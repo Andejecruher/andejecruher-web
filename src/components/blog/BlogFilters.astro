@@ -1,0 +1,27 @@
+---
+import BlogFilterPanel from './BlogFilterPanel.astro';
+import BlogResultsSummary from './BlogResultsSummary.astro';
+import BlogSearchAndSort from './BlogSearchAndSort.astro';
+import { getLang, useTranslations } from '../../i18n/utils';
+
+interface Props {
+  categories: string[];
+  tags: string[];
+  postCount: number;
+}
+
+const { categories, tags, postCount } = Astro.props;
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<section class="blog-discovery glass-card rounded-2xl mb-10" data-blog-controls aria-labelledby="blog-controls-title">
+  <h2 id="blog-controls-title" class="sr-only">{t('blog:controls-title')}</h2>
+  <div class="blog-discovery-primary">
+    <BlogSearchAndSort />
+  </div>
+  <div class="blog-discovery-secondary">
+    <BlogFilterPanel categories={categories} tags={tags} />
+  </div>
+  <BlogResultsSummary postCount={postCount} />
+</section>
