@@ -41,11 +41,5 @@
   "clear-filters": "Clear filters",
   "post-navigation-label": "Article navigation",
   "previous-post": "Previous article",
-  "next-post": "Next article",
-  "controls-title": "Article discovery tools",
-  "primary-controls-label": "Article search and sorting",
-  "filter-panel-title": "Filters",
-  "filter-panel-description": "Refine articles by category or tags.",
-  "categories-label": "Categories",
-  "tags-label": "Tags"
+  "next-post": "Next article"
 }
