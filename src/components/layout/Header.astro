@@ -6,6 +6,12 @@ import { localizePath } from '../../i18n/routing';
 import logoLight from '../../assets/logo-light.png';
 import logoDark from '../../assets/logo-dark.png';
 
+interface Props {
+  mode?: 'fixed' | 'static';
+}
+
+const { mode = 'fixed' } = Astro.props;
+const headerPositionClass = mode === 'static' ? 'relative z-30' : 'fixed top-0 left-0 right-0 z-50';
 const currentPath = Astro.url.pathname;
 const lang = getLang(currentPath);
 const t = useTranslations(lang);
@@ -39,7 +45,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header data-site-header class="fixed top-0 left-0 right-0 z-50 px-3 py-3 sm:px-4">
+<header data-site-header data-header-mode={mode} class={`${headerPositionClass} px-3 py-3 sm:px-4`}>
   <nav
     class="nav-shell nav-shell-main max-w-7xl mx-auto flex items-center justify-between gap-3 px-3 py-2.5 sm:px-5 lg:px-6"
     aria-label={t('nav:aria-label')}
