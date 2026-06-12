@@ -47,5 +47,13 @@
   "filter-panel-title": "Filters",
   "filter-panel-description": "Refine articles by category or tags.",
   "categories-label": "Categories",
-  "tags-label": "Tags"
+  "tags-label": "Tags",
+  "clear-search": "Clear search",
+  "active-filters-summary": "{{count}} active filters",
+  "pagination-label": "Article pagination",
+  "pagination-previous": "Previous",
+  "pagination-next": "Next",
+  "pagination-page-label": "Page",
+  "posts-scroll-label": "Scrollable article list",
+  "mobile-filter-toggle": "Show filters"
 }

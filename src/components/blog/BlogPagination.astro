@@ -1,0 +1,25 @@
+---
+import { getLang, useTranslations } from '../../i18n/utils';
+
+const lang = getLang(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<nav
+  id="blog-pagination"
+  class="blog-pagination hidden"
+  aria-label={t('blog:pagination-label')}
+  data-previous-label={t('blog:pagination-previous')}
+  data-next-label={t('blog:pagination-next')}
+  data-page-label={t('blog:pagination-page-label')}
+>
+  <button type="button" class="blog-page-button blog-page-direction" data-page-action="previous">
+    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"></path></svg>
+    <span>{t('blog:pagination-previous')}</span>
+  </button>
+  <div class="blog-page-list" data-page-list></div>
+  <button type="button" class="blog-page-button blog-page-direction" data-page-action="next">
+    <span>{t('blog:pagination-next')}</span>
+    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"></path></svg>
+  </button>
+</nav>

@@ -47,5 +47,13 @@
   "filter-panel-title": "Filtros",
   "filter-panel-description": "Refina los artículos por categoría o etiquetas.",
   "categories-label": "Categorías",
-  "tags-label": "Tags"
+  "tags-label": "Tags",
+  "clear-search": "Limpiar búsqueda",
+  "active-filters-summary": "{{count}} filtros activos",
+  "pagination-label": "Paginación de artículos",
+  "pagination-previous": "Anterior",
+  "pagination-next": "Siguiente",
+  "pagination-page-label": "Página",
+  "posts-scroll-label": "Listado desplazable de artículos",
+  "mobile-filter-toggle": "Mostrar filtros"
 }

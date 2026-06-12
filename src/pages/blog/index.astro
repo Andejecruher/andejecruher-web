@@ -6,6 +6,7 @@ import BlogCard from '../../components/blog/BlogCard.astro';
 import BlogFilters from '../../components/blog/BlogFilters.astro';
 import BlogLayout from '../../components/blog/BlogLayout.astro';
 import EmptyBlogState from '../../components/blog/EmptyBlogState.astro';
+import BlogPagination from '../../components/blog/BlogPagination.astro';
 import { getLang } from '../../i18n/utils';
 import { getPageSeo } from '../../seo/pages';
 
@@ -20,42 +21,114 @@ const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
 <MainLayout {...seo}>
   <BlogHero postCount={posts.length} />
   <BlogLayout maxWidth="max-w-7xl">
-    <BlogFilters categories={categories} tags={tags} postCount={posts.length} />
-    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {posts.map((post, i) => <div class="post-card-wrapper" data-title={post.data.title} data-description={post.data.description} data-category={post.data.category} data-tags={JSON.stringify(post.data.tags)} data-date={post.data.pubDate.getTime()} data-reading-time={post.data.readingTime}>
-        <BlogCard slug={toSlug(post.id)} {...post.data} index={i} />
-      </div>)}
-    </div>
-    <div id="empty-state" class="hidden"><EmptyBlogState /></div>
+    <BlogFilters categories={categories} tags={tags} postCount={posts.length}>
+      <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {posts.map((post, i) => <div class="post-card-wrapper" data-title={post.data.title} data-description={post.data.description} data-category={post.data.category} data-tags={JSON.stringify(post.data.tags)} data-date={post.data.pubDate.getTime()} data-reading-time={post.data.readingTime}>
+          <BlogCard slug={toSlug(post.id)} {...post.data} index={i} />
+        </div>)}
+      </div>
+      <div id="empty-state" class="hidden"><EmptyBlogState /></div>
+      <BlogPagination />
+    </BlogFilters>
   </BlogLayout>
 </MainLayout>
 <script>
   const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
   const initBlogDiscovery = () => {
     const controls = document.querySelector<HTMLElement>('[data-blog-controls]');
     const grid = document.querySelector<HTMLElement>('#posts-grid');
+    const postsScroll = document.querySelector<HTMLElement>('#blog-posts-scroll');
     const search = controls?.querySelector<HTMLInputElement>('#blog-search');
     const sort = controls?.querySelector<HTMLSelectElement>('#blog-sort');
-    if (!controls || !grid || !search || !sort) return;
+    const pagination = controls?.querySelector<HTMLElement>('#blog-pagination');
+    if (!controls || !grid || !postsScroll || !search || !sort || !pagination) return;
+
     const cards = [...grid.querySelectorAll<HTMLElement>('.post-card-wrapper')];
     const categoryButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-category]')];
     const tagButtons = [...controls.querySelectorAll<HTMLButtonElement>('button[data-tag]')];
     const count = controls.querySelector<HTMLElement>('#results-count');
     const clear = controls.querySelector<HTMLButtonElement>('#clear-blog-filters');
-    const empty = document.querySelector<HTMLElement>('#empty-state');
-    let category = new URL(location.href).searchParams.get('category') ?? 'all';
-    if (!categoryButtons.some((button) => button.dataset.category === category)) category = 'all';
+    const clearSearch = controls.querySelector<HTMLButtonElement>('#clear-blog-search');
+    const emptyClear = controls.querySelector<HTMLButtonElement>('[data-empty-clear]');
+    const empty = controls.querySelector<HTMLElement>('#empty-state');
+    const activeSummary = controls.querySelector<HTMLElement>('#active-filter-summary');
+    const activeFilterCount = controls.querySelector<HTMLElement>('[data-active-filter-count]');
+    const filterToggle = controls.querySelector<HTMLButtonElement>('#blog-filter-toggle');
+    const filterDrawer = controls.querySelector<HTMLElement>('#blog-filter-drawer');
+    const pageList = pagination.querySelector<HTMLElement>('[data-page-list]');
+    const previous = pagination.querySelector<HTMLButtonElement>('[data-page-action="previous"]');
+    const next = pagination.querySelector<HTMLButtonElement>('[data-page-action="next"]');
+    const postsPerPage = Number(controls.dataset.postsPerPage ?? 6);
+    const urlParams = new URL(location.href).searchParams;
+    let category = urlParams.get('category') ?? 'all';
+    let currentPage = 1;
+    let initialized = false;
     const selectedTags = new Set<string>();
-    const apply = () => {
+
+    if (!categoryButtons.some((button) => button.dataset.category === category)) category = 'all';
+
+    const updateUrl = () => {
+      const url = new URL(location.href);
+      category === 'all' ? url.searchParams.delete('category') : url.searchParams.set('category', category);
+      history.replaceState({}, '', url);
+    };
+
+    const getPaginationItems = (totalPages: number) => {
+      if (totalPages <= 7) return Array.from({ length: totalPages }, (_, index) => index + 1);
+      const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1]);
+      const valid = [...pages].filter((page) => page > 0 && page <= totalPages).sort((a, b) => a - b);
+      const items: Array<number | 'ellipsis'> = [];
+      valid.forEach((page, index) => {
+        if (index > 0 && page - valid[index - 1] > 1) items.push('ellipsis');
+        items.push(page);
+      });
+      return items;
+    };
+
+    const renderPagination = (totalPages: number) => {
+      pagination.classList.toggle('hidden', totalPages <= 1);
+      if (!pageList || !previous || !next) return;
+      previous.disabled = currentPage === 1;
+      next.disabled = currentPage === totalPages;
+      pageList.replaceChildren();
+      getPaginationItems(totalPages).forEach((item) => {
+        if (item === 'ellipsis') {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'blog-page-ellipsis';
+          ellipsis.textContent = '…';
+          ellipsis.setAttribute('aria-hidden', 'true');
+          pageList.append(ellipsis);
+          return;
+        }
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'blog-page-button';
+        button.textContent = String(item);
+        button.setAttribute('aria-label', `${pagination.dataset.pageLabel ?? 'Page'} ${item}`);
+        if (item === currentPage) button.setAttribute('aria-current', 'page');
+        button.addEventListener('click', () => { currentPage = item; apply(false); });
+        pageList.append(button);
+      });
+    };
+
+    const apply = (resetPage = true) => {
+      if (resetPage) currentPage = 1;
       const query = normalize(search.value);
       const visible = cards.filter((card) => {
         const tags: string[] = JSON.parse(card.dataset.tags ?? '[]');
         const searchable = normalize(`${card.dataset.title} ${card.dataset.description} ${card.dataset.category} ${tags.join(' ')}`);
-        const matches = (!query || searchable.includes(query)) && (category === 'all' || card.dataset.category === category) && [...selectedTags].every((tag) => tags.includes(tag));
-        card.hidden = !matches; return matches;
+        return (!query || searchable.includes(query)) && (category === 'all' || card.dataset.category === category) && [...selectedTags].every((tag) => tags.includes(tag));
       });
+      const property = sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date';
       const factor = sort.value === 'oldest' || sort.value === 'shortest' ? 1 : -1;
-      visible.sort((a, b) => factor * (Number(a.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']) - Number(b.dataset[sort.value.includes('short') || sort.value.includes('long') ? 'readingTime' : 'date']))).forEach((card) => grid.append(card));
+      visible.sort((a, b) => factor * (Number(a.dataset[property]) - Number(b.dataset[property]))).forEach((card) => grid.append(card));
+      const totalPages = Math.max(1, Math.ceil(visible.length / postsPerPage));
+      currentPage = Math.min(currentPage, totalPages);
+      const pageStart = (currentPage - 1) * postsPerPage;
+      cards.forEach((card) => { card.hidden = true; });
+      visible.slice(pageStart, pageStart + postsPerPage).forEach((card) => { card.hidden = false; });
+
       categoryButtons.forEach((button) => {
         const isActive = button.dataset.category === category;
         button.setAttribute('aria-pressed', String(isActive));
@@ -68,15 +141,40 @@ const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
         button.classList.toggle('chip-filter-active', isActive);
         button.classList.toggle('chip-filter', !isActive);
       });
-      const active = Boolean(query || category !== 'all' || selectedTags.size || sort.value !== 'newest');
-      clear?.classList.toggle('hidden', !active); empty?.classList.toggle('hidden', visible.length > 0); grid.classList.toggle('hidden', visible.length === 0);
+
+      const filterCount = Number(category !== 'all') + selectedTags.size;
+      const active = Boolean(query || filterCount || sort.value !== 'newest');
+      clear?.classList.toggle('hidden', !active);
+      clearSearch?.classList.toggle('hidden', !query);
+      search.classList.toggle('is-active', Boolean(query));
+      activeFilterCount?.classList.toggle('hidden', filterCount === 0);
+      if (activeFilterCount) activeFilterCount.textContent = String(filterCount);
+      activeSummary?.classList.toggle('hidden', filterCount === 0);
+      if (activeSummary) activeSummary.textContent = (activeSummary.dataset.template ?? '{{count}}').replace('{{count}}', String(filterCount));
+      empty?.classList.toggle('hidden', visible.length > 0);
+      grid.classList.toggle('hidden', visible.length === 0);
       if (count) count.textContent = (count.dataset.template ?? '{{count}}').replace('{{count}}', String(visible.length));
-      const url = new URL(location.href); category === 'all' ? url.searchParams.delete('category') : url.searchParams.set('category', category); history.replaceState({}, '', url);
+      renderPagination(totalPages);
+      updateUrl();
+      if (initialized) postsScroll.scrollTo({ top: 0, behavior: 'smooth' });
+      initialized = true;
     };
-    search.addEventListener('input', apply); sort.addEventListener('change', apply);
+
+    const clearAll = () => { search.value = ''; sort.value = 'newest'; category = 'all'; selectedTags.clear(); apply(); search.focus(); };
+    search.addEventListener('input', () => apply());
+    sort.addEventListener('change', () => apply());
+    clearSearch?.addEventListener('click', () => { search.value = ''; apply(); search.focus(); });
+    clear?.addEventListener('click', clearAll);
+    emptyClear?.addEventListener('click', clearAll);
     categoryButtons.forEach((button) => button.addEventListener('click', () => { category = button.dataset.category ?? 'all'; apply(); }));
     tagButtons.forEach((button) => button.addEventListener('click', () => { const tag = button.dataset.tag ?? ''; selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag); apply(); }));
-    clear?.addEventListener('click', () => { search.value = ''; sort.value = 'newest'; category = 'all'; selectedTags.clear(); apply(); search.focus(); });
+    previous?.addEventListener('click', () => { if (currentPage > 1) { currentPage -= 1; apply(false); } });
+    next?.addEventListener('click', () => { currentPage += 1; apply(false); });
+    filterToggle?.addEventListener('click', () => {
+      const expanded = filterToggle.getAttribute('aria-expanded') === 'true';
+      filterToggle.setAttribute('aria-expanded', String(!expanded));
+      filterDrawer?.classList.toggle('is-open', !expanded);
+    });
     apply();
   };
   document.addEventListener('astro:page-load', initBlogDiscovery);
