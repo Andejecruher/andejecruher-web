@@ -1,11 +1,6 @@
 ---
 import { getLang, useTranslations } from '../../i18n/utils';
-
-interface Props {
-  categories: string[];
-  tags: string[];
-}
-
+interface Props { categories: string[]; tags: string[]; }
 const { categories, tags } = Astro.props;
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
@@ -18,36 +13,25 @@ const t = useTranslations(lang);
       <p class="blog-filter-description">{t('blog:filter-panel-description')}</p>
     </div>
     <button id="clear-blog-filters" type="button" class="blog-clear-filters hidden">
-      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="m19 6-1 14H6L5 6"></path>
-      </svg>
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="m19 6-1 14H6L5 6"></path></svg>
       {t('blog:clear-filters')}
     </button>
   </header>
+
+  <p id="active-filter-summary" class="blog-active-summary hidden" aria-live="polite" data-template={t('blog:active-filters-summary')}></p>
 
   <div class="blog-filter-groups">
     <fieldset class="blog-filter-group">
       <legend class="text-label">{t('blog:categories-label')}</legend>
       <div class="blog-filter-chips">
-        <button type="button" data-category="all" class="category-btn blog-filter-chip chip-filter-active" aria-pressed="true">
-          {t('blog:filters-all')}
-        </button>
-        {categories.map((category) => (
-          <button type="button" data-category={category} class="category-btn blog-filter-chip chip-filter" aria-pressed="false">
-            {category}
-          </button>
-        ))}
+        <button type="button" data-category="all" class="category-btn blog-filter-chip chip-filter-active" aria-pressed="true">{t('blog:filters-all')}</button>
+        {categories.map((category) => <button type="button" data-category={category} class="category-btn blog-filter-chip chip-filter" aria-pressed="false">{category}</button>)}
       </div>
     </fieldset>
-
     <fieldset class="blog-filter-group">
       <legend class="text-label">{t('blog:tags-label')}</legend>
       <div class="blog-filter-chips">
-        {tags.map((tag) => (
-          <button type="button" data-tag={tag} class="tag-filter-btn blog-filter-chip chip-filter" aria-pressed="false">
-            #{tag}
-          </button>
-        ))}
+        {tags.map((tag) => <button type="button" data-tag={tag} class="tag-filter-btn blog-filter-chip chip-filter" aria-pressed="false">#{tag}</button>)}
       </div>
     </fieldset>
   </div>

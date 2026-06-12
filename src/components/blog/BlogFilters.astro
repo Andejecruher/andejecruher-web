@@ -3,25 +3,30 @@ import BlogFilterPanel from './BlogFilterPanel.astro';
 import BlogResultsSummary from './BlogResultsSummary.astro';
 import BlogSearchAndSort from './BlogSearchAndSort.astro';
 import { getLang, useTranslations } from '../../i18n/utils';
-
-interface Props {
-  categories: string[];
-  tags: string[];
-  postCount: number;
-}
-
+interface Props { categories: string[]; tags: string[]; postCount: number; }
 const { categories, tags, postCount } = Astro.props;
 const lang = getLang(Astro.url.pathname);
 const t = useTranslations(lang);
 ---
 
-<section class="blog-discovery glass-card rounded-2xl mb-10" data-blog-controls aria-labelledby="blog-controls-title">
+<section class="blog-workspace" data-blog-controls aria-labelledby="blog-controls-title" data-posts-per-page="6">
   <h2 id="blog-controls-title" class="sr-only">{t('blog:controls-title')}</h2>
-  <div class="blog-discovery-primary">
-    <BlogSearchAndSort />
+  <div class="blog-content-column">
+    <header class="blog-search-toolbar glass-card">
+      <BlogSearchAndSort />
+      <BlogResultsSummary postCount={postCount} />
+    </header>
+    <div id="blog-posts-scroll" class="blog-posts-scroll" tabindex="0" role="region" aria-label={t('blog:posts-scroll-label')}>
+      <slot />
+    </div>
   </div>
-  <div class="blog-discovery-secondary">
-    <BlogFilterPanel categories={categories} tags={tags} />
-  </div>
-  <BlogResultsSummary postCount={postCount} />
+  <aside class="blog-filter-sidebar" aria-label={t('blog:filter-panel-title')}>
+    <button id="blog-filter-toggle" type="button" class="blog-filter-toggle" aria-expanded="false" aria-controls="blog-filter-drawer">
+      <span>{t('blog:mobile-filter-toggle')}</span><span class="blog-filter-toggle-count hidden" data-active-filter-count>0</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"></path></svg>
+    </button>
+    <div id="blog-filter-drawer" class="blog-filter-drawer">
+      <BlogFilterPanel categories={categories} tags={tags} />
+    </div>
+  </aside>
 </section>
