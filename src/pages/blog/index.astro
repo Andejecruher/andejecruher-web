@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import BlogHero from '../../components/blog/BlogHero.astro';
 import BlogCard from '../../components/blog/BlogCard.astro';
 import BlogFilters from '../../components/blog/BlogFilters.astro';
 import BlogLayout from '../../components/blog/BlogLayout.astro';
@@ -18,9 +17,8 @@ const toSlug = (id: string) => id.replace(/\.[^.]+$/, '');
 const categories = [...new Set(posts.map(({ data }) => data.category))].sort();
 const tags = [...new Set(posts.flatMap(({ data }) => data.tags))].sort();
 ---
-<MainLayout {...seo}>
-  <BlogHero postCount={posts.length} />
-  <BlogLayout maxWidth="max-w-7xl">
+<MainLayout {...seo} headerMode="static">
+  <BlogLayout maxWidth="max-w-7xl" paddingY="blog-index-spacing">
     <BlogFilters categories={categories} tags={tags} postCount={posts.length}>
       <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {posts.map((post, i) => <div class="post-card-wrapper" data-title={post.data.title} data-description={post.data.description} data-category={post.data.category} data-tags={JSON.stringify(post.data.tags)} data-date={post.data.pubDate.getTime()} data-reading-time={post.data.readingTime}>

@@ -10,6 +10,7 @@ import type { SeoProps } from '../seo/types';
 interface Props {
   lang?: string;
   seo?: SeoProps;
+  headerMode?: 'fixed' | 'static';
 }
 
 const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
@@ -17,6 +18,7 @@ const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
 const langProp: 'es' | 'en' | undefined =
   lang === 'es' || lang === 'en' ? (lang as 'es' | 'en') : undefined;
 const seo = (Astro.props.seo ?? Astro.props) as SeoProps;
+const headerMode = Astro.props.headerMode ?? 'fixed';
 ---
 
 <!doctype html>
@@ -51,8 +53,8 @@ const seo = (Astro.props.seo ?? Astro.props) as SeoProps;
     <a class="skip-link" href="#main-content"
       >{lang === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}</a
     >
-    <Header />
-    <main id="main-content">
+    <Header mode={headerMode} />
+    <main id="main-content" class:list={{ 'site-header-static': headerMode === 'static' }}>
       <slot />
     </main>
     <Footer />

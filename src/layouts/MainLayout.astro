@@ -3,7 +3,9 @@ import BaseLayout from './BaseLayout.astro';
 import { getLang } from '../i18n/utils';
 import type { SeoProps } from '../seo/types';
 
-interface Props extends SeoProps {}
+interface Props extends SeoProps {
+  headerMode?: 'fixed' | 'static';
+}
 
 const lang = Astro.props.lang ?? getLang(Astro.url.pathname);
 ---
